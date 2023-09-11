@@ -53,15 +53,28 @@ void handleRoot() {
   String html = "<html><body>";
   html += "<h1>NodeMCU LED Control</h1>";
   html += "<p>Click the buttons below to control the LED:</p>";
-  html += "<a href='/on'><button>Turn On</button></a>";
-  html += "<a href='/off'><button>Turn Off</button></a>";
+  html += "<button onclick=\"turnOn()\">Turn On</button>";
+  html += "<button onclick=\"turnOff()\">Turn Off</button>";
+  html += "<script>";
+  html += "function turnOn() {";
+  html += "  var xhr = new XMLHttpRequest();";
+  html += "  xhr.open('GET', '/on', true);";
+  html += "  xhr.send();";
+  html += "}";
+  html += "function turnOff() {";
+  html += "  var xhr = new XMLHttpRequest();";
+  html += "  xhr.open('GET', '/off', true);";
+  html += "  xhr.send();";
+  html += "}";
+  html += "</script>";
   html += "</body></html>";
   server.send(200, "text/html", html);
 }
 
+
 void handleOn() {
   digitalWrite(ledPin, HIGH); // Turn the LED on
-  server.send(200, "text/html", "LED turned on"); // text/html or text/plain no big difference
+  server.send(200, "text/html", "LED turned on");
 }
 
 void handleOff() {
