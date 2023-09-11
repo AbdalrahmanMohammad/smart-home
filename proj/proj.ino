@@ -61,7 +61,7 @@ void handleRoot() {
 
 void handleOn() {
   digitalWrite(ledPin, HIGH); // Turn the LED on
-  server.send(200, "text/html", "LED turned on"); // text/html or text/plain on big difference
+  server.send(200, "text/html", "LED turned on"); // text/html or text/plain no big difference
 }
 
 void handleOff() {
