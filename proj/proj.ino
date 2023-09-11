@@ -1,26 +1,38 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+#include <WiFi.h>
+#include <WebServer.h>
 
 // Set your network credentials
 const char* ssid = "PL";
 const char* password = "87654321";
 
 // Set your static IP address here
-IPAddress staticIP(192, 168, 8, 177); // Change to the desired static IP address
-IPAddress gateway(192, 168, 8, 1);    // Your router's IP address
-IPAddress subnet(255, 255, 255, 0);  // Subnet mask
+IPAddress staticIP(192, 168, 8, 177); 
+IPAddress gateway(192, 168, 8, 1);    
+IPAddress subnet(255, 255, 255, 0);  
 
-ESP8266WebServer server(80);
+WebServer server(80);
 
-int ledPin = D1; // GPIO pin connected to the LED
+int ledPin = 13; 
+bool state=false;
+unsigned long previous;
+int button=2;
+unsigned long buttonprevious;
+
+
 
 void setup() {
   // Initialize serial communication
   Serial.begin(9600);
+  
+  attachInterrupt(digitalPinToInterrupt(button),toggleled,FALLING);
 
+  previous=0; 
+  buttonprevious=0;
+  
   // Initialize LED pin as an output
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW);
+  pinMode(button,INPUT_PULLUP);
 
   // Connect to Wi-Fi with static IP
   WiFi.config(staticIP, gateway, subnet);
@@ -32,52 +44,63 @@ void setup() {
   }
   Serial.println("Connected to WiFi");
 
-  // Print the NodeMCU's IP address
-  Serial.print("NodeMCU IP address: ");
+  Serial.print("ESP32 IP address: ");
   Serial.println(WiFi.localIP());
 
-  // Define web server routes
   server.on("/", HTTP_GET, handleRoot);
-  server.on("/on", HTTP_GET, handleOn);
-  server.on("/off", HTTP_GET, handleOff);
+  server.on("/tog", HTTP_GET, handletoggle);
 
-  // Start the web server
+
   server.begin();
 }
 
 void loop() {
   server.handleClient();
+    if(millis()-previous>=3000UL)
+  {
+    Serial.println(WiFi.status());
+    previous=millis();
+              // #######put some code to light up the built-in led when it is connected##########
+    }
 }
+
 
 void handleRoot() {
   String html = "<html><body>";
   html += "<h1>NodeMCU LED Control</h1>";
-  html += "<p>Click the buttons below to control the LED:</p>";
-  html += "<button onclick=\"turnOn()\">Turn On</button>";
-  html += "<button onclick=\"turnOff()\">Turn Off</button>";
+  html += "<button id=\"myButton\" onclick=\"toggle()\">" + String(state ? "Off" : "On") + "</button>";
   html += "<script>";
-  html += "function turnOn() {";
+  html += "function toggle() {";
   html += "  var xhr = new XMLHttpRequest();";
-  html += "  xhr.open('GET', '/on', true);";
+  html += "  xhr.open('GET', '/tog', true);";
   html += "  xhr.send();";
-  html += "}";
-  html += "function turnOff() {";
-  html += "  var xhr = new XMLHttpRequest();";
-  html += "  xhr.open('GET', '/off', true);";
-  html += "  xhr.send();";
+  html += "  var button = document.getElementById('myButton');";
+  html += "  if (button.innerHTML === 'On') {";
+  html += "    button.innerHTML = 'Off';";
+  html += "  } else {";
+  html += "    button.innerHTML = 'On';";
+  html += "  }";
   html += "}";
   html += "</script>";
   html += "</body></html>";
-  server.send(200, "text/html", html);
+  server.send(200, "text/html", html); // ### this is so important because it sends back to client that server got it###
 }
 
 
-void handleOn() {
-  digitalWrite(ledPin, HIGH); // Turn the LED on
-  server.send(200, "text/html", "LED turned on");
+void handletoggle() {
+toggleled();
+    server.send(200, "text/plain", "LED toggled"); // note this is so heavy for the interrupt
 }
 
-void handleOff() {
-  digitalWrite(ledPin, LOW); // Turn the LED off
-  server.send(200, "text/plain", "LED turned off");
-}
+
+
+
+void toggleled()// #####keep this for all leds (300 millis is very small) and make array for states and name the leds by numbers#######
+{
+      if(millis()-buttonprevious>=300UL)
+ {
+    state=!state;
+  digitalWrite(ledPin, state); 
+      buttonprevious=millis();
+  }
+  }
