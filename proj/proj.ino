@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <WebServer.h>
+#include <my_library.h>
 
 // Set your network credentials
 const char* ssid = "PL";
@@ -55,6 +56,7 @@ void setup() {
 }
 
 void loop() {
+  Serial.println(addition(2,22));
   server.handleClient();
     if(millis()-previous>=3000UL)
   {
