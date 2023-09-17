@@ -26,9 +26,11 @@ void handleRoot() {
     return;
   }
 
-  // Replace the placeholder with LED state
+  // Replace the placeholder with LED state and color when reloading the page
   String buttonLabel = (state ? "Off" : "On");
-  html.replace("{LED_STATE}", buttonLabel);
+  String buttonColor = (state ? "red" : "green");
+  html.replace("(LED_STATE)", buttonLabel);
+  html.replace("(LED_STATE_COLOR)", buttonColor);
 
   // Send the HTML content as the response
   server.send(200, "text/html", html);

@@ -7,7 +7,7 @@
 </head>
 <body>
   <h1>NodeMCU LED Control</h1>
-  <button id="myButton" onclick="toggle()">{LED_STATE}</button>
+  <button id="myButton" onclick="toggle()" style="background-color: (LED_STATE_COLOR)">(LED_STATE)</button>
 
   <script>
     function toggle() {
@@ -15,8 +15,20 @@
       xhr.open('GET', '/tog', true);
       xhr.send();
 
+      // change led state and color at every click
       var button = document.getElementById('myButton');
-      button.innerHTML = (button.innerHTML === 'Off') ? 'On' : 'Off';
+      if(button.innerHTML==="On")
+      {
+        button.innerHTML = "Off";
+        button.style.backgroundColor = "red";
+      }
+      else 
+      {
+        button.innerHTML = "On";
+        button.style.backgroundColor = "green";
+      }
+      
+
     }
   </script>
 </body>
