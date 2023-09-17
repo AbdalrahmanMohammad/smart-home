@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include "SPIFFS.h"
 #include <WebServer.h>
 #include "../lib/functions.h"
 #include "../lib/my_library.h"
@@ -33,7 +34,7 @@ void setup() {
   server.on("/", HTTP_GET, handleRoot);
   server.on("/tog", HTTP_GET, handletoggle);
 
-
+ if (!SPIFFS.begin(true)) { Serial.println("An Error has occurred while mounting SPIFFS");return; }
   server.begin();
 }
 

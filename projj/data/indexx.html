@@ -1,0 +1,23 @@
+<html>
+<head>
+  <title>NodeMCU LED Control</title>
+  <style>
+    /* Add your CSS styles here */
+  </style>
+</head>
+<body>
+  <h1>NodeMCU LED Control</h1>
+  <button id="myButton" onclick="toggle()">{LED_STATE}</button>
+
+  <script>
+    function toggle() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/tog', true);
+      xhr.send();
+
+      var button = document.getElementById('myButton');
+      button.innerHTML = (button.innerHTML === 'Off') ? 'On' : 'Off';
+    }
+  </script>
+</body>
+</html>

@@ -13,22 +13,23 @@ void handletoggle() {
 }
 
 void handleRoot() {
-    String html = "<html><body>";
-    html += "<h1>NodeMCU LED Control</h1>";
-    html += "<button id=\"myButton\" onclick=\"toggle()\">" + String(state ? "Off" : "On") + "</button>";
-    html += "<script>";
-    html += "function toggle() {";
-    html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/tog', true);";
-    html += "  xhr.send();";
-    html += "  var button = document.getElementById('myButton');";
-    html += "  if (button.innerHTML === 'On') {";
-    html += "    button.innerHTML = 'Off';";
-    html += "  } else {";
-    html += "    button.innerHTML = 'On';";
-    html += "  }";
-    html += "}";
-    html += "</script>";
-    html += "</body></html>";
-    server.send(200, "text/html", html);
+  // Read the HTML file into a String
+  String html;
+  File file = SPIFFS.open("/indexx.html", "r");
+  if (file) {
+    while (file.available()) {
+      html += (char)file.read();
+    }
+    file.close();
+  } else {
+    Serial.println("Failed to open HTML file");
+    return;
+  }
+
+  // Replace the placeholder with LED state
+  String buttonLabel = (state ? "Off" : "On");
+  html.replace("{LED_STATE}", buttonLabel);
+
+  // Send the HTML content as the response
+  server.send(200, "text/html", html);
 }
