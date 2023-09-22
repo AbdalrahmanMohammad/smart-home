@@ -8,16 +8,14 @@ void setup()
 {
     Serial.begin(9600);
 
-    wifiLed.init(); 
+    wifiLed.init(LOW); 
+    ledPin.init(LOW);
 
     attachInterrupt(digitalPinToInterrupt(button), toggleled, FALLING);
 
     wifiLedPrevious = 0;
     buttonprevious = 0;
 
-    // Initialize LED pin as an output
-    pinMode(ledPin, OUTPUT);
-    digitalWrite(ledPin, LOW);
     pinMode(button, INPUT_PULLUP);
 
     // Connect to Wi-Fi with static IP
@@ -41,5 +39,5 @@ void setup()
 
 void loop()
 {
-    checkWifi();
+    checkWifi(); 
 }

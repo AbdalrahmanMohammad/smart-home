@@ -47,8 +47,7 @@ void toggleled()
 {
   if (millis() - buttonprevious >= 300UL)
   {
-    state = !state;
-    digitalWrite(ledPin, state);
+    ledPin.toggle();
     buttonprevious = millis();
   }
 }
@@ -61,7 +60,7 @@ void handletoggle(AsyncWebServerRequest *request)
 
 void handleLEDState(AsyncWebServerRequest *request)
 {
-  request->send(200, "text/plain", String(state ? "On" : "Off"));
+  request->send(200, "text/plain", String(ledPin.isOn() ? "On" : "Off"));
 }
 
 void handleRoot(AsyncWebServerRequest *request)
@@ -84,8 +83,8 @@ void handleRoot(AsyncWebServerRequest *request)
   }
 
   // Replace the placeholder with LED state and color when reloading the page
-  String buttonLabel = (state ? "Off" : "On");
-  String buttonColor = (state ? "red" : "green");
+  String buttonLabel = (ledPin.isOn()  ? "Off" : "On");
+  String buttonColor = (ledPin.isOn()  ? "red" : "green");
   html.replace("(LED_STATE)", buttonLabel);
   html.replace("(LED_STATE_COLOR)", buttonColor);
 
