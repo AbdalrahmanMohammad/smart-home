@@ -7,12 +7,16 @@ void toggleled() {
     }
 }
 
-void handletoggle() {
+void handletoggle(AsyncWebServerRequest *request) {
     toggleled();
-    server.send(200, "text/plain", "LED toggled");
+  request->redirect("/");
 }
 
-void handleRoot() {
+void handleLEDState(AsyncWebServerRequest *request) {
+  request->send(200, "text/plain", String(state ? "On" : "Off"));
+}
+
+void handleRoot(AsyncWebServerRequest *request) {
   // Read the HTML file into a String
   String html;
   File file = SPIFFS.open("/indexx.html", "r");
@@ -33,5 +37,5 @@ void handleRoot() {
   html.replace("(LED_STATE_COLOR)", buttonColor);
 
   // Send the HTML content as the response
-  server.send(200, "text/html", html);
+  request->send(200, "text/html", html);
 }

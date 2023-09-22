@@ -1,6 +1,6 @@
 #include <WiFi.h>
 #include "SPIFFS.h"
-#include <WebServer.h>
+#include <ESPAsyncWebServer.h>
 #include "../lib/functions.h"
 #include "../lib/my_library.h"
 
@@ -33,13 +33,13 @@ void setup() {
 
   server.on("/", HTTP_GET, handleRoot);
   server.on("/tog", HTTP_GET, handletoggle);
+  server.on("/ledstate", HTTP_GET, handleLEDState);
 
  if (!SPIFFS.begin(true)) { Serial.println("An Error has occurred while mounting SPIFFS");return; }
   server.begin();
 }
 
 void loop() {
-  server.handleClient();
     if(millis()-previous>=3000UL)
   {
     Serial.println(WiFi.status());

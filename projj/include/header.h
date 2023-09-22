@@ -8,7 +8,7 @@ IPAddress staticIP(192, 168, 8, 177);
 IPAddress gateway(192, 168, 8, 1);    
 IPAddress subnet(255, 255, 255, 0);  
 
-WebServer server(80);
+AsyncWebServer server(80);
 
 int ledPin = 13; 
 bool state=false;
