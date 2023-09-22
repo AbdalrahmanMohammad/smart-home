@@ -1,3 +1,4 @@
+#include "../lib/LedClass.h" // include the classes you make here
 
 // Set your network credentials
 const char* ssid = "PLL";
@@ -12,6 +13,7 @@ AsyncWebServer server(80);
 
 int ledPin = 13; 
 bool state=false;
-unsigned long previous;
+unsigned long wifiLedPrevious;
 int button=0;
 unsigned long buttonprevious;
+LedClass wifiLed(32);            
