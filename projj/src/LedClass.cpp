@@ -43,7 +43,6 @@ bool LedClass::isOn()
 
 void LedClass::toggle() // you can just digialWrite(pin,!digitalRead(pin)); but this is better
 {
-  Serial.println(isOn());
   if(isOn())
   {
     off();

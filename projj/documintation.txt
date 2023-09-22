@@ -1,5 +1,2 @@
   server.on("/tog", HTTP_GET, handletoggle);
 this is not accessed directly, the main root access it using ajax to do its function
-    server.send(200, "text/plain", "LED toggled"); // this line in handletoggle() 
-                                                    //is so important to tell the root that it
-                                                   // has did its job

@@ -17,14 +17,14 @@
       xhttp.open("GET", "/tog", true);
       xhttp.send();
     }
-    setInterval(function() {
-      updateLEDState();
-    }, 300);
+    setInterval(function() { updateLEDState(); }, 300);
+
     function updateLEDState() {
       var button = document.getElementById("myButton");
       var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+      xhttp.onreadystatechange = function() {    // it depends on xhttp.open() && xhttp.send()
+        if (this.readyState == 4 && this.status == 200) { //4: Request finished and response is ready.
+                                                          // 200 (HTTP OK). 
           if(this.responseText=="On")
           {
             button.innerHTML = "Off";
@@ -38,38 +38,11 @@
           }
         }
       };
-      xhttp.open("GET", "/ledstate", true);
-      xhttp.send();
+      xhttp.open("GET", "/ledstate", true); // this what changes the ready state
+      xhttp.send();                         // it updates the value on /ledstate so the value in this page(/ledstate) is updated each 300 millis
     }
   </script>
   
 </body>
 
 </html>
-
-
-
-
-
-
-<!-- 
-<script>
-  function toggle() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/tog', true);
-    xhr.send();
-
-    // change led state and color at every click
-    var button = document.getElementById('myButton');
-    if (button.innerHTML === "On") {
-      button.innerHTML = "Off";
-      button.style.backgroundColor = "red";
-    }
-    else {
-      button.innerHTML = "On";
-      button.style.backgroundColor = "green";
-    }
-
-
-  }
-</script> -->

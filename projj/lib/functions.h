@@ -16,7 +16,7 @@ void handleLEDState(AsyncWebServerRequest *request) {
   request->send(200, "text/plain", String(state ? "On" : "Off"));
 }
 
-void handleRoot(AsyncWebServerRequest *request) {
+void handleRoot(AsyncWebServerRequest *request) {  // note this code works just when refreshing the "/"
   // Read the HTML file into a String
   String html;
   File file = SPIFFS.open("/indexx.html", "r");
@@ -29,6 +29,7 @@ void handleRoot(AsyncWebServerRequest *request) {
     Serial.println("Failed to open HTML file");
     return;
   }
+   
 
   // Replace the placeholder with LED state and color when reloading the page
   String buttonLabel = (state ? "Off" : "On");
