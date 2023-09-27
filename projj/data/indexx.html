@@ -1,15 +1,36 @@
+<!DOCTYPE html>
 <html>
 
 <head>
   <title>NodeMCU LED Control</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <style>
-    /* Add your CSS styles here */
+    /* Custom CSS for centering content */
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-container {
+      text-align: center;
+      border-radius: 50%;
+    }
+    .btn{
+      border-radius: 50%;
+    }
   </style>
 </head>
 
 <body>
-  <h1>NodeMCU LED Control</h1>
-  <button id="myButton" onclick="toggle()" style="background-color: (LED_STATE_COLOR)">(LED_STATE)</button>
+  <div class="container">
+    <div class="btn-container">
+      <h1 class="mt-5">NodeMCU LED Control</h1>
+      <button id="myButton" onclick="toggle()" class="btn btn-lg btn-primary mt-3">(LED_STATE)</button>
+    </div>
+  </div>
 
   <script>
     function toggle() {
@@ -17,32 +38,34 @@
       xhttp.open("GET", "/tog", true);
       xhttp.send();
     }
+
     setInterval(function() { updateLEDState(); }, 300);
 
     function updateLEDState() {
       var button = document.getElementById("myButton");
       var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {    // it depends on xhttp.open() && xhttp.send()
-        if (this.readyState == 4 && this.status == 200) { //4: Request finished and response is ready.
-                                                          // 200 (HTTP OK). 
-          if(this.responseText=="On")
-          {
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          if(this.responseText=="On") {
             button.innerHTML = "Off";
-      button.style.backgroundColor = "red";
+            button.classList.remove("btn-success");
+            button.classList.add("btn-danger");
           }
-          else if (this.responseText=="Off")
-          {
+          else if (this.responseText=="Off") {
             button.innerHTML = "On";
-      button.style.backgroundColor = "green";
-
+            button.classList.remove("btn-danger");
+            button.classList.add("btn-success");
           }
         }
       };
-      xhttp.open("GET", "/ledstate", true); // this what changes the ready state
-      xhttp.send();                         // it updates the value on /ledstate so the value in this page(/ledstate) is updated each 300 millis
+      xhttp.open("GET", "/ledstate", true);
+      xhttp.send();
     }
   </script>
-  
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -1,2 +1,10 @@
   server.on("/tog", HTTP_GET, handletoggle);
 this is not accessed directly, the main root access it using ajax to do its function
+----------------------------------------------------------------------------------------
+ xhttp.onreadystatechange = function() {    // it depends on xhttp.open() && xhttp.send()
+        if (this.readyState == 4 && this.status == 200) { //4: Request finished and response is ready.
+                                                          // 200 (HTTP OK). 
+
+  xhttp.open("GET", "/ledstate", true); // this what changes the ready state
+      xhttp.send();                         // it updates the value on /ledstate so the value in this page(/ledstate) is updated each 300 millis
+------------------------------------------------------------------------------------------------
