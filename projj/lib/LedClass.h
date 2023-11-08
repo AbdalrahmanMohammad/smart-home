@@ -10,7 +10,10 @@ private:
     byte state;
 
 public:
-    unsigned long previous;
+    unsigned long previous; // for button debounce
+    unsigned long duration; // for timer (how many seconds to toggle)
+    unsigned long startTime; // when i sat the timer
+
     LedClass() {} // do not use
     LedClass(byte pin);
 

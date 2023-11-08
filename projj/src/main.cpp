@@ -37,4 +37,8 @@ void setup()
 void loop()
 {
     checkWifi(); 
+
+    ledTimer(); // keeps checking if a timer is set to the led
+
 }
+

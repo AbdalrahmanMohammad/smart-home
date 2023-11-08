@@ -30,9 +30,16 @@
       <h1 class="mt-5">NodeMCU LED Control</h1>
       <button id="myButton" onclick="toggle()" class="btn btn-lg btn-primary mt-3">(LED_STATE)</button>
     </div>
+    <form method='get' action='/ledstate'>
+      <label for='seconds'>Enter seconds:</label>
+      <input type='number' class='form-control' id='seconds' name='seconds'>
+      <button class='btn btn-primary mt-3'>Perform Action</button>
+  </form>
+  
   </div>
 
   <script>
+
     function toggle() {
       var xhttp = new XMLHttpRequest();
       xhttp.open("GET", "/tog", true);
@@ -61,11 +68,14 @@
       xhttp.open("GET", "/ledstate", true);
       xhttp.send();
     }
+
+
   </script>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

@@ -60,6 +60,14 @@ void handletoggle(AsyncWebServerRequest *request)
 
 void handleLEDState(AsyncWebServerRequest *request)
 {
+      if (request->hasParam("seconds")) {
+      AsyncWebParameter *p = request->getParam("seconds");
+      int seconds = p->value().toInt();
+      Serial.println("Received seconds: " + String(seconds));
+      ledPin.duration = seconds * 1000; // Convert seconds to milliseconds
+      ledPin.startTime = millis(); // Start time
+        request->redirect("/"); // to not go actually to /ledstate
+    }
   request->send(200, "text/plain", String(ledPin.isOn() ? "On" : "Off"));
 }
 
@@ -90,4 +98,12 @@ void handleRoot(AsyncWebServerRequest *request)
 
   // Send the HTML content as the response
   request->send(200, "text/html", html);
+}
+void  ledTimer()
+{
+  if (ledPin.duration > 0 && (millis() - ledPin.startTime >= ledPin.duration )) {
+    Serial.println("yes i'm here");
+    toggleled();
+    ledPin.duration = 0; // Reset the delay
+  }
 }
