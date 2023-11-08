@@ -11,9 +11,6 @@ IPAddress subnet(255, 255, 255, 0);
 
 AsyncWebServer server(80);
 
-unsigned long wifiLedPrevious;
-unsigned long buttonprevious;
-
 const byte button= 0;
 LedClass wifiLed(32); 
 LedClass ledPin(13); 

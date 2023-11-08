@@ -26,7 +26,7 @@ void wificonnection()
 
 void checkWifi()// checks wifi connection every 3 seconds and shows the condition on wifiLed
 {
-  if (millis() - wifiLedPrevious >= 3000UL)
+  if (millis() - wifiLed.previous >= 3000UL)
   {
     if (WiFi.status() == WL_CONNECTED)
     {
@@ -39,16 +39,16 @@ void checkWifi()// checks wifi connection every 3 seconds and shows the conditio
 
     Serial.println(WiFi.status());
 
-    wifiLedPrevious = millis();
+    wifiLed.previous = millis();
   }
 }
 
 void toggleled()
 {
-  if (millis() - buttonprevious >= 300UL)
+  if (millis() - ledPin.previous >= 300UL)
   {
     ledPin.toggle();
-    buttonprevious = millis();
+    ledPin.previous = millis();
   }
 }
 

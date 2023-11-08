@@ -10,6 +10,7 @@ private:
     byte state;
 
 public:
+    unsigned long previous;
     LedClass() {} // do not use
     LedClass(byte pin);
 

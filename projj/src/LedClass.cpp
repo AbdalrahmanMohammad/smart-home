@@ -4,6 +4,7 @@ LedClass::LedClass(byte pin)
 {
     this->pin = pin;
     state=LOW;
+    previous=0UL;
 
 }
 

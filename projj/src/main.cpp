@@ -13,9 +13,6 @@ void setup()
 
     attachInterrupt(digitalPinToInterrupt(button), toggleled, FALLING);
 
-    wifiLedPrevious = 0;
-    buttonprevious = 0;
-
     pinMode(button, INPUT_PULLUP);
 
     // Connect to Wi-Fi with static IP
