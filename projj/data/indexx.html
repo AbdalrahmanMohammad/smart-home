@@ -30,15 +30,22 @@
       <h1 class="mt-5">NodeMCU LED Control</h1>
       <button id="myButton" onclick="toggle()" class="btn btn-lg btn-primary mt-3">(LED_STATE)</button>
     </div>
-    <form method='get' action='/ledstate'>
       <label for='seconds'>Enter seconds:</label>
-      <input type='number' class='form-control' id='seconds' name='seconds'>
-      <button class='btn btn-primary mt-3'>Perform Action</button>
-  </form>
+      <input type='number' class='form-control' id='seconds' >
+      <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
   
   </div>
 
   <script>
+  
+        function setTimer() {
+        var secondsValue = document.getElementById('seconds').value;
+        var xhr = new XMLHttpRequest();
+        // Send the 'seconds' value as part of the URL in a GET request
+        xhr.open('GET', '/ledstate?seconds=' + encodeURIComponent(secondsValue), true);
+        xhr.send();
+        } 
+
 
     function toggle() {
       var xhttp = new XMLHttpRequest();

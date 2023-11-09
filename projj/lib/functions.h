@@ -37,7 +37,7 @@ void checkWifi()// checks wifi connection every 3 seconds and shows the conditio
       wifiLed.off();
     }
 
-    Serial.println(WiFi.status());
+    // Serial.println(WiFi.status());
 
     wifiLed.previous = millis();
   }
@@ -60,14 +60,16 @@ void handletoggle(AsyncWebServerRequest *request)
 
 void handleLEDState(AsyncWebServerRequest *request)
 {
-      if (request->hasParam("seconds")) {
-      AsyncWebParameter *p = request->getParam("seconds");
-      int seconds = p->value().toInt();
-      Serial.println("Received seconds: " + String(seconds));
+
+
+      if (request->hasArg("seconds")) {
+        String colorValue = request->arg("seconds");
+        int seconds= (int)strtol(colorValue.c_str(), NULL, 10);
       ledPin.duration = seconds * 1000; // Convert seconds to milliseconds
       ledPin.startTime = millis(); // Start time
-        request->redirect("/"); // to not go actually to /ledstate
+      return;
     }
+
   request->send(200, "text/plain", String(ledPin.isOn() ? "On" : "Off"));
 }
 
@@ -92,9 +94,9 @@ void handleRoot(AsyncWebServerRequest *request)
 
   // Replace the placeholder with LED state and color when reloading the page
   String buttonLabel = (ledPin.isOn()  ? "Off" : "On");
-  String buttonColor = (ledPin.isOn()  ? "red" : "green");
+  String buttonColor = (ledPin.isOn()  ? "btn-danger" : "btn-success");
   html.replace("(LED_STATE)", buttonLabel);
-  html.replace("(LED_STATE_COLOR)", buttonColor);
+  html.replace("btn-primary", buttonColor);
 
   // Send the HTML content as the response
   request->send(200, "text/html", html);
