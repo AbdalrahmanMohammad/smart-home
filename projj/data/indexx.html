@@ -49,7 +49,7 @@
 
     <div class="action-container" id="actionContainer">
       <span class="hide-button" onclick="toggleVisibility()">x</span>
-      <label for='seconds'>Enter seconds:</label>
+      <label for='seconds' id="timerlabel">Enter seconds:</label>
       <input type='number' class='form-control' id='seconds'>
       <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
     </div>
@@ -82,34 +82,15 @@
       xhttp.send();
     }
 
-    setInterval(function () {
-      updateLEDState();
-    }, 300);
+    setInterval(function () {   updateLEDState();  }, 300);
 
     function updateLEDState() {
-      // var xhttp = new XMLHttpRequest();
-      // xhttp.onreadystatechange = function () {
-      //   if (this.readyState == 4 && this.status == 200) {
-      //     if (this.responseText == "On") {
-      //       button.innerHTML = "Off";
-      //       button.classList.remove("btn-success");
-      //       button.classList.add("btn-danger");
-      //     } else if (this.responseText == "Off") {
-      //       button.innerHTML = "On";
-      //       button.classList.remove("btn-danger");
-      //       button.classList.add("btn-success");
-      //     }
-      //   }
-      // };
-      // xhttp.open("GET", "/ledstate", true);
-      // xhttp.send();
 
       var button = document.getElementById("myButton");
 
       fetch('/ledstate')
     .then(response => response.json())
     .then(data => {
-      // Handle the received data (replace this with your logic)
       console.log('Received data:', data);
 
       if (data.state == "On") {
@@ -120,6 +101,19 @@
             button.innerHTML = "On";
             button.classList.remove("btn-danger");
             button.classList.add("btn-success");
+          }
+
+          var timerlabel=document.getElementById("timerlabel");
+          var timetotoggle=data.secondsToToggle;
+          var nextstate=(data.state=="Off") ? "On" : "Off";
+          if(timetotoggle==-1)
+          {
+            timerlabel.innerHTML="set a timer";
+          }
+          else
+          {
+           timerlabel.innerHTML="Led will be "+nextstate+" after "+ data.secondsToToggle+" seconds";
+
           }
 
     })

@@ -43,6 +43,13 @@ void checkWifi()// checks wifi connection every 3 seconds and shows the conditio
   }
 }
 
+int secondsToToggle(LedClass a) // this is used to calculate remind time, to be then sent to web page
+{
+  if (a.duration==0)
+  return -1;
+  return (a.duration-(millis()-a.startTime))/1000;
+}
+
 void toggleled()
 {
   if (millis() - ledPin.previous >= 300UL)
@@ -62,17 +69,19 @@ void handleLEDState(AsyncWebServerRequest *request)
 {
 
 
-      if (request->hasArg("seconds")) {
+      if (request->hasArg("seconds")) {/////////////////         this part for recieve data from web page
         String colorValue = request->arg("seconds");
         int seconds= (int)strtol(colorValue.c_str(), NULL, 10);
       ledPin.duration = seconds * 1000; // Convert seconds to milliseconds
       ledPin.startTime = millis(); // Start time
       return;
     }
-String ss=ledPin.isOn() ? "On" : "Off";
-  // request->send(200, "text/plain", String(ledPin.isOn() ? "On" : "Off"));////////////
+    //------------------------------------------------------------------
+                                                 /////////////      this part for send data to web page
 
-String info = "{\"state\": \"" + ss + "\", \"try\": 50}";
+    String stateOfLed=ledPin.isOn() ? "On" : "Off";
+    long secondsToTog = secondsToToggle(ledPin);
+    String info = "{\"state\": \"" + stateOfLed + "\", \"secondsToToggle\": "+secondsToTog+"}";
     request->send(200, "application/json", info);
 
 }
@@ -114,3 +123,4 @@ void  ledTimer()
     ledPin.duration = 0; // Reset the delay
   }
 }
+
