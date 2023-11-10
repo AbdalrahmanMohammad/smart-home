@@ -13,8 +13,6 @@ void setup()
 
     attachInterrupt(digitalPinToInterrupt(ledPin.btn()), toggleled, FALLING);
 
-    pinMode(ledPin.btn(), INPUT_PULLUP);
-
     // Connect to Wi-Fi with static IP
     WiFi.config(staticIP, gateway, subnet);
     WiFi.begin(ssid, password);

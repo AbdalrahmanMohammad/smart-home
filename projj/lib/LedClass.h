@@ -9,6 +9,7 @@ private:
     byte pin;
     byte buttonPin; // it is optional to use
     byte state;
+    boolean hasbutton;
 
 public:
     unsigned long previous; // for button debounce (has nothing to do with the timer)
