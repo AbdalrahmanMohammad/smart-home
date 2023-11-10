@@ -11,9 +11,9 @@ void setup()
     wifiLed.init(LOW); 
     ledPin.init(LOW);
 
-    attachInterrupt(digitalPinToInterrupt(button), toggleled, FALLING);
+    attachInterrupt(digitalPinToInterrupt(ledPin.btn()), toggleled, FALLING);
 
-    pinMode(button, INPUT_PULLUP);
+    pinMode(ledPin.btn(), INPUT_PULLUP);
 
     // Connect to Wi-Fi with static IP
     WiFi.config(staticIP, gateway, subnet);

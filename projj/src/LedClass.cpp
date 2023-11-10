@@ -5,7 +5,13 @@ LedClass::LedClass(byte pin)
     this->pin = pin;
     state=LOW;
     previous=0UL;
+    Serial.println("yes i went to the other construcotr");
 
+}
+
+LedClass::LedClass(byte pin, byte buttonPin) : LedClass(pin) { // i called the first constructor
+
+    this->buttonPin = buttonPin;
 }
 
 void LedClass::init()
@@ -52,3 +58,13 @@ void LedClass::toggle() // you can just digialWrite(pin,!digitalRead(pin)); but 
       on();
       }
 }
+
+    void LedClass::setButton(int i)
+    {
+        buttonPin=i;
+    }
+
+    byte LedClass::btn()
+    {
+        return buttonPin;
+    }

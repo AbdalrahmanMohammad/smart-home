@@ -26,8 +26,8 @@ void wificonnection()
 
 void checkWifi()// checks wifi connection every 3 seconds and shows the condition on wifiLed
 {
-  if (millis() - wifiLed.previous >= 3000UL)
-  {
+  if (millis() - wifiLed.previous >= 3000UL)// this uses the previous differently it uses it to repeat
+  {                                         // with constant period. (it doesn't have a button, so this is fine)
     if (WiFi.status() == WL_CONNECTED)
     {
       wifiLed.on();
@@ -104,7 +104,6 @@ void handleRoot(AsyncWebServerRequest *request)
 void  ledTimer()
 {
   if (ledPin.duration > 0 && (millis() - ledPin.startTime >= ledPin.duration )) {
-    Serial.println("yes i'm here");
     toggleled();
     ledPin.duration = 0; // Reset the delay
   }
