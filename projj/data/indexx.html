@@ -18,8 +18,24 @@
       text-align: center;
       border-radius: 50%;
     }
-    .btn{
+    .btn {
       border-radius: 50%;
+    }
+    /* Custom CSS for the new div */
+    .action-container {
+      background-color: #f0f0f0; /* Set your desired background color */
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 20px;
+      text-align: center;
+      position: relative;
+      display: none; /* Initially hidden */
+    }
+    .hide-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -28,24 +44,37 @@
   <div class="container">
     <div class="btn-container">
       <h1 class="mt-5">NodeMCU LED Control</h1>
-      <button id="myButton" onclick="toggle()" class="btn btn-lg btn-primary mt-3">(LED_STATE)</button>
+      <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-primary mt-3">(LED_STATE)</button>
     </div>
+
+    <div class="action-container" id="actionContainer">
+      <span class="hide-button" onclick="toggleVisibility()">x</span>
       <label for='seconds'>Enter seconds:</label>
-      <input type='number' class='form-control' id='seconds' >
+      <input type='number' class='form-control' id='seconds'>
       <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
-  
+    </div>
+
   </div>
 
   <script>
-  
-        function setTimer() {
-        var secondsValue = document.getElementById('seconds').value;
-        var xhr = new XMLHttpRequest();
-        // Send the 'seconds' value as part of the URL in a GET request
-        xhr.open('GET', '/ledstate?seconds=' + encodeURIComponent(secondsValue), true);
-        xhr.send();
-        } 
+    var clickTimer;
 
+    function startTimer() {
+      clickTimer = setTimeout(function () {
+        toggleVisibility();
+      }, 1000); // if i click for 1000 millies then it will call togglevisibility()
+    }
+
+    function endTimer() {
+      clearTimeout(clickTimer);
+    }
+
+    function setTimer() {
+      var secondsValue = document.getElementById('seconds').value;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/ledstate?seconds=' + encodeURIComponent(secondsValue), true);
+      xhr.send();
+    }
 
     function toggle() {
       var xhttp = new XMLHttpRequest();
@@ -53,30 +82,61 @@
       xhttp.send();
     }
 
-    setInterval(function() { updateLEDState(); }, 300);
+    setInterval(function () {
+      updateLEDState();
+    }, 300);
 
     function updateLEDState() {
+      // var xhttp = new XMLHttpRequest();
+      // xhttp.onreadystatechange = function () {
+      //   if (this.readyState == 4 && this.status == 200) {
+      //     if (this.responseText == "On") {
+      //       button.innerHTML = "Off";
+      //       button.classList.remove("btn-success");
+      //       button.classList.add("btn-danger");
+      //     } else if (this.responseText == "Off") {
+      //       button.innerHTML = "On";
+      //       button.classList.remove("btn-danger");
+      //       button.classList.add("btn-success");
+      //     }
+      //   }
+      // };
+      // xhttp.open("GET", "/ledstate", true);
+      // xhttp.send();
+
       var button = document.getElementById("myButton");
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          if(this.responseText=="On") {
+
+      fetch('/ledstate')
+    .then(response => response.json())
+    .then(data => {
+      // Handle the received data (replace this with your logic)
+      console.log('Received data:', data);
+
+      if (data.state == "On") {
             button.innerHTML = "Off";
             button.classList.remove("btn-success");
             button.classList.add("btn-danger");
-          }
-          else if (this.responseText=="Off") {
+          } else if (data.state == "Off") {
             button.innerHTML = "On";
             button.classList.remove("btn-danger");
             button.classList.add("btn-success");
           }
-        }
-      };
-      xhttp.open("GET", "/ledstate", true);
-      xhttp.send();
+
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
     }
 
+    function toggleVisibility() {
+      var container = document.getElementById("actionContainer");
 
+      if (container.style.display === "none" || container.style.display === "") {
+        container.style.display = "block";
+      } else {
+        container.style.display = "none";
+      }
+    }
   </script>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

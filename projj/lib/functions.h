@@ -69,8 +69,12 @@ void handleLEDState(AsyncWebServerRequest *request)
       ledPin.startTime = millis(); // Start time
       return;
     }
+String ss=ledPin.isOn() ? "On" : "Off";
+  // request->send(200, "text/plain", String(ledPin.isOn() ? "On" : "Off"));////////////
 
-  request->send(200, "text/plain", String(ledPin.isOn() ? "On" : "Off"));
+String info = "{\"state\": \"" + ss + "\", \"try\": 50}";
+    request->send(200, "application/json", info);
+
 }
 
 void handleRoot(AsyncWebServerRequest *request)
@@ -100,6 +104,8 @@ void handleRoot(AsyncWebServerRequest *request)
 
   // Send the HTML content as the response
   request->send(200, "text/html", html);
+
+  
 }
 void  ledTimer()
 {

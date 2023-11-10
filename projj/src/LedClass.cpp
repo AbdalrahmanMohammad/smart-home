@@ -5,8 +5,6 @@ LedClass::LedClass(byte pin)
     this->pin = pin;
     state=LOW;
     previous=0UL;
-    Serial.println("yes i went to the other construcotr");
-
 }
 
 LedClass::LedClass(byte pin, byte buttonPin) : LedClass(pin) { // i called the first constructor
