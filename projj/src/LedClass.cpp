@@ -10,13 +10,12 @@ LedClass::LedClass(byte pin)
 
 LedClass::LedClass(byte pin, byte buttonPin) : LedClass(pin)
 { // i called the first constructor
-    hasbutton = true;
-    this->buttonPin = buttonPin;
+   setButton(buttonPin);
 }
 
 void LedClass::init()
 {
-    if (hasbutton)
+    if (hasButton())
     {
         pinMode(buttonPin, INPUT_PULLUP);
     }
@@ -72,4 +71,9 @@ void LedClass::setButton(int i)
 byte LedClass::btn()
 {
     return buttonPin;
+}
+
+bool LedClass::hasButton()
+{
+    return hasbutton;
 }

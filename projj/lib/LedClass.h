@@ -5,10 +5,10 @@
 
 class LedClass
 {
-private:
+protected:
     byte pin;
     byte buttonPin; // it is optional to use
-    byte state;
+    boolean state;
     boolean hasbutton;
 
 public:
@@ -30,6 +30,7 @@ public:
     void toggle();
 
     bool isOn();
+    bool hasButton();
 
     byte btn();
 };
