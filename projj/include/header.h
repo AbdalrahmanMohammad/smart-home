@@ -1,4 +1,5 @@
 #include "../lib/LedClass.h" // include the classes you make here
+#include "../lib/RGB.h" 
 
 // Set your network credentials
 const char* ssid = "PL";
@@ -11,6 +12,7 @@ IPAddress subnet(255, 255, 255, 0);
 
 AsyncWebServer server(80);
 
+RGB rgb(5,4,8);
 LedClass wifiLed(32); 
 LedClass ledPin(13,0); 
 

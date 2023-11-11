@@ -16,6 +16,8 @@ private:
     Adafruit_NeoPixel strip;
 
 public:
+    bool btnprevstate; // these two btn states because interrupt can't handle rgb functions
+    bool btncurstate;  // so they're to toggle the led using button
     unsigned long previous;
     unsigned long duration;
     unsigned long startTime;
@@ -31,9 +33,13 @@ public:
         this->pin = pin;
         numpixles = num;
         strip = Adafruit_NeoPixel(numpixles, pin, NEO_GRB + NEO_KHZ800);
-        previous = 0UL;
         state = LOW;
         brightness = 255;
+
+        previous = 0UL;
+        duration = 0UL;
+        startTime = 0UL;
+
     }
 
     void init()
@@ -43,6 +49,21 @@ public:
         if (hasbutton)
         {
             pinMode(buttonPin, INPUT_PULLUP);
+            btnprevstate = digitalRead(buttonPin);
+            btncurstate = digitalRead(buttonPin);
+        }
+    }
+
+    void init(byte defaultState)
+    {
+        init();
+        if (defaultState == HIGH)
+        {
+            on();
+        }
+        else
+        {
+            off();
         }
     }
 
@@ -75,7 +96,11 @@ public:
     void off()
     {
         setBrightness(0);
-        setAll(0, 0, 0);
+        for (int i = 0; i < numpixles; i++)
+        {
+            strip.setPixelColor(i, strip.Color(0, 0, 0));
+        }
+        strip.show();
         state = LOW;
         brightness = 255; // so when i turn any LED after the off state it will be on full brightness
     }
@@ -126,9 +151,31 @@ public:
         buttonPin = i;
     }
 
+    bool btnstate()
+    {
+        return digitalRead(buttonPin);
+    }
+
+    int btn()
+    {
+        return buttonPin;
+    }
+
     int getBrightness()
     {
         return brightness;
+    }
+
+    void toggle()
+    {
+        if (isOn())
+        {
+            off();
+        }
+        else
+        {
+            on();
+        }
     }
 };
 

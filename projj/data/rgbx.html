@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>NodeMCU LED Control</title>
+  <title>RGB page</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <style>
     /* Custom CSS for centering content */
@@ -43,14 +43,14 @@
 <body>
   <div class="container">
     <div class="btn-container">
-      <h1 class="mt-5">NodeMCU LED Control</h1>
+      <h1 class="mt-5">RGB LED Control</h1>
       <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-primary mt-3">(LED_STATE)</button>
     </div>
 
     <div class="action-container" id="actionContainer">
       <span class="hide-button" onclick="toggleVisibility()">x</span>
       <label for='seconds' id="timerlabel">Enter seconds:</label>
-      <input type='number' class='form-control' id='seconds'>
+      <input type='number' class='form-control' id='seconds' min='0'>
       <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
     </div>
 
@@ -72,7 +72,7 @@
     function setTimer() {
       var secondsValue = document.getElementById('seconds').value;
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/ledstate?seconds=' + encodeURIComponent(secondsValue), true);
+      xhr.open('GET', '/ledstate?rgbseconds=' + encodeURIComponent(secondsValue), true);
       xhr.send();
     }
 
@@ -92,26 +92,26 @@
     .then(data => {
       console.log('Received data:', data);
 
-      if (data.state == "On") {
+      if (data.rgbstate == "On") {
             button.innerHTML = "Off";
             button.classList.remove("btn-success");
             button.classList.add("btn-danger");
-          } else if (data.state == "Off") {
+          } else if (data.rgbstate == "Off") {
             button.innerHTML = "On";
             button.classList.remove("btn-danger");
             button.classList.add("btn-success");
           }
 
           var timerlabel=document.getElementById("timerlabel");
-          var timetotoggle=data.secondsToToggle;
-          var nextstate=(data.state=="Off") ? "On" : "Off";
+          var timetotoggle=data.secondsToTogglergb;
+          var nextstate=(data.statestate=="Off") ? "On" : "Off";
           if(timetotoggle==-1)
           {
             timerlabel.innerHTML="set a timer";
           }
           else
           {
-           timerlabel.innerHTML="Led will be "+nextstate+" after "+ data.secondsToToggle+" seconds";
+           timerlabel.innerHTML="Led will be "+nextstate+" after "+ data.secondsToTogglergb+" seconds";
 
           }
 
