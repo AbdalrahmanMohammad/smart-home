@@ -1,112 +1,133 @@
+#include "../include/header.h"
 int secondsToToggle(LedClass a) // this is used to calculate remind time, to be then sent to web page
 {
-  if (a.duration == 0)
-    return -1;
-  return (a.duration - (millis() - a.startTime)) / 1000;
+    if (a.duration == 0)
+        return -1;
+    return (a.duration - (millis() - a.startTime)) / 1000;
 }
 
 void handleLEDState(AsyncWebServerRequest *request)
 {
-            /////////////////         this part for recieve data from web page
-  if (request->hasArg("seconds"))
-  { 
-    String colorValue = request->arg("seconds");
-    int seconds = (int)strtol(colorValue.c_str(), NULL, 10);
+    /////////////////         this part for recieve data from web page
+
+    if (request->hasArg("seconds")) // normal led timer
+    {
+        String colorValue = request->arg("seconds");
+        int seconds = (int)strtol(colorValue.c_str(), NULL, 10);
         if (seconds == -555) // to toggle the led immediately
-    {
-        ledPin.toggle();
-        ledPin.duration = 0; 
-        request->send(200, "application/json", "{}");
-        return;
+        {
+            ledPin.toggle();
+            ledPin.duration = 0;
+            request->send(200, "application/json", "{}");
+            return;
+        }
+        ledPin.duration = seconds * 1000;
+        ledPin.startTime = millis();
     }
-    ledPin.duration = seconds * 1000; 
-    ledPin.startTime = millis();      
-    return;
-  }
 
-  if (request->hasArg("rgbseconds"))
-  { /////////////////         
-    String colorValue = request->arg("rgbseconds");
-    int seconds = (int)strtol(colorValue.c_str(), NULL, 10);
-    if (seconds == -555)
-    {
-        rgb.toggle();
-        rgb.duration = 0; 
-        request->send(200, "application/json", "{}");
-        return;
+    if (request->hasArg("rgbseconds")) // rgb timer
+    {                                  /////////////////
+        String colorValue = request->arg("rgbseconds");
+        int seconds = (int)strtol(colorValue.c_str(), NULL, 10);
+        if (seconds == -555)
+        {
+            rgb.toggle();
+            rgb.duration = 0;
+            request->send(200, "application/json", "{}");
+            return;
+        }
+        rgb.duration = seconds * 1000;
+        rgb.startTime = millis();
+        Serial.println("im here");
     }
-    rgb.duration = seconds * 1000; 
-    rgb.startTime = millis();      
-    Serial.println("im here");
-    return;
-  }
-  //------------------------------------------------------------------
-  /////////////      this part for send data to web page
 
-  String stateOfLed = ledPin.isOn() ? "On" : "Off";
-  String stateOfRGB = rgb.isOn() ? "On" : "Off";
-  long secondsToTog = secondsToToggle(ledPin);
-  long secondsToTogrgb = rgb.duration == 0 ? -1 : ((rgb.duration - (millis() - rgb.startTime)) / 1000);//didn't work with function, no clue why (it destroyed the whole esp32)
+    if (request->hasArg("color")) // rgb color
+    {
+        String colorValue = request->arg("color");
+        int red = (int)strtol(colorValue.substring(1, 3).c_str(), NULL, 16);
+        int green = (int)strtol(colorValue.substring(3, 5).c_str(), NULL, 16);
+        int blue = (int)strtol(colorValue.substring(5, 7).c_str(), NULL, 16);
+        rgb.setAll(red, green, blue);
+    }
 
-  String info = "{\"state\": \"" + stateOfLed + "\", \"secondsToToggle\": " + secondsToTog + ", \"rgbstate\": \"" + stateOfRGB + "\", \"secondsToTogglergb\": \"" + secondsToTogrgb + "\"}";
-  request->send(200, "application/json", info);
+    if (request->hasArg("intensity")) // rgb brightness
+    {
+        String colorValue = request->arg("intensity");
+        if (colorValue == "up")
+        {
+            rgb.brightnessup();
+        }
+        else
+        {
+            rgb.brightnessdown();
+        }
+    }
+    //------------------------------------------------------------------
+    /////////////      this part for send data to web page
+
+    String stateOfLed = ledPin.isOn() ? "On" : "Off";
+    String stateOfRGB = rgb.isOn() ? "On" : "Off";
+    long secondsToTog = secondsToToggle(ledPin);
+    long secondsToTogrgb = rgb.duration == 0 ? -1 : ((rgb.duration - (millis() - rgb.startTime)) / 1000); // didn't work with function, no clue why (it destroyed the whole esp32)
+
+    String info = "{\"state\": \"" + stateOfLed + "\", \"secondsToToggle\": " + secondsToTog + ", \"rgbstate\": \"" + stateOfRGB + "\", \"secondsToTogglergb\": \"" + secondsToTogrgb + "\", \"brightness\": \"" + rgb.getBrightness() + "\"}";
+    request->send(200, "application/json", info);
 }
-
 
 void handleRoot(AsyncWebServerRequest *request)
 { // note this code works just when refreshing the "/"
-  // Read the HTML file into a String
-  String html;
-  File file = SPIFFS.open("/indexx.html", "r");
-  if (file)
-  {
-    while (file.available())
+    // Read the HTML file into a String
+    String html;
+    File file = SPIFFS.open("/indexx.html", "r");
+    if (file)
     {
-      html += (char)file.read();
+        while (file.available())
+        {
+            html += (char)file.read();
+        }
+        file.close();
     }
-    file.close();
-  }
-  else
-  {
-    Serial.println("Failed to open HTML file");
-    return;
-  }
+    else
+    {
+        Serial.println("Failed to open HTML file");
+        return;
+    }
 
-  // Replace the placeholder with LED state and color when reloading the page
-  String buttonLabel = (ledPin.isOn() ? "Off" : "On");
-  String buttonColor = (ledPin.isOn() ? "btn-danger" : "btn-success");
-  html.replace("(LED_STATE)", buttonLabel);
-  html.replace("btn-primary", buttonColor);
+    // Replace the placeholder with LED state and color when reloading the page
+    String buttonLabel = (ledPin.isOn() ? "Off" : "On");
+    String buttonColor = (ledPin.isOn() ? "btn-danger" : "btn-success");
+    html.replace("(LED_STATE)", buttonLabel);
+    html.replace("btn-primary", buttonColor);
 
-  // Send the HTML content as the response
-  request->send(200, "text/html", html);
+    // Send the HTML content as the response
+    request->send(200, "text/html", html);
 }
 
 void handlergbx(AsyncWebServerRequest *request)
 { // note this code works just when refreshing the "/"
-  // Read the HTML file into a String
-  String html;
-  File file = SPIFFS.open("/rgbx.html", "r");
-  if (file)
-  {
-    while (file.available())
+    // Read the HTML file into a String
+    String html;
+    File file = SPIFFS.open("/rgbx.html", "r");
+    if (file)
     {
-      html += (char)file.read();
+        while (file.available())
+        {
+            html += (char)file.read();
+        }
+        file.close();
     }
-    file.close();
-  }
-  else
-  {
-    Serial.println("Failed to open HTML file");
-    return;
-  }
+    else
+    {
+        Serial.println("Failed to open HTML file");
+        return;
+    }
 
-  // Replace the placeholder with LED state and color when reloading the page
-  String buttonLabel = (rgb.isOn() ? "Off" : "On");
-  String buttonColor = (rgb.isOn() ? "btn-danger" : "btn-success");
-  html.replace("(LED_STATE)", buttonLabel);
-  html.replace("btn-primary", buttonColor);
+    // Replace the placeholder with LED state and color when reloading the page
+    String buttonLabel = (rgb.isOn() ? "Off" : "On");
+    String buttonColor = (rgb.isOn() ? "btn-danger" : "btn-success");
+    html.replace("(LED_STATE)", buttonLabel);
+    html.replace("btn-primary", buttonColor);
 
-  // Send the HTML content as the response
-  request->send(200, "text/html", html);
+    // Send the HTML content as the response
+    request->send(200, "text/html", html);
 }

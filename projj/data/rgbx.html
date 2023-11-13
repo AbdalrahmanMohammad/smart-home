@@ -21,21 +21,48 @@
     .btn {
       border-radius: 50%;
     }
-    /* Custom CSS for the new div */
-    .action-container {
-      background-color: #f0f0f0; /* Set your desired background color */
-      padding: 10px;
-      border-radius: 10px;
-      margin-top: 20px;
-      text-align: center;
-      position: relative;
-      display: none; /* Initially hidden */
-    }
+/* Custom CSS for the new div */
+.action-container {
+  background-color: #f0f0f0; /* Set your desired background color */
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+  display: none; /* Updated to use flexbox */
+  justify-content: space-between; /* Spacing between the three containers */
+  align-items: center; /* Center items vertically */
+}
+
+/* Updated styles for the input field and color input */
+#left-container, #middle-container, #right-container {
+  width: 30%; /* Adjust the width of each container */
+  text-align: center; /* Align text to the center in each container */
+}
+
+#seconds, #colorInput {
+  width: 80%; /* Adjust the width of the input fields */
+  margin-bottom: 10px; /* Add margin between the input fields and buttons */
+}
+
     .hide-button {
       position: absolute;
       top: 5px;
       right: 5px;
       cursor: pointer;
+    }
+
+    /* Added style for buttons in the middle container */
+    #middle-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #middle-container button {
+      display: block;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -49,43 +76,67 @@
 
     <div class="action-container" id="actionContainer">
       <span class="hide-button" onclick="toggleVisibility()">x</span>
-      <label for='seconds' id="timerlabel">Enter seconds:</label>
-      <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');"> <!--the last funciton to prevent negative sign-->
-      <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
-    </div>
+      <!-- Left Container: Input and Perform Action button -->
+      <div id="left-container">
+        <label for='seconds' id="timerlabel">set a timer</label>
+        <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');">
+        <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
+      </div>
 
+      <!-- Middle Container: Buttons -->
+      <div id="middle-container">
+        <label id="brightlabel" for="control">Control:</label>
+        <button onclick="buttonClick('button1')" class='btn btn-info'>&#8593</button>
+        <button onclick="buttonClick('button2')" class='btn btn-info'>&#8595</button>
+      </div>
+
+      <!-- Right Container: Color input and Set Color button -->
+      <div id="right-container">
+        <label for='colorInput'>Choose color:</label>
+        <input type='color' id='colorInput'>
+        <button onclick="setColor()" class='btn btn-info mt-3'>Set Color</button>
+      </div>
+    </div>
   </div>
 
   <script>
     var clickTimer;
 
-    function startTimer() {     // for long press on the button
+    function startTimer() {
       clickTimer = setTimeout(function () {
         toggleVisibility();
-      }, 1000); // if i click for 1000 millies then it will call togglevisibility()
+      }, 1000);
     }
 
-    function endTimer() { // for long press on the button
+    function endTimer() {
       clearTimeout(clickTimer);
     }
 
-    function setTimer() { // for put timer to toggle
+    function setTimer() {
       var secondsValue = document.getElementById('seconds').value;
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/ledstate?rgbseconds=' + encodeURIComponent(secondsValue), true);
-        xhr.send();
+      var colorValue = document.getElementById('colorInput').value;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/ledstate?rgbseconds=' + encodeURIComponent(secondsValue), true);
+      xhr.send();
     }
 
     function toggle() {
-      document.getElementById('seconds').value = -555;// to toggle the led immediately
+      document.getElementById('seconds').value = -555;
       setTimer();
-      document.getElementById('seconds').value = ''; // Clear the value
+      document.getElementById('seconds').value = '';
     }
 
-    setInterval(function () { updateLEDState(); }, 300); // for update the button
+    function buttonClick(buttonName) {
+      // Handle button click logic here
+      var intensity=(buttonName=='button1')?"up":"down";
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/ledstate?intensity=' + encodeURIComponent(intensity), true);
+      xhr.send();
+    }
+
+    setInterval(function () { updateLEDState(); }, 300);
 
     function updateLEDState() {
-
       var button = document.getElementById("myButton");
 
       fetch('/ledstate')
@@ -111,9 +162,10 @@
           }
           else {
             timerlabel.innerHTML = "Led will be " + nextstate + " after " + data.secondsToTogglergb + " seconds";
-
           }
 
+          var intensity=data.brightness;
+          document.getElementById("brightlabel").innerHTML=intensity;
         })
         .catch(error => {
           console.error('Error fetching data:', error);
@@ -124,10 +176,17 @@
       var container = document.getElementById("actionContainer");
 
       if (container.style.display === "none" || container.style.display === "") {
-        container.style.display = "block";
+        container.style.display = "flex"; // Display as flex when toggled
       } else {
         container.style.display = "none";
       }
+    }
+
+    function setColor() {
+      var colorValue = document.getElementById('colorInput').value;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/ledstate?color=' + encodeURIComponent(colorValue), true);
+      xhr.send();
     }
   </script>
 

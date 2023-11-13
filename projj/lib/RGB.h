@@ -123,25 +123,25 @@ public:
 
     void brightnessup()
     {
-        if (brightness > 245)
+        if (brightness+20 > 255)
         {
             setBrightness(255);
         }
         else
         {
-            setBrightness(brightness + 10);
+            setBrightness(brightness + 20);
         }
     }
 
     void brightnessdown()
     {
-        if (brightness < 11)
+        if (brightness-20 < 0)
         {
             setBrightness(5);
         }
         else
         {
-            setBrightness(brightness - 10);
+            setBrightness(brightness - 20);
         }
     }
 
