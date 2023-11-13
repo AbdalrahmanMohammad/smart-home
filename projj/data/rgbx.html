@@ -50,7 +50,7 @@
     <div class="action-container" id="actionContainer">
       <span class="hide-button" onclick="toggleVisibility()">x</span>
       <label for='seconds' id="timerlabel">Enter seconds:</label>
-      <input type='number' class='form-control' id='seconds' min='0'>
+      <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');"> <!--the last funciton to prevent negative sign-->
       <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
     </div>
 
@@ -59,40 +59,41 @@
   <script>
     var clickTimer;
 
-    function startTimer() {
+    function startTimer() {     // for long press on the button
       clickTimer = setTimeout(function () {
         toggleVisibility();
       }, 1000); // if i click for 1000 millies then it will call togglevisibility()
     }
 
-    function endTimer() {
+    function endTimer() { // for long press on the button
       clearTimeout(clickTimer);
     }
 
-    function setTimer() {
+    function setTimer() { // for put timer to toggle
       var secondsValue = document.getElementById('seconds').value;
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/ledstate?rgbseconds=' + encodeURIComponent(secondsValue), true);
-      xhr.send();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/ledstate?rgbseconds=' + encodeURIComponent(secondsValue), true);
+        xhr.send();
     }
 
     function toggle() {
       document.getElementById('seconds').value = -555;// to toggle the led immediately
       setTimer();
+      document.getElementById('seconds').value = ''; // Clear the value
     }
 
-    setInterval(function () {   updateLEDState();  }, 300);
+    setInterval(function () { updateLEDState(); }, 300); // for update the button
 
     function updateLEDState() {
 
       var button = document.getElementById("myButton");
 
       fetch('/ledstate')
-    .then(response => response.json())
-    .then(data => {
-      console.log('Received data:', data);
+        .then(response => response.json())
+        .then(data => {
+          console.log('Received data:', data);
 
-      if (data.rgbstate == "On") {
+          if (data.rgbstate == "On") {
             button.innerHTML = "Off";
             button.classList.remove("btn-success");
             button.classList.add("btn-danger");
@@ -102,23 +103,21 @@
             button.classList.add("btn-success");
           }
 
-          var timerlabel=document.getElementById("timerlabel");
-          var timetotoggle=data.secondsToTogglergb;
-          var nextstate=(data.statestate=="Off") ? "On" : "Off";
-          if(timetotoggle==-1)
-          {
-            timerlabel.innerHTML="set a timer";
+          var timerlabel = document.getElementById("timerlabel");
+          var timetotoggle = data.secondsToTogglergb;
+          var nextstate = (data.statestate == "Off") ? "On" : "Off";
+          if (timetotoggle == -1) {
+            timerlabel.innerHTML = "set a timer";
           }
-          else
-          {
-           timerlabel.innerHTML="Led will be "+nextstate+" after "+ data.secondsToTogglergb+" seconds";
+          else {
+            timerlabel.innerHTML = "Led will be " + nextstate + " after " + data.secondsToTogglergb + " seconds";
 
           }
 
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
     }
 
     function toggleVisibility() {

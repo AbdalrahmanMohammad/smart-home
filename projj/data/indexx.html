@@ -50,7 +50,7 @@
     <div class="action-container" id="actionContainer">
       <span class="hide-button" onclick="toggleVisibility()">x</span>
       <label for='seconds' id="timerlabel">Enter seconds:</label>
-      <input type='number' class='form-control' id='seconds'>
+      <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');"> <!--the last funciton to prevent negative sign-->
       <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
     </div>
 
@@ -59,17 +59,17 @@
   <script>
     var clickTimer;
 
-    function startTimer() {
+    function startTimer() {  // for long press on the button
       clickTimer = setTimeout(function () {
         toggleVisibility();
       }, 1000); // if i click for 1000 millies then it will call togglevisibility()
     }
 
-    function endTimer() {
+    function endTimer() {  // for long press on the button
       clearTimeout(clickTimer);
     }
 
-    function setTimer() {
+    function setTimer() {   // for put timer to toggle
       var secondsValue = document.getElementById('seconds').value;
       var xhr = new XMLHttpRequest();
       xhr.open('GET', '/ledstate?seconds=' + encodeURIComponent(secondsValue), true);
@@ -79,9 +79,11 @@
     function toggle() {
       document.getElementById('seconds').value = -555;// to toggle the led immediately
       setTimer();
+      document.getElementById('seconds').value = ''; // Clear the value
+
     }
 
-    setInterval(function () {   updateLEDState();  }, 300);
+    setInterval(function () {   updateLEDState();  }, 300); // for update the button
 
     function updateLEDState() {
 
