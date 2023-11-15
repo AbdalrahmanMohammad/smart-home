@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include "LoggingFunctions.h"
 
 class RGB
 {
@@ -39,7 +40,6 @@ public:
         previous = 0UL;
         duration = 0UL;
         startTime = 0UL;
-
     }
 
     void init()
@@ -123,7 +123,7 @@ public:
 
     void brightnessup()
     {
-        if (brightness+20 > 255)
+        if (brightness + 20 > 255)
         {
             setBrightness(255);
         }
@@ -135,7 +135,7 @@ public:
 
     void brightnessdown()
     {
-        if (brightness-20 < 0)
+        if (brightness - 20 < 0)
         {
             setBrightness(5);
         }
@@ -171,10 +171,12 @@ public:
         if (isOn())
         {
             off();
+            LoggingFunctions::writeLog("rgb", "off");
         }
         else
         {
             on();
+            LoggingFunctions::writeLog("rgb", "on");
         }
     }
 };

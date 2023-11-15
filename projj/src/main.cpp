@@ -6,38 +6,40 @@
 
 void setup()
 {
-    Serial.begin(9600);
+  Serial.begin(9600);
 
-    wifiLed.init(LOW); 
-    ledPin.init(LOW);
-    rgb.init(LOW);
+  wifiLed.init(LOW);
+  ledPin.init(LOW);
+  rgb.init(LOW);
 
-    attachInterrupt(digitalPinToInterrupt(ledPin.btn()), toggleled, FALLING);
+  attachInterrupt(digitalPinToInterrupt(ledPin.btn()), toggleled, FALLING);
 
-    // Connect to Wi-Fi with static IP
-    WiFi.config(staticIP, gateway, subnet);
-    WiFi.begin(ssid, password);
+  // Connect to Wi-Fi with static IP
+  WiFi.config(staticIP, gateway, subnet);
+  WiFi.begin(ssid, password);
 
-    wificonnection();
+  wificonnection();
 
-    server.on("/", HTTP_GET, handleRoot);
-    server.on("/rgbx", HTTP_GET, handlergbx);
-    server.on("/ledstate", HTTP_GET, handleLEDState); // prints variable state on this route. so when i refresh the page each 300 millis
-                                                      // i visit this to get the updates on it and then change the button state depending on the value here
+  server.on("/", HTTP_GET, handleRoot);
+  server.on("/rgbx", HTTP_GET, handlergbx);
+  server.on("/ledstate", HTTP_GET, handleLEDState);
 
-    if (!SPIFFS.begin(true))
-    {
-        Serial.println("An Error has occurred while mounting SPIFFS");
-        return;
-    }
-    server.begin();
+  if (!SPIFFS.begin(true))
+  {
+    Serial.println("An Error has occurred while mounting SPIFFS");
+    return;
+  }
+  server.begin();
+
+  if (LoggingFunctions::readLog("rgb") == "on")
+  {
+    rgb.toggle();
+  }
 }
 
 void loop()
 {
-    checkWifi(); 
-    ledTimer(); // keeps checking if a timer is set to the led
-    togglergb(); // toggles the rgb led using the button
-
-
+  checkWifi();
+  ledTimer();  // keeps checking if a timer is set to the led
+  togglergb(); // toggles the rgb led using the button
 }
