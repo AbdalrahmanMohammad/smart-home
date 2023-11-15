@@ -1,6 +1,8 @@
 #include "../lib/LedClass.h" // include the classes you make here
 #include "../lib/RGB.h" 
 
+#define pr(x) Serial.println(x)
+
 // Set your network credentials
 const char* ssid = "PL";
 const char* password = "87654321";
