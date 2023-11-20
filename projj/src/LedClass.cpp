@@ -6,6 +6,8 @@ LedClass::LedClass(byte pin)
     this->pin = pin;
     state = LOW;
     previous = 0UL;
+    duration=0;
+    startTime=0;
 }
 
 LedClass::LedClass(byte pin, byte buttonPin) : LedClass(pin)

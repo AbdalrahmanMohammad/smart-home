@@ -30,7 +30,6 @@ public:
 
     RGB(byte pin, int num)
     {
-        hasbutton = false;
         this->pin = pin;
         numpixles = num;
         strip = Adafruit_NeoPixel(numpixles, pin, NEO_GRB + NEO_KHZ800);
@@ -40,6 +39,11 @@ public:
         previous = 0UL;
         duration = 0UL;
         startTime = 0UL;
+
+        hasbutton = false;
+        btncurstate=HIGH;
+        btnprevstate=HIGH;
+        buttonPin=-1;
     }
 
     void init()
