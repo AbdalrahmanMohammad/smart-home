@@ -2,17 +2,17 @@
 
 LedClass::LedClass(byte pin)
 {
-    hasbutton=false;
+    hasbutton = false;
     this->pin = pin;
     state = LOW;
     previous = 0UL;
-    duration=0;
-    startTime=0;
+    duration = 0UL;
+    startTime = 0UL;
 }
 
 LedClass::LedClass(byte pin, byte buttonPin) : LedClass(pin)
 { // i called the first constructor
-   setButton(buttonPin);
+    setButton(buttonPin);
 }
 
 void LedClass::init()
@@ -78,4 +78,24 @@ byte LedClass::btn()
 bool LedClass::hasButton()
 {
     return hasbutton;
+}
+
+void LedClass::timer()// toggles the led after (duration) seconds
+{
+
+    if (this->duration > 0UL && (millis() - this->startTime >= this->duration))
+    {
+        this->toggle();
+        this->duration = 0; // Reset the delay
+    }
+}
+
+void LedClass::onPushbuttonIsClicked() // this toggles when the pushbutton is pressed
+{
+
+    if (millis() - this->previous >= 300UL)
+    {
+        this->toggle();
+        this->previous = millis();
+    }
 }

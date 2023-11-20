@@ -33,6 +33,9 @@ public:
     bool hasButton();
 
     byte btn();
+
+    void timer();
+    void onPushbuttonIsClicked();
 };
 
 #endif

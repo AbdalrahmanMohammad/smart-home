@@ -24,10 +24,10 @@ void wificonnection()
   }
 }
 
-void checkWifi()// checks wifi connection every 3 seconds and shows the condition on wifiLed
+void checkWifi() // checks wifi connection every 3 seconds and shows the condition on wifiLed
 {
-  if (millis() - wifiLed.previous >= 3000UL)// this uses the previous differently it uses it to repeat
-  {                                         // with constant period. (it doesn't have a button, so this is fine)
+  if (millis() - wifiLed.previous >= 3000UL) // this uses the previous differently it uses it to repeat
+  {                                          // with constant period. (it doesn't have a button, so this is fine)
     if (WiFi.status() == WL_CONNECTED)
     {
       wifiLed.on();
@@ -43,42 +43,18 @@ void checkWifi()// checks wifi connection every 3 seconds and shows the conditio
   }
 }
 
-void toggleled()
+void toggleled()// works when the led's pushbutton is pressed
 {
-  if (millis() - ledPin.previous >= 300UL)
-  {
-    ledPin.toggle();
-    ledPin.previous = millis();
-  }
+  ledPin.onPushbuttonIsClicked();
 }
 
-void togglergb() // to toggle the rgb from a button
+void togglergb() // works when the rgb's pushbutton is pressed
 {
-
-  rgb.btncurstate = rgb.btnstate();
-
-  if (rgb.btncurstate == LOW && rgb.btnprevstate == HIGH)
-  {
-    if (millis() - rgb.previous >= 500UL)
-    {
-      rgb.toggle();
-      rgb.previous = millis();
-    }
-  }
-  rgb.btnprevstate = rgb.btncurstate;
+    rgb.onPushbuttonIsClicked(); 
 }
 
 void ledTimer()
 {
-  if (ledPin.duration > 0 && (millis() - ledPin.startTime >= ledPin.duration))
-  {
-    ledPin.toggle();
-    ledPin.duration = 0; // Reset the delay
-  }
-
-  if (rgb.duration > 0 && (millis() - rgb.startTime >= rgb.duration))
-  {
-    rgb.toggle();
-    rgb.duration = 0; // Reset the delay
-  }
+  ledPin.timer();
+  rgb.timer();
 }

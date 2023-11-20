@@ -41,9 +41,9 @@ public:
         startTime = 0UL;
 
         hasbutton = false;
-        btncurstate=HIGH;
-        btnprevstate=HIGH;
-        buttonPin=-1;
+        btncurstate = HIGH;
+        btnprevstate = HIGH;
+        buttonPin = -1;
     }
 
     void init()
@@ -182,6 +182,32 @@ public:
             on();
             LoggingFunctions::writeLog("rgb", "on");
         }
+    }
+
+    void timer()// toggles the led after (duration) seconds
+    {
+
+        if (this->duration > 0UL && (millis() - this->startTime >= this->duration))
+        {
+            this->toggle();
+            this->duration = 0; // Reset the delay
+        }
+    }
+
+    void onPushbuttonIsClicked() // this works when the rgb's Pushbutton is clicked
+    {
+
+        this->btncurstate = this->btnstate();
+
+        if (this->btncurstate == LOW && this->btnprevstate == HIGH)
+        {
+            if (millis() - this->previous >= 500UL)
+            {
+                this->toggle();
+                this->previous = millis();
+            }
+        }
+        this->btnprevstate = this->btncurstate;
     }
 };
 
