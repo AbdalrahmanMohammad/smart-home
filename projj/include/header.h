@@ -1,7 +1,9 @@
-#include "../lib/ledClasses/LedClass.h" 
-#include "../lib/rgbClasses/RGB.h" 
-#include "../lib/logClasses/LoggingFunctions.h"
-
+#include <WiFi.h>
+#include "SPIFFS.h"
+#include <ESPAsyncWebServer.h>
+#include <LedClass.h>
+#include <RGB.h>
+#include <LoggingFunctions.h>
 
 
 #define pr(x) Serial.println(x)
