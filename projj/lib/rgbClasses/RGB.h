@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
-#include "LoggingFunctions.h"
+#include "../logClasses/LoggingFunctions.h"
 
 class RGB
 {

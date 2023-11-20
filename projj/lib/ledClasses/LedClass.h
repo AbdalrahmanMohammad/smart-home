@@ -1,6 +1,22 @@
-#include "../lib/LedClass.h"
+#ifndef LedClass_h
+#define LedClass_h
 
-LedClass::LedClass(byte pin)
+#include <Arduino.h>
+
+class LedClass
+{
+protected:
+    byte pin;
+    byte buttonPin; // it is optional to use
+    boolean state;
+    boolean hasbutton;
+
+public:
+    unsigned long previous; // for button debounce (has nothing to do with the timer)
+    unsigned long duration; // for timer (how many seconds to toggle)
+    unsigned long startTime; // when i sat the timer
+
+    LedClass(byte pin)
 {
     hasbutton = false;
     this->pin = pin;
@@ -10,12 +26,12 @@ LedClass::LedClass(byte pin)
     startTime = 0UL;
 }
 
-LedClass::LedClass(byte pin, byte buttonPin) : LedClass(pin)
+LedClass(byte pin, byte buttonPin) : LedClass(pin)
 { // i called the first constructor
     setButton(buttonPin);
 }
 
-void LedClass::init()
+void init()
 {
     if (hasButton())
     {
@@ -23,7 +39,7 @@ void LedClass::init()
     }
     pinMode(pin, OUTPUT);
 }
-void LedClass::init(byte defaultState)
+void init(byte defaultState)
 {
     init();
     if (defaultState == HIGH)
@@ -36,23 +52,23 @@ void LedClass::init(byte defaultState)
     }
 }
 
-void LedClass::on()
+void on()
 {
     digitalWrite(pin, HIGH);
     state = HIGH;
 }
-void LedClass::off()
+void off()
 {
     digitalWrite(pin, LOW);
     state = LOW;
 }
 
-bool LedClass::isOn()
+bool isOn()
 {
     return (state == HIGH);
 }
 
-void LedClass::toggle() // you can just digialWrite(pin,!digitalRead(pin)); but this is better
+void toggle() // you can just digialWrite(pin,!digitalRead(pin)); but this is better
 {
     if (isOn())
     {
@@ -64,23 +80,23 @@ void LedClass::toggle() // you can just digialWrite(pin,!digitalRead(pin)); but 
     }
 }
 
-void LedClass::setButton(int i)
+void setButton(int i)
 {
     hasbutton = true;
     buttonPin = i;
 }
 
-byte LedClass::btn()
+byte btn()
 {
     return buttonPin;
 }
 
-bool LedClass::hasButton()
+bool hasButton()
 {
     return hasbutton;
 }
 
-void LedClass::timer()// toggles the led after (duration) seconds
+void timer()// toggles the led after (duration) seconds
 {
 
     if (this->duration > 0UL && (millis() - this->startTime >= this->duration))
@@ -90,7 +106,7 @@ void LedClass::timer()// toggles the led after (duration) seconds
     }
 }
 
-void LedClass::onPushbuttonIsClicked() // this toggles when the pushbutton is pressed
+void onPushbuttonIsClicked() // this toggles when the pushbutton is pressed
 {
 
     if (millis() - this->previous >= 300UL)
@@ -99,3 +115,6 @@ void LedClass::onPushbuttonIsClicked() // this toggles when the pushbutton is pr
         this->previous = millis();
     }
 }
+};
+
+#endif

@@ -1,6 +1,8 @@
-#include "../lib/LedClass.h" // include the classes you make here
-#include "../lib/RGB.h" 
-#include "../lib/LoggingFunctions.h"
+#include "../lib/ledClasses/LedClass.h" 
+#include "../lib/rgbClasses/RGB.h" 
+#include "../lib/logClasses/LoggingFunctions.h"
+
+
 
 #define pr(x) Serial.println(x)
 

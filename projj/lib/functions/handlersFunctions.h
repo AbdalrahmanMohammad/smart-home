@@ -1,4 +1,4 @@
-#include "../include/header.h"
+#include "header.h"
 int secondsToToggle(LedClass a) // this is used to calculate remind time, to be then sent to web page
 {
     if (a.duration == 0)

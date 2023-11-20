@@ -1,8 +1,7 @@
 #include <WiFi.h>
 #include "SPIFFS.h"
 #include <ESPAsyncWebServer.h>
-#include "../lib/functions.h"
-#include "../lib/my_library.h"
+#include <functions.h>
 
 void setup()
 {
