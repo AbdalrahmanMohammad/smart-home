@@ -156,7 +156,7 @@
 
           var timerlabel = document.getElementById("timerlabel");
           var timetotoggle = data.secondsToTogglergb;
-          var nextstate = (data.statestate == "Off") ? "On" : "Off";
+          var nextstate = (data.rgbstate == "Off") ? "On" : "Off";
           if (timetotoggle == -1) {
             timerlabel.innerHTML = "set a timer";
           }

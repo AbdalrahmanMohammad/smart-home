@@ -16,7 +16,6 @@ void handleLEDState(AsyncWebServerRequest *request)
         if (seconds == -555) // to toggle the led immediately
         {
             ledPin.toggle();
-            ledPin.duration = 0;
             request->send(200, "application/json", "{}");
             return;
         }
@@ -31,7 +30,6 @@ void handleLEDState(AsyncWebServerRequest *request)
         if (seconds == -555)
         {
             rgb.toggle();
-            rgb.duration = 0;
             request->send(200, "application/json", "{}");
             return;
         }
