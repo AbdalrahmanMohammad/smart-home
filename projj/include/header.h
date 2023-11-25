@@ -5,6 +5,14 @@
 #include <RGB.h>
 #include <LoggingFunctions.h>
 
+#include<Command.h>
+#include<ROOM1.h>
+#include<LedToggleCommand.h>
+#include <RgbToggleCommand.h>
+#include <DimUpCommand.h>
+#include <DimDownCommand.h>
+#include <ChangeColorCommand.h>
+
 
 #define pr(x) Serial.println(x)
 
@@ -22,4 +30,12 @@ AsyncWebServer server(80);
 RGB rgb(5,4,8);
 LedClass wifiLed(32); 
 LedClass ledPin(13,0); 
+
+LedToggleCommand ledcom(&ledPin);
+RgbToggleCommand rgbcom(&rgb);
+DimUpCommand dimupcom(&rgb);
+DimDownCommand dimdowncom(&rgb);
+ChangeColorCommand chcolorcom(&rgb);
+
+ROOM1 room1(&ledcom,&rgbcom,&ledPin,&rgb,&dimupcom,&dimdowncom,&chcolorcom);
 

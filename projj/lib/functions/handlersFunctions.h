@@ -15,7 +15,7 @@ void handleLEDState(AsyncWebServerRequest *request)
         int seconds = (int)strtol(colorValue.c_str(), NULL, 10);
         if (seconds == -555) // to toggle the led immediately
         {
-            ledPin.toggle();
+            room1.excLed();
             request->send(200, "application/json", "{}");
             return;
         }
@@ -29,7 +29,7 @@ void handleLEDState(AsyncWebServerRequest *request)
         int seconds = (int)strtol(colorValue.c_str(), NULL, 10);
         if (seconds == -555)
         {
-            rgb.toggle();
+            room1.excRgb();
             request->send(200, "application/json", "{}");
             return;
         }
@@ -44,7 +44,7 @@ void handleLEDState(AsyncWebServerRequest *request)
         int red = (int)strtol(colorValue.substring(1, 3).c_str(), NULL, 16);
         int green = (int)strtol(colorValue.substring(3, 5).c_str(), NULL, 16);
         int blue = (int)strtol(colorValue.substring(5, 7).c_str(), NULL, 16);
-        rgb.setAll(red, green, blue);
+        room1.excColor(red, green, blue);
     }
 
     if (request->hasArg("intensity")) // rgb brightness
@@ -52,12 +52,17 @@ void handleLEDState(AsyncWebServerRequest *request)
         String colorValue = request->arg("intensity");
         if (colorValue == "up")
         {
-            rgb.brightnessup();
+            room1.excDimUp();
         }
         else
         {
-            rgb.brightnessdown();
+            room1.excDimDown();
         }
+    }
+
+        if (request->hasArg("undo")) 
+    {
+        room1.undoColor();
     }
     //------------------------------------------------------------------
     /////////////      this part for send data to web page

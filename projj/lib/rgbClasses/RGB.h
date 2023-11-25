@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
-#include "../logClasses/LoggingFunctions.h"
 
 class RGB
 {
@@ -15,6 +14,9 @@ private:
     int brightness; // from 0 to 255
     int numpixles;
     Adafruit_NeoPixel strip;
+    int red;
+    int green;
+    int blue;
 
 public:
     bool btnprevstate; // these two btn states because interrupt can't handle rgb functions
@@ -35,6 +37,9 @@ public:
         strip = Adafruit_NeoPixel(numpixles, pin, NEO_GRB + NEO_KHZ800);
         state = LOW;
         brightness = 255;
+        red = 0;
+        green = 0;
+        blue = 0;
 
         previous = 0UL;
         duration = 0UL;
@@ -73,9 +78,16 @@ public:
 
     void setAll(int r, int g, int b)
     {
+        if (r == g && g == b && b == 0)
+        {
+            this->off();
+        }
         for (int i = 0; i < numpixles; i++)
         {
             setpixle(r, g, b, i);
+            red = r;
+            green = g;
+            blue = b;
         }
     }
 
@@ -106,6 +118,9 @@ public:
         }
         strip.show();
         state = LOW;
+        red = 0;
+        green = 0;
+        blue = 0;
         brightness = 255; // so when i turn any LED after the off state it will be on full brightness
     }
 
@@ -175,39 +190,35 @@ public:
         if (isOn())
         {
             off();
-            LoggingFunctions::writeLog("rgb", "off");
         }
         else
         {
             on();
-            LoggingFunctions::writeLog("rgb", "on");
         }
     }
 
-    void timer()// toggles the led after (duration) seconds
+    byte getRed()
     {
-
-        if (this->duration > 0UL && (millis() - this->startTime >= this->duration))
-        {
-            this->toggle();
-            this->duration = 0; // Reset the delay
-        }
+        return red;
     }
-
-    void onPushbuttonIsClicked() // this works when the rgb's Pushbutton is clicked
+    byte getGreen()
     {
-
-        this->btncurstate = this->btnstate();
-
-        if (this->btncurstate == LOW && this->btnprevstate == HIGH)
-        {
-            if (millis() - this->previous >= 500UL)
-            {
-                this->toggle();
-                this->previous = millis();
-            }
-        }
-        this->btnprevstate = this->btncurstate;
+        return green;
+    }
+    byte getBlue()
+    {
+        return blue;
+    }
+    void setRed(byte t)
+    {
+        red=t;
+    }
+        void setGreen(byte t)
+    {
+        green=t;
+    }    void setBlue(byte t)
+    {
+        blue=t;
     }
 };
 

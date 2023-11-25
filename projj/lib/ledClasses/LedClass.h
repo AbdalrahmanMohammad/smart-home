@@ -96,25 +96,6 @@ bool hasButton()
     return hasbutton;
 }
 
-void timer()// toggles the led after (duration) seconds
-{
-
-    if (this->duration > 0UL && (millis() - this->startTime >= this->duration))
-    {
-        this->toggle();
-        this->duration = 0; // Reset the delay
-    }
-}
-
-void onPushbuttonIsClicked() // this toggles when the pushbutton is pressed
-{
-
-    if (millis() - this->previous >= 300UL)
-    {
-        this->toggle();
-        this->previous = millis();
-    }
-}
 };
 
 #endif

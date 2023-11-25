@@ -51,6 +51,12 @@
       right: 5px;
       cursor: pointer;
     }
+    .return-button {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      cursor: pointer;
+    }
 
     /* Added style for buttons in the middle container */
     #middle-container {
@@ -76,6 +82,8 @@
 
     <div class="action-container" id="actionContainer">
       <span class="hide-button" onclick="toggleVisibility()">x</span>
+      <span class="return-button" onclick="undo()">&#9100</span>
+
       <!-- Left Container: Input and Perform Action button -->
       <div id="left-container">
         <label for='seconds' id="timerlabel">set a timer</label>
@@ -186,6 +194,13 @@
       var colorValue = document.getElementById('colorInput').value;
       var xhr = new XMLHttpRequest();
       xhr.open('GET', '/ledstate?color=' + encodeURIComponent(colorValue), true);
+      xhr.send();
+    }
+
+    function undo()
+    {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/ledstate?undo=' + "yes", true);
       xhr.send();
     }
   </script>

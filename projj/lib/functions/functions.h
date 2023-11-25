@@ -45,16 +45,18 @@ void checkWifi() // checks wifi connection every 3 seconds and shows the conditi
 
 void toggleled()// works when the led's pushbutton is pressed
 {
-  ledPin.onPushbuttonIsClicked();
+     
+        room1.excLedPushbutton();
+    
 }
 
 void togglergb() // works when the rgb's pushbutton is pressed
 {
-    rgb.onPushbuttonIsClicked(); 
+        room1.excRgbPushbutton();
 }
 
 void ledTimer()
 {
-  ledPin.timer();
-  rgb.timer();
+  room1.rgbTimer();
+  room1.ledTimer();
 }

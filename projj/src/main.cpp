@@ -28,10 +28,6 @@ void setup()
   }
   server.begin();
 
-  if (LoggingFunctions::readLog("rgb") == "on")
-  {
-    rgb.toggle();
-  }
 }
 
 void loop()
