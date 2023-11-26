@@ -28,6 +28,12 @@ public:
         changecolorcommand = changecolor;
     }
 
+    void init(byte defaultState)
+    {
+        led->init(defaultState);
+        rgb->init(defaultState);
+    }
+
     void excLed()
     {
         ledcommand->execute();
@@ -79,6 +85,12 @@ public:
             this->excLed();
             led->duration = 0; // Reset the delay
         }
+    }
+
+    void timers()
+    {
+        this->ledTimer();
+        this->rgbTimer();
     }
 
     void excColor(int r, int g, int b)

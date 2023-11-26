@@ -6,8 +6,7 @@ void setup()
   Serial.begin(9600);
 
   wifiLed.init(LOW);
-  ledPin.init(LOW);
-  rgb.init(LOW);
+  room1.init(LOW);
 
   attachInterrupt(digitalPinToInterrupt(ledPin.btn()), toggleled, FALLING);
 
@@ -33,6 +32,6 @@ void setup()
 void loop()
 {
   checkWifi();
-  ledTimer();  // keeps checking if a timer is set to the led
+  room1.timers(); 
   togglergb(); // toggles the rgb led using the button
 }
