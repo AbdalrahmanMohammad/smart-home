@@ -51,7 +51,7 @@ public:
         buttonPin = -1;
     }
 
-    void init()
+    virtual void init()
     {
         strip.begin();
         strip.show();
@@ -63,7 +63,7 @@ public:
         }
     }
 
-    void init(byte defaultState)
+    virtual void init(byte defaultState)
     {
         init();
         if (defaultState == HIGH)
@@ -76,7 +76,7 @@ public:
         }
     }
 
-    void setAll(int r, int g, int b)
+    virtual void setAll(int r, int g, int b)
     {
         if (r == g && g == b && b == 0)
         {
@@ -91,7 +91,7 @@ public:
         }
     }
 
-    void setpixle(int r, int g, int b, int i)
+    virtual void setpixle(int r, int g, int b, int i)
     {
         strip.setBrightness(brightness); // important if i set a pixle after the LED was off
 
@@ -104,12 +104,12 @@ public:
         strip.show();
     }
 
-    void on()
+    virtual void on()
     {
         setAll(255, 255, 255);
     }
 
-    void off()
+    virtual void off()
     {
         setBrightness(0);
         for (int i = 0; i < numpixles; i++)
@@ -124,13 +124,13 @@ public:
         brightness = 255; // so when i turn any LED after the off state it will be on full brightness
     }
 
-    bool isOn()
+    virtual bool isOn()
     {
         return (state == HIGH);
     }
 
-    void setBrightness(int a) // never set brightness 0, because then leds will get off and you need
-    {                         // to explicitly turn them on
+    virtual void setBrightness(int a) // never set brightness 0, because then leds will get off and you need
+    {                                 // to explicitly turn them on
         if (a < 1)
         {
             return;
@@ -140,7 +140,7 @@ public:
         strip.show();
     }
 
-    void brightnessup()
+    virtual void brightnessup()
     {
         if (brightness + 20 > 255)
         {
@@ -152,7 +152,7 @@ public:
         }
     }
 
-    void brightnessdown()
+    virtual void brightnessdown()
     {
         if (brightness - 20 < 0)
         {
@@ -164,28 +164,28 @@ public:
         }
     }
 
-    void setButton(int i)
+    virtual void setButton(int i)
     {
         hasbutton = true;
         buttonPin = i;
     }
 
-    bool btnstate()
+    virtual bool btnstate()
     {
         return digitalRead(buttonPin);
     }
 
-    int btn()
+    virtual int btn()
     {
         return buttonPin;
     }
 
-    int getBrightness()
+    virtual int getBrightness()
     {
         return brightness;
     }
 
-    void toggle()
+    virtual void toggle()
     {
         if (isOn())
         {
@@ -197,28 +197,33 @@ public:
         }
     }
 
-    byte getRed()
+    virtual byte getRed()
     {
         return red;
     }
-    byte getGreen()
+    virtual byte getGreen()
     {
         return green;
     }
-    byte getBlue()
+    virtual byte getBlue()
     {
         return blue;
     }
-    void setRed(byte t)
+    virtual void setRed(byte t)
     {
-        red=t;
+        red = t;
     }
-        void setGreen(byte t)
+    virtual void setGreen(byte t)
     {
-        green=t;
-    }    void setBlue(byte t)
+        green = t;
+    }
+    virtual void setBlue(byte t)
     {
-        blue=t;
+        blue = t;
+    }
+    virtual boolean checkIfNo() const// this function to let the invoker know that is not instance from NoRgb
+    {
+        return false; 
     }
 };
 

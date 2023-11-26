@@ -4,6 +4,7 @@
 #include <DimUpCommand.h>
 #include <DimDownCommand.h>
 #include <ChangeColorCommand.h>
+#include <NoRgb.h>
 class ROOM1
 {
 private:
@@ -41,6 +42,11 @@ public:
 
     void excLedPushbutton()
     {
+        if (led->checkIfNo()) // checks if it's from Noled class
+        {
+            return;
+        }
+
         if (millis() - led->previous >= 300UL)
         {
             this->excLed();
@@ -55,6 +61,11 @@ public:
 
     void excRgbPushbutton()
     {
+        if (rgb->checkIfNo())
+        {
+            return;
+        }
+
         rgb->btncurstate = rgb->btnstate();
 
         if (rgb->btncurstate == LOW && rgb->btnprevstate == HIGH)
@@ -70,6 +81,10 @@ public:
 
     void rgbTimer()
     {
+        if (rgb->checkIfNo())
+        {
+            return;
+        }
 
         if (rgb->duration > 0UL && (millis() - rgb->startTime >= rgb->duration))
         {
@@ -80,6 +95,11 @@ public:
 
     void ledTimer()
     {
+        if (led->checkIfNo())
+        {
+            return;
+        }
+
         if (led->duration > 0UL && (millis() - led->startTime >= led->duration))
         {
             this->excLed();
@@ -95,6 +115,11 @@ public:
 
     void excColor(int r, int g, int b)
     {
+        if (rgb->checkIfNo())
+        {
+            return;
+        }
+
         rgb->setRed(r);
         rgb->setGreen(g);
         rgb->setBlue(b);

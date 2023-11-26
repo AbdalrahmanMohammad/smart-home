@@ -13,6 +13,10 @@
 #include <DimDownCommand.h>
 #include <ChangeColorCommand.h>
 
+#include <NoCommand.h>
+#include <NoLed.h>
+#include <NoRgb.h>
+
 
 #define pr(x) Serial.println(x)
 
@@ -39,3 +43,11 @@ ChangeColorCommand chcolorcom(&rgb);
 
 ROOM1 room1(&ledcom,&rgbcom,&ledPin,&rgb,&dimupcom,&dimdowncom,&chcolorcom);
 
+
+/// @brief ////////////////////////////////  just to show you how it works ( delete it in the next push)
+NoCommand no;
+NoLed nol;
+NoRgb nor;
+
+ROOM1 room2(&no,&no,&nol,&nor,&no,&no,&no);
+/// @brief ////////////////////////////////

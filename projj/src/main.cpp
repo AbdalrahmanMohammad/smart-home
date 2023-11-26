@@ -7,6 +7,7 @@ void setup()
 
   wifiLed.init(LOW);
   room1.init(LOW);
+  room2.init(LOW);/// @brief ////////////////////////////////  just to show you how it works ( delete it in the next push)
 
   attachInterrupt(digitalPinToInterrupt(ledPin.btn()), toggleled, FALLING);
 
@@ -33,5 +34,6 @@ void loop()
 {
   checkWifi();
   room1.timers(); 
+  room2.timers();/// @brief ////////////////////////////////  just to show you how it works ( delete it in the next push)
   togglergb(); // toggles the rgb led using the button
 }
