@@ -56,7 +56,7 @@ public:
         return true;
     }
     unsigned long getDuration() override {return -1;}
-    unsigned long getPrevious() override {return -1;}
+    unsigned long getPrevious() override {return (millis()-10);}//same reason an in noled, (even though that is not necessar for rgb because it will not even reach this if statement)
     unsigned long getStartTime() override {return -1;}
     boolean getBtnprevstate()override{return false;}
     boolean getBtncurvstate()override{return false;}

@@ -1,15 +1,23 @@
+#ifndef ROOM1_H
+#define ROOM1_H
+
 #include <Command.h>
-#include <LedClass.h>
-#include <RGB.h>
+#include <LedToggleCommand.h>
+#include <RgbToggleCommand.h>
 #include <DimUpCommand.h>
 #include <DimDownCommand.h>
 #include <ChangeColorCommand.h>
+#include <LedClass.h>
+#include <RGB.h>
+#include <NoCommand.h>
 #include <NoRgb.h>
+#include <NoLed.h>
+
 class ROOM1
 {
 private:
-    Command *ledcommand; // i have to make it pointer because of polymorphism (that is how c++ works)
-    Command *rgbcommand;
+    Command *ledtogcommand; // i have to make it pointer because of polymorphism (that is how c++ works)
+    Command *rgbtogcommand;
     Command *changecolorcommand;
     Command *dimupcommand;
     Command *dimdowncommand;
@@ -17,13 +25,30 @@ private:
     RGB *rgb;
 
 public:
-    ROOM1(Command *ledcmd, Command *rgbcmd, LedClass *l, RGB *r, Command *dimup, Command *dimdown, Command *changecolor)
+    ROOM1()
     {
-        ledcommand = ledcmd;
-        rgbcommand = rgbcmd;
-        led = l;
-        rgb = r;
+        NoCommand *noCmd = new NoCommand();
+        NoLed *noLed = new NoLed();
+        NoRgb *noRgb = new NoRgb();
 
+        ledtogcommand = noCmd;
+        rgbtogcommand = noCmd;
+        changecolorcommand = noCmd;
+        dimupcommand = noCmd;
+        dimdowncommand = noCmd;
+        led = noLed;
+        rgb = noRgb;
+    }
+
+    void setLed(LedClass *l, Command *ledtogcom)
+    {
+        led = l;
+        ledtogcommand = ledtogcom;
+    }
+    void setRgb(RGB *r, Command *rgbtogcmd, Command *dimup, Command *dimdown, Command *changecolor)
+    {
+        rgb = r;
+        rgbtogcommand = rgbtogcmd;
         dimupcommand = dimup;
         dimdowncommand = dimdown;
         changecolorcommand = changecolor;
@@ -37,16 +62,11 @@ public:
 
     void excLed()
     {
-        ledcommand->execute();
+        ledtogcommand->execute();
     }
 
     void excLedPushbutton()
     {
-        if (led->checkIfNo()) // checks if it's from Noled class
-        {
-            return;
-        }
-
         if (millis() - led->getPrevious() >= 300UL)
         {
             this->excLed();
@@ -56,23 +76,18 @@ public:
 
     void excRgb()
     {
-        rgbcommand->execute();
+        rgbtogcommand->execute();
     }
 
     void excRgbPushbutton()
     {
-        if (rgb->checkIfNo())
-        {
-            return;
-        }
-
         rgb->setBtncurstate(rgb->btnstate());
 
         if (rgb->getBtncurvstate() == LOW && rgb->getBtnprevstate() == HIGH)
         {
             if (millis() - rgb->getPrevious() >= 500UL)
             {
-                rgbcommand->execute();
+                rgbtogcommand->execute();
                 rgb->setPrevious(millis());
             }
         }
@@ -81,11 +96,6 @@ public:
 
     void rgbTimer()
     {
-        if (rgb->checkIfNo())
-        {
-            return;
-        }
-
         if (rgb->getDuration() > 0UL && (millis() - rgb->getStartTime() >= rgb->getDuration()))
         {
             this->excRgb();
@@ -95,11 +105,6 @@ public:
 
     void ledTimer()
     {
-        if (led->checkIfNo())
-        {
-            return;
-        }
-
         if (led->getDuration() > 0UL && (millis() - led->getStartTime() >= led->getDuration()))
         {
             this->excLed();
@@ -115,11 +120,6 @@ public:
 
     void excColor(int r, int g, int b)
     {
-        if (rgb->checkIfNo())
-        {
-            return;
-        }
-
         rgb->setRed(r);
         rgb->setGreen(g);
         rgb->setBlue(b);
@@ -141,12 +141,14 @@ public:
         changecolorcommand->undo();
     }
 
-    LedClass& getLed()
+    LedClass &getLed()
     {
         return *led;
     }
-    RGB& getRgb()
+    RGB &getRgb()
     {
         return *rgb;
     }
 };
+
+#endif

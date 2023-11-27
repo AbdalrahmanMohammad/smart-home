@@ -5,9 +5,11 @@ void setup()
 {
   Serial.begin(9600);
 
+  room1.setLed(&ledPin, &ledtogcom);
+  room1.setRgb(&rgb, &rgbtogcom, &dimupcom, &dimdowncom, &chcolorcom);
+
   wifiLed.init(LOW);
   room1.init(LOW);
-  room2.init(LOW);/// @brief ////////////////////////////////  just to show you how it works ( delete it in the next push)
 
   attachInterrupt(digitalPinToInterrupt(ledPin.btn()), toggleled, FALLING);
 
@@ -27,13 +29,12 @@ void setup()
     return;
   }
   server.begin();
-
 }
 
 void loop()
 {
   checkWifi();
-  room1.timers(); 
-  room2.timers();/// @brief ////////////////////////////////  just to show you how it works ( delete it in the next push)
+  room1.timers();
   togglergb(); // toggles the rgb led using the button
+
 }

@@ -1,3 +1,6 @@
+#ifndef NO_LED_H
+#define NO_LED_H
+
 #include <Arduino.h>
 #include <LedClass.h>
 
@@ -21,9 +24,10 @@ public:
         return true;
     }
     unsigned long getDuration() override {return -1;}
-    unsigned long getPrevious() override {return -1;}
-    unsigned long getStartTime() override {return -1;}
+    unsigned long getPrevious() override {return (millis()-10);}//so (millis() - led->getPrevious() >= 300UL) never satisfies, even though if it satisfy it nothing happens but to save cpu cycles
+    unsigned long getStartTime() override {return -1;}          // -10 because it takes some time to get the value from led->getPrevious(), if so happens it will be true because of unsigned overvflow
     void setDuration(unsigned long f) override {}
     void setPrevious(unsigned long f) override {}
     void setStartTime(unsigned long f) override {}
 };
+#endif
