@@ -5,7 +5,7 @@ class NoLed : public LedClass
 {
 private:
 public:
-    NoLed() : LedClass(-1){}
+    NoLed() : LedClass(-1) {}
 
     void init() override {}
     void init(byte defaultState) override {}
@@ -20,4 +20,10 @@ public:
     {
         return true;
     }
+    unsigned long getDuration() override {return -1;}
+    unsigned long getPrevious() override {return -1;}
+    unsigned long getStartTime() override {return -1;}
+    void setDuration(unsigned long f) override {}
+    void setPrevious(unsigned long f) override {}
+    void setStartTime(unsigned long f) override {}
 };

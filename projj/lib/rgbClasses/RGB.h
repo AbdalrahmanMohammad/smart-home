@@ -18,13 +18,13 @@ private:
     int green;
     int blue;
 
-public:
     bool btnprevstate; // these two btn states because interrupt can't handle rgb functions
     bool btncurstate;  // so they're to toggle the led using button
     unsigned long previous;
     unsigned long duration;
     unsigned long startTime;
 
+public:
     RGB(byte pin, byte buttonPin, int num) : RGB(pin, num)
     {
         setButton(buttonPin);
@@ -221,9 +221,49 @@ public:
     {
         blue = t;
     }
-    virtual boolean checkIfNo() const// this function to let the invoker know that is not instance from NoRgb
+    virtual boolean checkIfNo() const // this function to let the invoker know that is not instance from NoRgb
     {
-        return false; 
+        return false;
+    }
+    virtual unsigned long getStartTime()
+    {
+        return startTime;
+    }
+    virtual void setStartTime(unsigned long s)
+    {
+        startTime = s;
+    }
+    virtual unsigned long getPrevious()
+    {
+        return previous;
+    }
+    virtual void setPrevious(unsigned long s)
+    {
+        previous = s;
+    }
+    virtual unsigned long getDuration()
+    {
+        return duration;
+    }
+    virtual void setDuration(unsigned long s)
+    {
+        duration = s;
+    }
+    virtual boolean getBtnprevstate()
+    {
+        return btnprevstate;
+    }
+    virtual void setBtnprevstate(boolean s)
+    {
+        btnprevstate = s;
+    }
+        virtual boolean getBtncurvstate()
+    {
+        return btncurstate;
+    }
+    virtual void setBtncurstate(boolean s)
+    {
+        btncurstate = s;
     }
 };
 

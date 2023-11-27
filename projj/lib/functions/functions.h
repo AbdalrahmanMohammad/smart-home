@@ -26,7 +26,7 @@ void wificonnection()
 
 void checkWifi() // checks wifi connection every 3 seconds and shows the condition on wifiLed
 {
-  if (millis() - wifiLed.previous >= 3000UL) // this uses the previous differently it uses it to repeat
+  if (millis() - wifiLed.getPrevious() >= 3000UL) // this uses the previous differently it uses it to repeat
   {                                          // with constant period. (it doesn't have a button, so this is fine)
     if (WiFi.status() == WL_CONNECTED)
     {
@@ -39,7 +39,7 @@ void checkWifi() // checks wifi connection every 3 seconds and shows the conditi
 
     // Serial.println(WiFi.status());
 
-    wifiLed.previous = millis();
+    wifiLed.setPrevious(millis());
   }
 }
 

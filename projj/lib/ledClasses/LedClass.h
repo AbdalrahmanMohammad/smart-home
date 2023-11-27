@@ -5,17 +5,16 @@
 
 class LedClass
 {
-protected:
+private:
     byte pin;
     byte buttonPin; // it is optional to use
     boolean state;
     boolean hasbutton;
-
-public:
     unsigned long previous;  // for button debounce (has nothing to do with the timer)
     unsigned long duration;  // for timer (how many seconds to toggle)
     unsigned long startTime; // when i sat the timer
 
+public:
     LedClass(byte pin)
     {
         hasbutton = false;
@@ -24,6 +23,7 @@ public:
         previous = 0UL;
         duration = 0UL;
         startTime = 0UL;
+        buttonPin=-1;
     }
 
     LedClass(byte pin, byte buttonPin) : LedClass(pin)
@@ -98,6 +98,30 @@ public:
     virtual boolean checkIfNo() const // this function to let the invoker know that is not instance from NoRgb
     {
         return false;
+    }
+    virtual unsigned long getStartTime()
+    {
+        return startTime;
+    }
+    virtual void setStartTime(unsigned long s)
+    {
+        startTime = s;
+    }
+    virtual unsigned long getPrevious()
+    {
+        return previous;
+    }
+    virtual void setPrevious(unsigned long s)
+    {
+        previous = s;
+    }
+    virtual unsigned long getDuration()
+    {
+        return duration;
+    }
+    virtual void setDuration(unsigned long s)
+    {
+        duration = s;
     }
 };
 

@@ -1,8 +1,8 @@
 int secondsToToggle(LedClass a) // this is used to calculate remind time, to be then sent to web page
 {
-    if (a.duration == 0)
+    if (a.getDuration() == 0)
         return -1;
-    return (a.duration - (millis() - a.startTime)) / 1000;
+    return (a.getDuration() - (millis() - a.getStartTime())) / 1000;
 }
 
 void handleLEDState(AsyncWebServerRequest *request)
@@ -19,8 +19,8 @@ void handleLEDState(AsyncWebServerRequest *request)
             request->send(200, "application/json", "{}");
             return;
         }
-        ledPin.duration = seconds * 1000;
-        ledPin.startTime = millis();
+        ledPin.setDuration(seconds * 1000);
+        ledPin.setStartTime(millis());
     }
 
     if (request->hasArg("rgbseconds")) // rgb timer
@@ -33,9 +33,8 @@ void handleLEDState(AsyncWebServerRequest *request)
             request->send(200, "application/json", "{}");
             return;
         }
-        rgb.duration = seconds * 1000;
-        rgb.startTime = millis();
-        Serial.println("im here");
+        rgb.setDuration( seconds * 1000);
+        rgb.setStartTime(millis());
     }
 
     if (request->hasArg("color")) // rgb color
@@ -70,7 +69,7 @@ void handleLEDState(AsyncWebServerRequest *request)
     String stateOfLed = ledPin.isOn() ? "On" : "Off";
     String stateOfRGB = rgb.isOn() ? "On" : "Off";
     long secondsToTog = secondsToToggle(ledPin);
-    long secondsToTogrgb = rgb.duration == 0 ? -1 : ((rgb.duration - (millis() - rgb.startTime)) / 1000); // didn't work with function, no clue why (it destroyed the whole esp32)
+    long secondsToTogrgb = rgb.getDuration() == 0 ? -1 : ((rgb.getDuration() - (millis() - rgb.getStartTime())) / 1000); // didn't work with function, no clue why (it destroyed the whole esp32)
 
     String info = "{\"state\": \"" + stateOfLed + "\", \"secondsToToggle\": " + secondsToTog + ", \"rgbstate\": \"" + stateOfRGB + "\", \"secondsToTogglergb\": \"" + secondsToTogrgb + "\", \"brightness\": \"" + rgb.getBrightness() + "\"}";
     request->send(200, "application/json", info);

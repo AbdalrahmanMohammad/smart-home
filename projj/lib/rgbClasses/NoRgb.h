@@ -55,6 +55,16 @@ public:
     {
         return true;
     }
+    unsigned long getDuration() override {return -1;}
+    unsigned long getPrevious() override {return -1;}
+    unsigned long getStartTime() override {return -1;}
+    boolean getBtnprevstate()override{return false;}
+    boolean getBtncurvstate()override{return false;}
+    void setDuration(unsigned long f) override {}
+    void setPrevious(unsigned long f) override {}
+    void setStartTime(unsigned long f) override {}
+    void setBtnprevstate(boolean s)override{}
+    void setBtncurstate(boolean s)override{}
 };
 
 #endif

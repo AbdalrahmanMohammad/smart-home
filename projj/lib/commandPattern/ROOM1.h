@@ -47,10 +47,10 @@ public:
             return;
         }
 
-        if (millis() - led->previous >= 300UL)
+        if (millis() - led->getPrevious() >= 300UL)
         {
             this->excLed();
-            led->previous = millis();
+            led->setPrevious(millis());
         }
     }
 
@@ -66,17 +66,17 @@ public:
             return;
         }
 
-        rgb->btncurstate = rgb->btnstate();
+        rgb->setBtncurstate(rgb->btnstate());
 
-        if (rgb->btncurstate == LOW && rgb->btnprevstate == HIGH)
+        if (rgb->getBtncurvstate() == LOW && rgb->getBtnprevstate() == HIGH)
         {
-            if (millis() - rgb->previous >= 500UL)
+            if (millis() - rgb->getPrevious() >= 500UL)
             {
                 rgbcommand->execute();
-                rgb->previous = millis();
+                rgb->setPrevious(millis());
             }
         }
-        rgb->btnprevstate = rgb->btncurstate;
+        rgb->setBtnprevstate(rgb->getBtncurvstate());
     }
 
     void rgbTimer()
@@ -86,10 +86,10 @@ public:
             return;
         }
 
-        if (rgb->duration > 0UL && (millis() - rgb->startTime >= rgb->duration))
+        if (rgb->getDuration() > 0UL && (millis() - rgb->getStartTime() >= rgb->getDuration()))
         {
             this->excRgb();
-            rgb->duration = 0; // Reset the delay
+            rgb->setDuration(0); // Reset the delay
         }
     }
 
@@ -100,10 +100,10 @@ public:
             return;
         }
 
-        if (led->duration > 0UL && (millis() - led->startTime >= led->duration))
+        if (led->getDuration() > 0UL && (millis() - led->getStartTime() >= led->getDuration()))
         {
             this->excLed();
-            led->duration = 0; // Reset the delay
+            led->setDuration(0); // Reset the delay
         }
     }
 
