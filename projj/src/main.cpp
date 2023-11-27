@@ -6,7 +6,7 @@ void setup()
   Serial.begin(9600);
 
   room1.setLed(&ledPin, &ledtogcom);
-  room1.setRgb(&rgb, &rgbtogcom, &dimupcom, &dimdowncom, &chcolorcom);
+  room1.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
 
   wifiLed.init(LOW);
   room1.init(LOW);

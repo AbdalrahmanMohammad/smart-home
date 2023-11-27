@@ -24,7 +24,6 @@ LedClass wifiLed(32);
 LedClass ledPin(13,0); 
 
 LedToggleCommand ledtogcom(&ledPin);
-RgbToggleCommand rgbtogcom(&rgb);
 DimUpCommand dimupcom(&rgb);
 DimDownCommand dimdowncom(&rgb);
 ChangeColorCommand chcolorcom(&rgb);

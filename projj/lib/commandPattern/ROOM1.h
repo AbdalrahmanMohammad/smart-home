@@ -3,7 +3,7 @@
 
 #include <Command.h>
 #include <LedToggleCommand.h>
-#include <RgbToggleCommand.h>
+#include <RgbToggleCommand.h>// this class is not helpfull any more, but i'll keep it just in case
 #include <DimUpCommand.h>
 #include <DimDownCommand.h>
 #include <ChangeColorCommand.h>
@@ -17,7 +17,6 @@ class ROOM1
 {
 private:
     Command *ledtogcommand; // i have to make it pointer because of polymorphism (that is how c++ works)
-    Command *rgbtogcommand;
     Command *changecolorcommand;
     Command *dimupcommand;
     Command *dimdowncommand;
@@ -32,7 +31,6 @@ public:
         NoRgb *noRgb = new NoRgb();
 
         ledtogcommand = noCmd;
-        rgbtogcommand = noCmd;
         changecolorcommand = noCmd;
         dimupcommand = noCmd;
         dimdowncommand = noCmd;
@@ -45,10 +43,9 @@ public:
         led = l;
         ledtogcommand = ledtogcom;
     }
-    void setRgb(RGB *r, Command *rgbtogcmd, Command *dimup, Command *dimdown, Command *changecolor)
+    void setRgb(RGB *r, Command *dimup, Command *dimdown, Command *changecolor)
     {
         rgb = r;
-        rgbtogcommand = rgbtogcmd;
         dimupcommand = dimup;
         dimdowncommand = dimdown;
         changecolorcommand = changecolor;
@@ -76,7 +73,10 @@ public:
 
     void excRgb()
     {
-        rgbtogcommand->execute();
+        if (rgb->isOn())
+            this->excColor(0, 0, 0);
+        else
+            this->excColor(255, 255, 255);
     }
 
     void excRgbPushbutton()
@@ -87,7 +87,7 @@ public:
         {
             if (millis() - rgb->getPrevious() >= 500UL)
             {
-                rgbtogcommand->execute();
+                this->excRgb();
                 rgb->setPrevious(millis());
             }
         }
