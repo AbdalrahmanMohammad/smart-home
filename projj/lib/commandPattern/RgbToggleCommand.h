@@ -1,3 +1,6 @@
+#ifndef RGB_TOGGLE_COMMAND_H
+#define RGB_TOGGLE_COMMAND_H
+
 #include <Command.h>
 #include <Arduino.h>
 #include <RGB.h>
@@ -20,3 +23,4 @@ public:
         rgb->toggle();
     }
 };
+#endif

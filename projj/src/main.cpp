@@ -7,6 +7,7 @@ void setup()
 
   room1.setLed(&ledPin, &ledtogcom);
   room1.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
+  room1.setTogBoth(&togboth);
 
   wifiLed.init(LOW);
   room1.init(LOW);
@@ -37,4 +38,18 @@ void loop()
   room1.timers();
   togglergb(); // toggles the rgb led using the button
 
+  if (Serial.available() > 0)
+  {
+    // If there is data available to read
+    int userInput = Serial.parseInt(); // Read the integer from Serial input
+
+    if (userInput == 6)
+    {
+      room1.excTogBoth();
+    }
+    else
+    {
+      Serial.println("You didn't enter 6");
+    }
+  }
 }

@@ -3,7 +3,7 @@
 
 #include <Command.h>
 #include <LedToggleCommand.h>
-#include <RgbToggleCommand.h>// this class is not helpfull any more, but i'll keep it just in case
+#include <RgbToggleCommand.h> // this class is not helpfull any more, but i'll keep it just in case
 #include <DimUpCommand.h>
 #include <DimDownCommand.h>
 #include <ChangeColorCommand.h>
@@ -12,6 +12,7 @@
 #include <NoCommand.h>
 #include <NoRgb.h>
 #include <NoLed.h>
+#include <MacroCommand.h>
 
 class ROOM1
 {
@@ -20,6 +21,7 @@ private:
     Command *changecolorcommand;
     Command *dimupcommand;
     Command *dimdowncommand;
+    Command *togboth;
     LedClass *led;
     RGB *rgb;
 
@@ -34,6 +36,7 @@ public:
         changecolorcommand = noCmd;
         dimupcommand = noCmd;
         dimdowncommand = noCmd;
+        togboth = noCmd;
         led = noLed;
         rgb = noRgb;
     }
@@ -51,10 +54,20 @@ public:
         changecolorcommand = changecolor;
     }
 
+    void setTogBoth(MacroCommand *m)
+    {
+        togboth = m;
+    }
+
     void init(byte defaultState)
     {
         led->init(defaultState);
         rgb->init(defaultState);
+    }
+
+    void excTogBoth()
+    {
+        togboth->execute();
     }
 
     void excLed()
