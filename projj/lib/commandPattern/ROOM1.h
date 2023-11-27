@@ -140,4 +140,13 @@ public:
     {
         changecolorcommand->undo();
     }
+
+    LedClass& getLed()
+    {
+        return *led;
+    }
+    RGB& getRgb()
+    {
+        return *rgb;
+    }
 };

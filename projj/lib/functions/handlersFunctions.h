@@ -19,8 +19,8 @@ void handleLEDState(AsyncWebServerRequest *request)
             request->send(200, "application/json", "{}");
             return;
         }
-        ledPin.setDuration(seconds * 1000);
-        ledPin.setStartTime(millis());
+        room1.getLed().setDuration(seconds * 1000);
+        room1.getLed().setStartTime(millis());
     }
 
     if (request->hasArg("rgbseconds")) // rgb timer
@@ -33,8 +33,8 @@ void handleLEDState(AsyncWebServerRequest *request)
             request->send(200, "application/json", "{}");
             return;
         }
-        rgb.setDuration( seconds * 1000);
-        rgb.setStartTime(millis());
+        room1.getRgb().setDuration( seconds * 1000);
+        room1.getRgb().setStartTime(millis());
     }
 
     if (request->hasArg("color")) // rgb color
@@ -66,12 +66,12 @@ void handleLEDState(AsyncWebServerRequest *request)
     //------------------------------------------------------------------
     /////////////      this part for send data to web page
 
-    String stateOfLed = ledPin.isOn() ? "On" : "Off";
-    String stateOfRGB = rgb.isOn() ? "On" : "Off";
+    String stateOfLed = room1.getLed().isOn() ? "On" : "Off";
+    String stateOfRGB = room1.getRgb().isOn() ? "On" : "Off";
     long secondsToTog = secondsToToggle(ledPin);
-    long secondsToTogrgb = rgb.getDuration() == 0 ? -1 : ((rgb.getDuration() - (millis() - rgb.getStartTime())) / 1000); // didn't work with function, no clue why (it destroyed the whole esp32)
+    long secondsToTogrgb = room1.getRgb().getDuration() == 0 ? -1 : ((room1.getRgb().getDuration() - (millis() - room1.getRgb().getStartTime())) / 1000); // didn't work with function, no clue why (it destroyed the whole esp32)
 
-    String info = "{\"state\": \"" + stateOfLed + "\", \"secondsToToggle\": " + secondsToTog + ", \"rgbstate\": \"" + stateOfRGB + "\", \"secondsToTogglergb\": \"" + secondsToTogrgb + "\", \"brightness\": \"" + rgb.getBrightness() + "\"}";
+    String info = "{\"state\": \"" + stateOfLed + "\", \"secondsToToggle\": " + secondsToTog + ", \"rgbstate\": \"" + stateOfRGB + "\", \"secondsToTogglergb\": \"" + secondsToTogrgb + "\", \"brightness\": \"" + room1.getRgb().getBrightness() + "\"}";
     request->send(200, "application/json", info);
 }
 
@@ -95,8 +95,8 @@ void handleRoot(AsyncWebServerRequest *request)
     }
 
     // Replace the placeholder with LED state and color when reloading the page
-    String buttonLabel = (ledPin.isOn() ? "Off" : "On");
-    String buttonColor = (ledPin.isOn() ? "btn-danger" : "btn-success");
+    String buttonLabel = (room1.getLed().isOn() ? "Off" : "On");
+    String buttonColor = (room1.getLed().isOn() ? "btn-danger" : "btn-success");
     html.replace("(LED_STATE)", buttonLabel);
     html.replace("btn-primary", buttonColor);
 
@@ -124,8 +124,8 @@ void handlergbx(AsyncWebServerRequest *request)
     }
 
     // Replace the placeholder with LED state and color when reloading the page
-    String buttonLabel = (rgb.isOn() ? "Off" : "On");
-    String buttonColor = (rgb.isOn() ? "btn-danger" : "btn-success");
+    String buttonLabel = (room1.getRgb().isOn() ? "Off" : "On");
+    String buttonColor = (room1.getRgb().isOn() ? "btn-danger" : "btn-success");
     html.replace("(LED_STATE)", buttonLabel);
     html.replace("btn-primary", buttonColor);
 
