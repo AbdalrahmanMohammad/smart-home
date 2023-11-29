@@ -24,12 +24,14 @@ LedClass wifiLed(32);
 LedClass ledPin(13,0); 
 
 LedToggleCommand ledtogcom(&ledPin);
-RgbToggleCommand rgbtogcom(&rgb);
 DimUpCommand dimupcom(&rgb);
 DimDownCommand dimdowncom(&rgb);
 ChangeColorCommand chcolorcom(&rgb);
-Command* commands[] = {&rgbtogcom, &ledtogcom};
-MacroCommand togboth(commands, 2);
+TurnOnCommand do_not_use_me(&ledPin);// do noot remove this, because first TurnOnCommand object causes run time error, so just do not use this
+TurnOnCommand ledoncom(&ledPin);
+TurnOnCommand rgboncom(&rgb);
+Command* commands[] = {&ledoncom, &rgboncom};
+MacroCommand onboth(commands, 2);
 
 
 ROOM1 room1;

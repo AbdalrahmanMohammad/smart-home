@@ -13,6 +13,8 @@
 #include <NoRgb.h>
 #include <NoLed.h>
 #include <MacroCommand.h>
+#include <TurnOnCommand.h>
+
 
 class ROOM1
 {
@@ -21,7 +23,7 @@ private:
     Command *changecolorcommand;
     Command *dimupcommand;
     Command *dimdowncommand;
-    Command *togboth;
+    Command *onboth;
     LedClass *led;
     RGB *rgb;
 
@@ -36,7 +38,7 @@ public:
         changecolorcommand = noCmd;
         dimupcommand = noCmd;
         dimdowncommand = noCmd;
-        togboth = noCmd;
+        onboth = noCmd;
         led = noLed;
         rgb = noRgb;
     }
@@ -54,9 +56,9 @@ public:
         changecolorcommand = changecolor;
     }
 
-    void setTogBoth(MacroCommand *m)
+    void setOnBoth(MacroCommand *m)
     {
-        togboth = m;
+        onboth = m;
     }
 
     void init(byte defaultState)
@@ -65,9 +67,14 @@ public:
         rgb->init(defaultState);
     }
 
-    void excTogBoth()
+    void excOnBoth()
     {
-        togboth->execute();
+        onboth->execute();
+    }
+
+    void excOffBoth()
+    {
+        onboth->undo();
     }
 
     void excLed()

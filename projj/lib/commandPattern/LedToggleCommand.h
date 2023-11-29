@@ -1,3 +1,5 @@
+#ifndef LOD_TOGGLE_COMMAND
+#define LOD_TOGGLE_COMMAND
 #include <Command.h>
 #include <Arduino.h>
 #include <LedClass.h>
@@ -20,3 +22,4 @@ public:
         led->toggle();
     }
 };
+#endif

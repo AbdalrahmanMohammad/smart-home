@@ -7,7 +7,7 @@ void setup()
 
   room1.setLed(&ledPin, &ledtogcom);
   room1.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
-  room1.setTogBoth(&togboth);
+  room1.setOnBoth(&onboth);
 
   wifiLed.init(LOW);
   room1.init(LOW);
@@ -45,7 +45,11 @@ void loop()
 
     if (userInput == 6)
     {
-      room1.excTogBoth();
+      room1.excOnBoth();
+    }
+    else if (userInput ==7)
+    {
+      room1.excOffBoth();
     }
     else
     {
