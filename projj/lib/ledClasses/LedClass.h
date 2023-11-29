@@ -2,8 +2,9 @@
 #define LedClass_h
 
 #include <Arduino.h>
+#include <Toggelable.h>
 
-class LedClass
+class LedClass : public Togglable
 {
 private:
     byte pin;
@@ -23,7 +24,7 @@ public:
         previous = 0UL;
         duration = 0UL;
         startTime = 0UL;
-        buttonPin=-1;
+        buttonPin = -1;
     }
 
     LedClass(byte pin, byte buttonPin) : LedClass(pin)
@@ -52,12 +53,12 @@ public:
         }
     }
 
-    virtual void on()
+    virtual void on() override
     {
         digitalWrite(pin, HIGH);
         state = HIGH;
     }
-    virtual void off()
+    virtual void off() override
     {
         digitalWrite(pin, LOW);
         state = LOW;
@@ -68,7 +69,7 @@ public:
         return (state == HIGH);
     }
 
-    virtual void toggle() // you can just digialWrite(pin,!digitalRead(pin)); but this is better
+    virtual void toggle() override // you can just digialWrite(pin,!digitalRead(pin)); but this is better
     {
         if (isOn())
         {

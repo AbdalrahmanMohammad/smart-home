@@ -3,8 +3,9 @@
 
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include <Toggelable.h>
 
-class RGB
+class RGB : public Togglable
 {
 private:
     int buttonPin;
@@ -104,12 +105,12 @@ public:
         strip.show();
     }
 
-    virtual void on()
+    virtual void on() override
     {
         setAll(255, 255, 255);
     }
 
-    virtual void off()
+    virtual void off() override
     {
         setBrightness(0);
         for (int i = 0; i < numpixles; i++)
@@ -185,7 +186,7 @@ public:
         return brightness;
     }
 
-    virtual void toggle()
+    virtual void toggle() override
     {
         if (isOn())
         {
@@ -257,7 +258,7 @@ public:
     {
         btnprevstate = s;
     }
-        virtual boolean getBtncurvstate()
+    virtual boolean getBtncurvstate()
     {
         return btncurstate;
     }

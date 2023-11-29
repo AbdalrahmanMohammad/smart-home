@@ -23,11 +23,10 @@ RGB rgb(5,4,8);
 LedClass wifiLed(32); 
 LedClass ledPin(13,0); 
 
-LedToggleCommand ledtogcom(&ledPin);
+ToggleCommand ledtogcom(&ledPin);
 DimUpCommand dimupcom(&rgb);
 DimDownCommand dimdowncom(&rgb);
 ChangeColorCommand chcolorcom(&rgb);
-TurnOnCommand do_not_use_me(&ledPin);// do noot remove this, because first TurnOnCommand object causes run time error, so just do not use this
 TurnOnCommand ledoncom(&ledPin);
 TurnOnCommand rgboncom(&rgb);
 Command* commands[] = {&ledoncom, &rgboncom};

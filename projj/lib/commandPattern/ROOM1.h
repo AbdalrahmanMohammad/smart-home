@@ -2,8 +2,7 @@
 #define ROOM1_H
 
 #include <Command.h>
-#include <LedToggleCommand.h>
-#include <RgbToggleCommand.h> // this class is not helpfull any more, but i'll keep it just in case
+#include <ToggleCommand.h>
 #include <DimUpCommand.h>
 #include <DimDownCommand.h>
 #include <ChangeColorCommand.h>

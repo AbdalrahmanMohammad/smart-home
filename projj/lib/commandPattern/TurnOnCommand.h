@@ -2,43 +2,28 @@
 #define Turn_On_Command_H
 
 #include <Command.h>
-#include <NoRgb.h>
-#include <NoLed.h>
+#include <Toggelable.h>
 
-class TurnOnCommand: public Command
+class TurnOnCommand : public Command
 {
 private:
-
-    LedClass *led;
-    RGB *rgb;
+    Togglable *device;
 
 public:
-    TurnOnCommand(LedClass* l)
+    TurnOnCommand(Togglable *d)
     {
-        NoRgb *noRgb = new NoRgb();
-        rgb = noRgb;
-        led=l;
+        device = d;
     }
-    TurnOnCommand(RGB* r)
-    {
-        NoLed *noLed = new NoLed();
-        led = noLed;
-        rgb=r;
-    }
-   
-  void execute() override
-    {
-        rgb->on();
-        led->on();
 
+    void execute() override
+    {
+        device->on();
     }
 
     void undo() override
     {
-        rgb->off();
-        led->off();
+        device->off();
     }
-
 };
 
 #endif
