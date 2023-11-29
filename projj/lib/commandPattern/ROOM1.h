@@ -29,17 +29,14 @@ private:
 public:
     ROOM1()
     {
-        NoCommand *noCmd = new NoCommand();
-        NoLed *noLed = new NoLed();
-        NoRgb *noRgb = new NoRgb();
-
+        NoCommand *noCmd = &NoCommand::getInstance();
         ledtogcommand = noCmd;
         changecolorcommand = noCmd;
         dimupcommand = noCmd;
         dimdowncommand = noCmd;
         onboth = noCmd;
-        led = noLed;
-        rgb = noRgb;
+        led = &NoLed::getInstance();
+        rgb = &NoRgb::getInstance();
     }
 
     void setLed(LedClass *l, Command *ledtogcom)

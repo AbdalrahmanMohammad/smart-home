@@ -7,8 +7,13 @@
 class NoRgb : public RGB
 {
 private:
-public:
     NoRgb() : RGB(-1, -1) {}
+
+public:
+    static NoRgb& getInstance() {
+        static NoRgb instance; 
+        return instance;
+    }
 
     void init() override {}
 
@@ -51,20 +56,19 @@ public:
     void setGreen(byte t) override {}
 
     void setBlue(byte t) override {}
-    boolean checkIfNo() const override // this is to let the invoker know that is NoRgb
-    {
-        return true;
-    }
-    unsigned long getDuration() override {return -1;}
-    unsigned long getPrevious() override {return (millis()-10);}//same reason an in noled, (even though that is not necessar for rgb because it will not even reach this if statement)
-    unsigned long getStartTime() override {return -1;}
-    boolean getBtnprevstate()override{return false;}
-    boolean getBtncurvstate()override{return false;}
+
+    boolean checkIfNo() const override { return true; }// this is to let the invoker know that is NoRgb
+
+    unsigned long getDuration() override { return -1; }
+    unsigned long getPrevious() override { return (millis() - 10); }//same reason an in noled, (even though that is not necessar for rgb because it will not even reach this if statement)
+    unsigned long getStartTime() override { return -1; }
+    boolean getBtnprevstate() override { return false; }
+    boolean getBtncurvstate() override { return false; }
     void setDuration(unsigned long f) override {}
     void setPrevious(unsigned long f) override {}
     void setStartTime(unsigned long f) override {}
-    void setBtnprevstate(boolean s)override{}
-    void setBtncurstate(boolean s)override{}
+    void setBtnprevstate(boolean s) override {}
+    void setBtncurstate(boolean s) override {}
 };
 
 #endif
