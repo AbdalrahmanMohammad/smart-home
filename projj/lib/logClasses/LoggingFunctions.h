@@ -8,26 +8,7 @@ class LoggingFunctions
   /////////  you don't need to use update function here, you just use writeLog and it internally uses update if necessary
   ////////   i have three overloaded functions for writeLog, depending on the value (string, int, boolean)
   ////////   they all will be stored as text
-public:
-  static String currentLogData()
-  {
-    String data;
-    File file = SPIFFS.open("/config.txt", "r");
-    if (file)
-    {
-      while (file.available())
-      {
-        data += (char)file.read();
-      }
-      file.close();
-    }
-    else
-    {
-      Serial.println("Failed to open file for reading");
-    }
-    return data;
-  }
-
+private:
   static bool updatelog(String index, String value)
   {
     File file = SPIFFS.open("/config.txt", "r");
@@ -70,7 +51,26 @@ public:
     return true;
   }
 
-  static void writeLog(String index, const char *value) // keep it char* because if you make it string it will get confused with bool
+public:
+  static String currentLogData()
+  {
+    String data;
+    File file = SPIFFS.open("/config.txt", "r");
+    if (file)
+    {
+      while (file.available())
+      {
+        data += (char)file.read();
+      }
+      file.close();
+    }
+    else
+    {
+      Serial.println("Failed to open file for reading");
+    }
+    return data;
+  }
+  static void writeLog(String index, String value) 
   {
     if (!updatelog(index, value)) // if update fails it appends a new line
     {
@@ -107,25 +107,25 @@ public:
     }
   }
 
-  static void writeLog(String index, boolean value)
-  {
-    String val = value ? "truee" : "falsee"; // you keep it like this if you write them properly they'll be saved as 0,1
-                                             // and then deal with it in readLog
-    if (!updatelog(index, val))
-    {
-      File file = SPIFFS.open("/config.txt", "a");
-      if (file)
-      {
-        file.print(index + ":");
-        file.println(value);
-        file.close();
-      }
-      else
-      {
-        Serial.println("Failed to open file for appending");
-      }
-    }
-  }
+  // static void writeLog(String index, boolean value)
+  // {
+  //   String val = value ? "truee" : "falsee"; // you keep it like this if you write them properly they'll be saved as 0,1
+  //                                            // and then deal with it in readLog
+  //   if (!updatelog(index, val))
+  //   {
+  //     File file = SPIFFS.open("/config.txt", "a");
+  //     if (file)
+  //     {
+  //       file.print(index + ":");
+  //       file.println(value);
+  //       file.close();
+  //     }
+  //     else
+  //     {
+  //       Serial.println("Failed to open file for appending");
+  //     }
+  //   }
+  // }
 
   static String readLog(String index)
   {
