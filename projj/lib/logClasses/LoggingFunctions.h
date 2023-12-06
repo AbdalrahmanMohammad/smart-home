@@ -11,6 +11,11 @@ class LoggingFunctions
 private:
   static bool updatelog(String index, String value)
   {
+    if(readLog(index)==value)// if the same pair is found then do not do anything
+    {
+      return true;
+    }
+
     File file = SPIFFS.open("/config.txt", "r");
     if (!file)
     {
