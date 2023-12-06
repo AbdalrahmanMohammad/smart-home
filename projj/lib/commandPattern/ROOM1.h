@@ -100,8 +100,9 @@ public:
         String blueKey = String(roomID) + "blue";
         String brightnessKey = String(roomID) + "rgbBrightness";
 
-        if (LoggingFunctions::readLog(ledkey) == "1")
+        if (LoggingFunctions::readLog(ledkey) != "not existed!!")
         {
+            if(LoggingFunctions::readLog(ledkey).toInt()==1 )
             excLed();
         }
         if (LoggingFunctions::readLog(brightnessKey) != "not existed!!") // brightness & colors are set together, so if one exists all of them exist
