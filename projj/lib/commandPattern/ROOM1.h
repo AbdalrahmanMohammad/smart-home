@@ -1,6 +1,7 @@
 #ifndef ROOM1_H
 #define ROOM1_H
 
+#include <LoggingFunctions.h>
 #include <Command.h>
 #include <ToggleCommand.h>
 #include <DimUpCommand.h>
@@ -17,6 +18,8 @@
 class ROOM1
 {
 private:
+    static int idCounter;
+    int roomID;
     Command *ledtogcommand; // i have to make it pointer because of polymorphism (that is how c++ works)
     Command *changecolorcommand;
     Command *dimupcommand;
@@ -29,10 +32,19 @@ private:
     {
         if (rgb == &NoRgb::getInstance())
             return;
-        String colors = String(rgb->getRed()) + "," + String(rgb->getGreen());
-        colors += "," + String(rgb->getBlue());
-        LoggingFunctions::writeLog("rgbCol", colors);
-        LoggingFunctions::writeLog("rgbDim", rgb->getBrightness());
+
+        String redVlaue = String(rgb->getRed());
+        String greenVlaue = String(rgb->getGreen());
+        String blueVlaue = String(rgb->getBlue());
+
+        String redKey = String(roomID) + "red";
+        String greenKey = String(roomID) + "green";
+        String blueKey = String(roomID) + "blue";
+        String brightnessKey = String(roomID) + "rgbBrightness";
+        LoggingFunctions::writeLog(redKey, redVlaue);
+        LoggingFunctions::writeLog(greenKey, greenVlaue);
+        LoggingFunctions::writeLog(blueKey, blueVlaue);
+        LoggingFunctions::writeLog(brightnessKey, rgb->getBrightness());
     }
 
     void logLed()
@@ -40,19 +52,15 @@ private:
         if (led == &NoLed::getInstance())
             return;
 
-        String val = String(led->isOn());
-        LoggingFunctions::writeLog("led", val);
-    }
-
-    void logAll()
-    {
-        logLed();
-        logRgb();
+        String key = String(roomID) + "led";
+        String value = String(led->isOn());
+        LoggingFunctions::writeLog(key, value);
     }
 
 public:
     ROOM1()
     {
+        roomID = idCounter++; // takes id and increment by 1 so the second room takes another id
         NoCommand *noCmd = &NoCommand::getInstance();
         ledtogcommand = noCmd;
         changecolorcommand = noCmd;
@@ -81,28 +89,50 @@ public:
         onboth = m;
     }
 
-    void init(byte defaultState)
+    void init()
     {
-        led->init(defaultState);
-        rgb->init(defaultState);
+        led->init(LOW);
+        rgb->init(LOW);
+
+        String ledkey = String(roomID) + "led";
+        String redKey = String(roomID) + "red";
+        String greenKey = String(roomID) + "green";
+        String blueKey = String(roomID) + "blue";
+        String brightnessKey = String(roomID) + "rgbBrightness";
+
+        if (LoggingFunctions::readLog(ledkey) == "1")
+        {
+            excLed();
+        }
+        if (LoggingFunctions::readLog(brightnessKey) != "not existed!!") // brightness & colors are set together, so if one exists all of them exist
+        {
+            rgb->setBrightness(LoggingFunctions::readLog(brightnessKey).toInt());
+            int r, b, g;
+            r = LoggingFunctions::readLog(redKey).toInt();
+            g = LoggingFunctions::readLog(greenKey).toInt();
+            b = LoggingFunctions::readLog(blueKey).toInt();
+            excColor(r, g, b);
+        }
     }
 
     void excOnBoth()
     {
         onboth->execute();
-        logAll();
+        logLed();
+        logRgb();
     }
 
     void excOffBoth()
     {
         onboth->undo();
-        logAll();
+        logLed();
+        logRgb();
     }
 
     void excLed()
     {
         ledtogcommand->execute();
-        logAll();
+        logLed();
     }
 
     void excLedPushbutton()
@@ -173,25 +203,25 @@ public:
         rgb->setGreen(g);
         rgb->setBlue(b);
         changecolorcommand->execute();
-        logAll();
+        logRgb();
     }
 
     void excDimUp()
     {
         dimupcommand->execute();
-        logAll();
+        logRgb();
     }
 
     void excDimDown()
     {
         dimdowncommand->execute();
-        logAll();
+        logRgb();
     }
 
     void undoColor()
     {
         changecolorcommand->undo();
-        logAll();
+        logRgb();
     }
 
     LedClass &getLed()
@@ -203,5 +233,6 @@ public:
         return *rgb;
     }
 };
+int ROOM1::idCounter = 0;
 
 #endif
