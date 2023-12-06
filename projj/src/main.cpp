@@ -12,8 +12,6 @@ void setup()
   wifiLed.init(LOW);
   room1.init(LOW);
 
-  attachInterrupt(digitalPinToInterrupt(ledPin.btn()), toggleled, FALLING);
-
   // Connect to Wi-Fi with static IP
   WiFi.config(staticIP, gateway, subnet);
   WiFi.begin(ssid, password);
@@ -37,6 +35,7 @@ void loop()
   checkWifi();
   room1.timers();
   togglergb(); // toggles the rgb led using the button
+  toggleled(); // toggles the led using the button
 
   if (Serial.available() > 0)
   {
@@ -45,9 +44,9 @@ void loop()
 
     if (userInput == 6)
     {
-      room1.excOnBoth();
+      Serial.println(LoggingFunctions::currentLogData());
     }
-    else if (userInput ==7)
+    else if (userInput == 7)
     {
       room1.excOffBoth();
     }

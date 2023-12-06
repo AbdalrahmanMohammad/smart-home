@@ -11,6 +11,8 @@ private:
     byte buttonPin; // it is optional to use
     boolean state;
     boolean hasbutton;
+    bool btnprevstate;// to toggle the led using button
+    bool btncurstate;// to toggle the led using button
     unsigned long previous;  // for button debounce (has nothing to do with the timer)
     unsigned long duration;  // for timer (how many seconds to toggle)
     unsigned long startTime; // when i sat the timer
@@ -24,6 +26,8 @@ public:
         previous = 0UL;
         duration = 0UL;
         startTime = 0UL;
+        btncurstate = HIGH;
+        btnprevstate = HIGH;
         buttonPin = -1;
     }
 
@@ -123,6 +127,28 @@ public:
     virtual void setDuration(unsigned long s)
     {
         duration = s;
+    }
+
+    virtual bool btnstate()
+    {
+        return digitalRead(buttonPin);
+    }
+
+    virtual boolean getBtnprevstate()
+    {
+        return btnprevstate;
+    }
+    virtual void setBtnprevstate(boolean s)
+    {
+        btnprevstate = s;
+    }
+    virtual boolean getBtncurvstate()
+    {
+        return btncurstate;
+    }
+    virtual void setBtncurstate(boolean s)
+    {
+        btncurstate = s;
     }
 };
 

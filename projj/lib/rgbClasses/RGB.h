@@ -19,8 +19,8 @@ private:
     int green;
     int blue;
 
-    bool btnprevstate; // these two btn states because interrupt can't handle rgb functions
-    bool btncurstate;  // so they're to toggle the led using button
+    bool btnprevstate; // to toggle the led using button
+    bool btncurstate;  // to toggle the led using button
     unsigned long previous;
     unsigned long duration;
     unsigned long startTime;

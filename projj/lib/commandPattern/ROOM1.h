@@ -14,7 +14,6 @@
 #include <MacroCommand.h>
 #include <TurnOnCommand.h>
 
-
 class ROOM1
 {
 private:
@@ -25,6 +24,31 @@ private:
     Command *onboth;
     LedClass *led;
     RGB *rgb;
+
+    void logRgb()
+    {
+        if (rgb == &NoRgb::getInstance())
+            return;
+        String colors = String(rgb->getRed()) + "," + String(rgb->getGreen());
+        colors += "," + String(rgb->getBlue());
+        LoggingFunctions::writeLog("rgbCol", colors);
+        LoggingFunctions::writeLog("rgbDim", rgb->getBrightness());
+    }
+
+    void logLed()
+    {
+        if (led == &NoLed::getInstance())
+            return;
+
+        String val = String(led->isOn());
+        LoggingFunctions::writeLog("led", val);
+    }
+
+    void logAll()
+    {
+        logLed();
+        logRgb();
+    }
 
 public:
     ROOM1()
@@ -66,25 +90,34 @@ public:
     void excOnBoth()
     {
         onboth->execute();
+        logAll();
     }
 
     void excOffBoth()
     {
         onboth->undo();
+        logAll();
     }
 
     void excLed()
     {
         ledtogcommand->execute();
+        logAll();
     }
 
     void excLedPushbutton()
     {
-        if (millis() - led->getPrevious() >= 300UL)
+        led->setBtncurstate(led->btnstate());
+
+        if (led->getBtncurvstate() == LOW && led->getBtnprevstate() == HIGH)
         {
-            this->excLed();
-            led->setPrevious(millis());
+            if (millis() - led->getPrevious() >= 500UL)
+            {
+                this->excLed();
+                led->setPrevious(millis());
+            }
         }
+        led->setBtnprevstate(led->getBtncurvstate());
     }
 
     void excRgb()
@@ -140,21 +173,25 @@ public:
         rgb->setGreen(g);
         rgb->setBlue(b);
         changecolorcommand->execute();
+        logAll();
     }
 
     void excDimUp()
     {
         dimupcommand->execute();
+        logAll();
     }
 
     void excDimDown()
     {
         dimdowncommand->execute();
+        logAll();
     }
 
     void undoColor()
     {
         changecolorcommand->undo();
+        logAll();
     }
 
     LedClass &getLed()
