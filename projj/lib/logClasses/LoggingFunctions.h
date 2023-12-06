@@ -39,7 +39,7 @@ private:
       return false;
     }
 
-    file = SPIFFS.open("/config.txt", "w"); // if the it found the index it will write the new data to the file
+    file = SPIFFS.open("/config.txt", "w"); // if it found the index it will write the new data to the file
     if (!file)
     {
       Serial.println("Failed to open file for writing");
@@ -70,6 +70,7 @@ public:
     }
     return data;
   }
+
   static void writeLog(String index, String value) 
   {
     if (!updatelog(index, value)) // if update fails it appends a new line
@@ -107,26 +108,6 @@ public:
     }
   }
 
-  // static void writeLog(String index, boolean value)
-  // {
-  //   String val = value ? "truee" : "falsee"; // you keep it like this if you write them properly they'll be saved as 0,1
-  //                                            // and then deal with it in readLog
-  //   if (!updatelog(index, val))
-  //   {
-  //     File file = SPIFFS.open("/config.txt", "a");
-  //     if (file)
-  //     {
-  //       file.print(index + ":");
-  //       file.println(value);
-  //       file.close();
-  //     }
-  //     else
-  //     {
-  //       Serial.println("Failed to open file for appending");
-  //     }
-  //   }
-  // }
-
   static String readLog(String index)
   {
     File file = SPIFFS.open("/config.txt", "r");
@@ -140,10 +121,6 @@ public:
         {
           value = (line.substring(line.indexOf(':') + 1)); // get the value
           file.close();
-          if (value == "truee" || value == "falsee")
-          {
-            value = value.substring(0, value.length() - 1); // remove the last character
-          }
           return value;
         }
       }
@@ -151,5 +128,17 @@ public:
     }
     return value;
   }
+
+ static void clear() {// clears file content
+    File file = SPIFFS.open("/config.txt", "w");// when i open the file in writing mode (w) it clears everything
+    if (file) {
+      file.close();
+      Serial.println("Logging file cleared.");
+    } else {
+      Serial.println("Failed to open file for clearing");
+    }
+  }
+  
+
 };
 #endif
