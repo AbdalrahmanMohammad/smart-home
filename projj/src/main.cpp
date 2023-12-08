@@ -38,26 +38,74 @@ void loop()
   togglergb(); // toggles the rgb led using the button
   toggleled(); // toggles the led using the button
 
+
   if (Serial.available() > 0)
   {
-    // If there is data available to read
-    int userInput = Serial.parseInt(); // Read the integer from Serial input
+    int userInput = Serial.parseInt(); 
 
-    if (userInput == 6)
+    switch (userInput)
     {
-      Serial.println(LoggingFunctions::currentLogData());
-    }
-    else if (userInput == 7)
-    {
-      room1.excOffBoth();
-    }
-    else if (userInput==19)
-    {
-        LoggingFunctions::clear();
-    }
-    else
-    {
-      Serial.println("You didn't enter 6");
+    case 0:
+      irsend.sendNECMSB(0x40BF22DD, 32);
+      Serial.println("kkkkk");
+      break;
+
+    case 1:
+      irsend.sendNECMSB(0x40BF48B7, 32);
+            Serial.println("111");
+      break;
+
+    case 2:
+      irsend.sendNECMSB(0x40BF6897, 32);
+      break;
+
+    case 3:
+      irsend.sendNECMSB(0x40BF40BF, 32);
+      break;
+
+    case 4:
+      irsend.sendNECMSB(0x40BF58A7, 32);
+      break;
+
+    case 5:
+      irsend.sendNECMSB(0x40BF7887, 32);
+      break;
+
+    case 6:
+      irsend.sendNECMSB(0x40BFC03F, 32);
+      break;
+
+    case 7:
+      irsend.sendNECMSB(0x40BFF00F, 32);
+      break;
+
+    case 8:
+      irsend.sendNECMSB(0x40BFD02F, 32);
+      break;
+
+    case 9:
+      irsend.sendNECMSB(0x40BFE01F, 32);
+      break;
+
+    case 111: // on
+      irsend.sendNECMSB(0x40BF708F, 32);
+      break;
+
+    case 555: // voice
+      irsend.sendNECMSB(0x40BF8A75, 32);
+      break;
+
+    case 88: // up
+      irsend.sendNECMSB(0x40BF827D, 32);
+      break;
+
+    case 22: // down
+      irsend.sendNECMSB(0x40BFA25D, 32);
+      break;
+
+    default:
+      break;
     }
   }
+
 }

@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <IRremote.h>
 #include "SPIFFS.h"
 #include <ESPAsyncWebServer.h>
 #include <LedClass.h>
@@ -18,6 +19,8 @@ IPAddress gateway(192, 168, 8, 1);
 IPAddress subnet(255, 255, 255, 0);  
 
 AsyncWebServer server(80);
+IRsend irsend(0);
+
 
 RGB rgb(5,4,8);
 LedClass wifiLed(32); 
