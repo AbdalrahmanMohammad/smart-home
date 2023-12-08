@@ -21,7 +21,7 @@ AsyncWebServer server(80);
 
 RGB rgb(5,4,8);
 LedClass wifiLed(32); 
-LedClass ledPin(13,0); 
+LedClass ledPin(12,17); 
 
 ToggleCommand ledtogcom(&ledPin);
 DimUpCommand dimupcom(&rgb);
