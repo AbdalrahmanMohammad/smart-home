@@ -1,15 +1,25 @@
 #ifndef TOGGLABLE_H
 #define TOGGLABLE_H
+#include <Arduino.h>
 
-class Togglable {
+class Togglable
+{
 public:
-    bool btnprevstate;// to toggle the led using button
-    bool btncurstate;// to toggle the led using button
+    Togglable()
+    {
+        btnprevstate = false;
+        btncurstate = false;
+        previous = 0;
+        duration = 0;
+        startTime = 0;
+    }
+    bool btnprevstate;       // to toggle the led using button
+    bool btncurstate;        // to toggle the led using button
     unsigned long previous;  // for button debounce (has nothing to do with the timer)
     unsigned long duration;  // for timer (how many seconds to toggle)
     unsigned long startTime; // when i sat the timer
 
-        virtual boolean getBtnprevstate()
+    virtual boolean getBtnprevstate()
     {
         return btnprevstate;
     }
@@ -26,7 +36,7 @@ public:
         btncurstate = s;
     }
 
-     virtual unsigned long getStartTime()
+    virtual unsigned long getStartTime()
     {
         return startTime;
     }
@@ -50,7 +60,7 @@ public:
     {
         duration = s;
     }
-    
+
     virtual void on() = 0;
     virtual void off() = 0;
     virtual void toggle() = 0;
