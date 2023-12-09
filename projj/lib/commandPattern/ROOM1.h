@@ -14,6 +14,9 @@
 #include <NoLed.h>
 #include <MacroCommand.h>
 #include <TurnOnCommand.h>
+#include <TV.h>
+#include <NoTV.h>
+#include <PressTvButton.h>
 
 class ROOM1
 {
@@ -27,6 +30,9 @@ private:
     Command *onboth;
     LedClass *led;
     RGB *rgb;
+    TV *tv;
+    Command *tvtogcommand;
+    Command *presstvbuttoncommand;
 
     void logRgb()
     {
@@ -67,8 +73,11 @@ public:
         dimupcommand = noCmd;
         dimdowncommand = noCmd;
         onboth = noCmd;
+        tvtogcommand = noCmd;
+        presstvbuttoncommand = noCmd;
         led = &NoLed::getInstance();
         rgb = &NoRgb::getInstance();
+        tv = &NoTV::getInstance();
     }
 
     void setLed(LedClass *l, Command *ledtogcom)
@@ -89,10 +98,18 @@ public:
         onboth = m;
     }
 
+    void setTV(TV *t, Command *tvtogcom, Command *pressbtncmd)
+    {
+        tv = t;
+        tvtogcommand = tvtogcom;
+        presstvbuttoncommand=pressbtncmd;
+    }
+
     void init()
     {
         led->init(LOW);
         rgb->init(LOW);
+        tv->init();
 
         String ledkey = String(roomID) + "led";
         String redKey = String(roomID) + "red";
@@ -102,8 +119,8 @@ public:
 
         if (LoggingFunctions::readLog(ledkey) != "not existed!!")
         {
-            if(LoggingFunctions::readLog(ledkey).toInt()==1 )
-            excLed();
+            if (LoggingFunctions::readLog(ledkey).toInt() == 1)
+                excLed();
         }
         if (LoggingFunctions::readLog(brightnessKey) != "not existed!!") // brightness & colors are set together, so if one exists all of them exist
         {
@@ -134,6 +151,27 @@ public:
     {
         ledtogcommand->execute();
         logLed();
+    }
+
+    void excTvToggle()
+    {
+        tvtogcommand->execute();
+    }
+
+    void tvTimer()
+    {
+        if (tv->getDuration() > 0UL && (millis() - tv->getStartTime() >= tv->getDuration()))
+        {
+            this->excTvToggle();
+            tv->setDuration(0); // Reset the delay
+        }
+    }
+    void excTvButton(String s)
+    {
+        tv->setButton(s);
+        if(s=="x")presstvbuttoncommand->undo();
+        else
+        presstvbuttoncommand->execute();
     }
 
     void excLedPushbutton()
