@@ -13,8 +13,6 @@ private:
                     // so i use a transistor as a switch which connects pin to ground after esp boots up.
                     // and helper pin is the pin that control the transistor(the transistor is normally off and when microcontroller is in void setUP(it has booted) i make make pin helper high to close the circuit)
     IRsend irsend;
-    unsigned long duration;  // for timer (how many seconds to toggle)
-    unsigned long startTime; // when i sat the timer
 
     String button; // last button i pressed (importat for PressTvButton class)
 
@@ -32,6 +30,11 @@ public:
         irsend.begin(pin);
     }
 
+    virtual void toggle() override
+    {
+        sendSignal("toggle");
+    }
+
     virtual void on() override
     {
         sendSignal("on");
@@ -41,27 +44,6 @@ public:
         sendSignal("off");
     }
 
-    virtual void toggle() override
-    {
-        sendSignal("toggle");
-    }
-
-    virtual unsigned long getStartTime()
-    {
-        return startTime;
-    }
-    virtual void setStartTime(unsigned long s)
-    {
-        startTime = s;
-    }
-    virtual unsigned long getDuration()
-    {
-        return duration;
-    }
-    virtual void setDuration(unsigned long s)
-    {
-        duration = s;
-    }
     virtual String getButton()
     {
         return button;

@@ -19,11 +19,6 @@ private:
     int green;
     int blue;
 
-    bool btnprevstate; // to toggle the led using button
-    bool btncurstate;  // to toggle the led using button
-    unsigned long previous;
-    unsigned long duration;
-    unsigned long startTime;
 
 public:
     RGB(byte pin, byte buttonPin, int num) : RGB(pin, num)
@@ -226,46 +221,7 @@ public:
     {
         return false;
     }
-    virtual unsigned long getStartTime()
-    {
-        return startTime;
-    }
-    virtual void setStartTime(unsigned long s)
-    {
-        startTime = s;
-    }
-    virtual unsigned long getPrevious()
-    {
-        return previous;
-    }
-    virtual void setPrevious(unsigned long s)
-    {
-        previous = s;
-    }
-    virtual unsigned long getDuration()
-    {
-        return duration;
-    }
-    virtual void setDuration(unsigned long s)
-    {
-        duration = s;
-    }
-    virtual boolean getBtnprevstate()
-    {
-        return btnprevstate;
-    }
-    virtual void setBtnprevstate(boolean s)
-    {
-        btnprevstate = s;
-    }
-    virtual boolean getBtncurvstate()
-    {
-        return btncurstate;
-    }
-    virtual void setBtncurstate(boolean s)
-    {
-        btncurstate = s;
-    }
+
 };
 
 #endif
