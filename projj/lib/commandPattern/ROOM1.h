@@ -31,7 +31,6 @@ private:
     LedClass *led;
     RGB *rgb;
     TV *tv;
-    Command *tvtogcommand;
     Command *presstvbuttoncommand;
 
     void logRgb()
@@ -73,7 +72,6 @@ public:
         dimupcommand = noCmd;
         dimdowncommand = noCmd;
         onboth = noCmd;
-        tvtogcommand = noCmd;
         presstvbuttoncommand = noCmd;
         led = &NoLed::getInstance();
         rgb = &NoRgb::getInstance();
@@ -98,10 +96,9 @@ public:
         onboth = m;
     }
 
-    void setTV(TV *t, Command *tvtogcom, Command *pressbtncmd)
+    void setTV(TV *t,Command *pressbtncmd)
     {
         tv = t;
-        tvtogcommand = tvtogcom;
         presstvbuttoncommand=pressbtncmd;
     }
 
@@ -153,19 +150,6 @@ public:
         logLed();
     }
 
-    void excTvToggle()
-    {
-        tvtogcommand->execute();
-    }
-
-    void tvTimer()
-    {
-        if (tv->getDuration() > 0UL && (millis() - tv->getStartTime() >= tv->getDuration()))
-        {
-            this->excTvToggle();
-            tv->setDuration(0); // Reset the delay
-        }
-    }
     void excTvButton(String s)
     {
         tv->setButton(s);
@@ -221,6 +205,15 @@ public:
         }
     }
 
+        void tvTimer()
+    {
+        if (tv->getDuration() > 0UL && (millis() - tv->getStartTime() >= tv->getDuration()))
+        {
+            this->excTvButton("toggle");
+            tv->setDuration(0); // Reset the delay
+        }
+    }
+
     void ledTimer()
     {
         if (led->getDuration() > 0UL && (millis() - led->getStartTime() >= led->getDuration()))
@@ -234,6 +227,7 @@ public:
     {
         this->ledTimer();
         this->rgbTimer();
+        this->tvTimer();
     }
 
     void excColor(int r, int g, int b)
@@ -270,6 +264,10 @@ public:
     RGB &getRgb()
     {
         return *rgb;
+    }
+    TV &getTV()
+    {
+        return *tv;
     }
 };
 int ROOM1::idCounter = 0;

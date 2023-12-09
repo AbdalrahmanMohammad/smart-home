@@ -14,7 +14,7 @@ void setup()
   room1.setLed(&ledPin, &ledtogcom);
   room1.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
   room1.setOnBoth(&onboth);
-  room1.setTV(&tv, &tvtogcom,&presstvbtncmd);
+  room1.setTV(&tv, &presstvbtncmd);
 
   wifiLed.init(LOW);
   room1.init();
@@ -28,6 +28,7 @@ void setup()
   server.on("/", HTTP_GET, handleRoot);
   server.on("/rgbx", HTTP_GET, handlergbx);
   server.on("/ledstate", HTTP_GET, handleLEDState);
+  server.on("/tv", HTTP_GET, handleTv);
 
   server.begin();
 }

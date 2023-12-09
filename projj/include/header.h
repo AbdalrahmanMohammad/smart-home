@@ -22,7 +22,7 @@ AsyncWebServer server(80);
 RGB rgb(5, 4, 8);
 LedClass wifiLed(32);
 LedClass ledPin(12, 17);
-TV tv(0,2);
+TV tv(0, 2);
 
 ToggleCommand ledtogcom(&ledPin);
 DimUpCommand dimupcom(&rgb);
@@ -32,8 +32,6 @@ TurnOnCommand ledoncom(&ledPin);
 TurnOnCommand rgboncom(&rgb);
 Command *commands[] = {&ledoncom, &rgboncom};
 MacroCommand onboth(commands, 2);
-ToggleCommand tvtogcom(&tv);
 PressTvButton presstvbtncmd(&tv);
 
 ROOM1 room1;
-

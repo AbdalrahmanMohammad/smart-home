@@ -1,13 +1,26 @@
-int secondsToToggle(LedClass a) // this is used to calculate remind time, to be then sent to web page
+int secondsToToggle(Togglable *device) // this is used to calculate remind time, to be then sent to web page
 {
-    if (a.getDuration() == 0)
+    if (device->getDuration() == 0)
         return -1;
-    return (a.getDuration() - (millis() - a.getStartTime())) / 1000;
+        Serial.println(device->getDuration());
+    return (device->getDuration() - (millis() - device->getStartTime())) / 1000;
 }
 
 void handleLEDState(AsyncWebServerRequest *request)
 {
     /////////////////         this part for recieve data from web page
+    if (request->hasArg("irsignal")) // normal led timer
+    {
+        String code = request->arg("irsignal");
+        room1.excTvButton(code);
+    }
+    if (request->hasArg("tvseconds")) // normal led timer
+    {
+        String colorValue = request->arg("tvseconds");
+        int seconds = (int)strtol(colorValue.c_str(), NULL, 10);
+        room1.getTV().setDuration(seconds * 1000);
+        room1.getTV().setStartTime(millis());
+    }
 
     if (request->hasArg("seconds")) // normal led timer
     {
@@ -33,7 +46,7 @@ void handleLEDState(AsyncWebServerRequest *request)
             request->send(200, "application/json", "{}");
             return;
         }
-        room1.getRgb().setDuration( seconds * 1000);
+        room1.getRgb().setDuration(seconds * 1000);
         room1.getRgb().setStartTime(millis());
     }
 
@@ -59,7 +72,7 @@ void handleLEDState(AsyncWebServerRequest *request)
         }
     }
 
-        if (request->hasArg("undo")) 
+    if (request->hasArg("undo"))
     {
         room1.undoColor();
     }
@@ -68,18 +81,18 @@ void handleLEDState(AsyncWebServerRequest *request)
 
     String stateOfLed = room1.getLed().isOn() ? "On" : "Off";
     String stateOfRGB = room1.getRgb().isOn() ? "On" : "Off";
-    long secondsToTog = secondsToToggle(ledPin);
-    long secondsToTogrgb = room1.getRgb().getDuration() == 0 ? -1 : ((room1.getRgb().getDuration() - (millis() - room1.getRgb().getStartTime())) / 1000); // didn't work with function, no clue why (it destroyed the whole esp32)
 
-    String info = "{\"state\": \"" + stateOfLed + "\", \"secondsToToggle\": " + secondsToTog + ", \"rgbstate\": \"" + stateOfRGB + "\", \"secondsToTogglergb\": \"" + secondsToTogrgb + "\", \"brightness\": \"" + room1.getRgb().getBrightness() + "\"}";
+    long secondsToTog = secondsToToggle(&ledPin);
+    long secondsToTogrgb = secondsToToggle(&rgb);
+    long secondsToTogtv = secondsToToggle(&tv);
+    String info = "{\"state\": \"" + stateOfLed + "\", \"secondsToToggle\": " + secondsToTog + ", \"rgbstate\": \"" + stateOfRGB + "\", \"secondsToTogglergb\": \"" + secondsToTogrgb + "\", \"brightness\": \"" + room1.getRgb().getBrightness() + "\", \"tvtimer\": " + secondsToTogtv + "}";
     request->send(200, "application/json", info);
 }
 
-void handleRoot(AsyncWebServerRequest *request)
-{ // note this code works just when refreshing the "/"
-    // Read the HTML file into a String
+String HTMLrender(String path)
+{
     String html;
-    File file = SPIFFS.open("/indexx.html", "r");
+    File file = SPIFFS.open(path, "r");
     if (file)
     {
         while (file.available())
@@ -91,8 +104,17 @@ void handleRoot(AsyncWebServerRequest *request)
     else
     {
         Serial.println("Failed to open HTML file");
-        return;
+        return "";
     }
+    return html;
+}
+
+void handleRoot(AsyncWebServerRequest *request)
+{ // note this code works just when refreshing the "/"
+
+    String html = HTMLrender("/indexx.html");
+    if (html == "")
+        return;
 
     // Replace the placeholder with LED state and color when reloading the page
     String buttonLabel = (room1.getLed().isOn() ? "Off" : "On");
@@ -104,24 +126,23 @@ void handleRoot(AsyncWebServerRequest *request)
     request->send(200, "text/html", html);
 }
 
+void handleTv(AsyncWebServerRequest *request)
+{ // note this code works just when refreshing the "/"
+
+    String html = HTMLrender("/tv.html");
+    if (html == "")
+        return;
+
+    // Send the HTML content as the response
+    request->send(200, "text/html", html);
+}
+
 void handlergbx(AsyncWebServerRequest *request)
 { // note this code works just when refreshing the "/"
     // Read the HTML file into a String
-    String html;
-    File file = SPIFFS.open("/rgbx.html", "r");
-    if (file)
-    {
-        while (file.available())
-        {
-            html += (char)file.read();
-        }
-        file.close();
-    }
-    else
-    {
-        Serial.println("Failed to open HTML file");
+    String html = HTMLrender("/rgbx.html");
+    if (html == "")
         return;
-    }
 
     // Replace the placeholder with LED state and color when reloading the page
     String buttonLabel = (room1.getRgb().isOn() ? "Off" : "On");
