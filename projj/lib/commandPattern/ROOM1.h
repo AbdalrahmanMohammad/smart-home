@@ -96,10 +96,10 @@ public:
         onboth = m;
     }
 
-    void setTV(TV *t,Command *pressbtncmd)
+    void setTV(TV *t, Command *pressbtncmd)
     {
         tv = t;
-        presstvbuttoncommand=pressbtncmd;
+        presstvbuttoncommand = pressbtncmd;
     }
 
     void init()
@@ -153,9 +153,10 @@ public:
     void excTvButton(String s)
     {
         tv->setButton(s);
-        if(s=="x")presstvbuttoncommand->undo();
+        if (s == "x")
+            presstvbuttoncommand->undo();
         else
-        presstvbuttoncommand->execute();
+            presstvbuttoncommand->execute();
     }
 
     void excLedPushbutton()
@@ -196,38 +197,25 @@ public:
         rgb->setBtnprevstate(rgb->getBtncurvstate());
     }
 
-    void rgbTimer()
+    void Timer(Togglable *device)
     {
-        if (rgb->getDuration() > 0UL && (millis() - rgb->getStartTime() >= rgb->getDuration()))
+        if (device->getDuration() > 0UL && (millis() - device->getStartTime() >= device->getDuration()))
         {
-            this->excRgb();
-            rgb->setDuration(0); // Reset the delay
-        }
-    }
-
-        void tvTimer()
-    {
-        if (tv->getDuration() > 0UL && (millis() - tv->getStartTime() >= tv->getDuration()))
-        {
-            this->excTvButton("toggle");
-            tv->setDuration(0); // Reset the delay
-        }
-    }
-
-    void ledTimer()
-    {
-        if (led->getDuration() > 0UL && (millis() - led->getStartTime() >= led->getDuration()))
-        {
-            this->excLed();
-            led->setDuration(0); // Reset the delay
+            device->setDuration(0); // Reset the delay
+            if (device->getName() == "rgb")
+                this->excRgb();
+            else if (device->getName() == "led")
+                this->excLed();
+            else if (device->getName() == "tv")
+                this->excTvButton("toggle");
         }
     }
 
     void timers()
     {
-        this->ledTimer();
-        this->rgbTimer();
-        this->tvTimer();
+        this->Timer(led);
+        this->Timer(rgb);
+        this->Timer(tv);
     }
 
     void excColor(int r, int g, int b)

@@ -2,7 +2,6 @@ int secondsToToggle(Togglable *device) // this is used to calculate remind time,
 {
     if (device->getDuration() == 0)
         return -1;
-        Serial.println(device->getDuration());
     return (device->getDuration() - (millis() - device->getStartTime())) / 1000;
 }
 

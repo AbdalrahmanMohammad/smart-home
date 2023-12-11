@@ -19,7 +19,6 @@ private:
     int green;
     int blue;
 
-
 public:
     RGB(byte pin, byte buttonPin, int num) : RGB(pin, num)
     {
@@ -193,6 +192,11 @@ public:
         }
     }
 
+    virtual String getName()
+    {
+        return "rgb";
+    }
+
     virtual byte getRed()
     {
         return red;
@@ -221,7 +225,6 @@ public:
     {
         return false;
     }
-
 };
 
 #endif

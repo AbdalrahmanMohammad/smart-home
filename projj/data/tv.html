@@ -2,278 +2,251 @@
 <html lang="en">
 
 <head>
-    <title>Room1</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Room1</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(120deg, #2980b9, #8e44ad);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    #info {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+      font-size: 1em;
+      width: 80%;
+      display: block;
+      margin: 5px auto;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 767px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .modal-dialog {
+        margin: 0 auto;
+        width: 100%;
+      }
+    }
+
+    .action-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 120px;
+      justify-content: center;
+      /* Added line to center elements vertically */
+    }
+
+    .action-container label,
+    .action-container input,
+    .action-container button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: block;
+      background-color: black;
+      width: 40px;
+      height: 30px;
+      color: white;
+    }
+
+    .modal-content {
+      max-width: 300px;
+      /* Set a maximum width */
+      padding: 40px 20px;
+      /* Increased vertical padding */
+      background: linear-gradient(120deg, #2980b9, #8e44ad);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      /* Subtle box shadow */
+      transition: background 0.3s, box-shadow 0.3s;
+      /* Transitions on hover */
+
+      display: flex;
+      /*  these three lines so that the inner div comes in the middle of the outer div*/
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Change background color on hover */
+    #tvdiv:hover {
+      background: linear-gradient(120deg, #3498db, #9b59b6);
+      /* Slightly different gradient on hover */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      /* Shadow becomes slightly more prominent on hover */
+    }
 
 
-    <style>
-        /* Custom CSS for the page background with linear gradient */
-        body {
-            background: linear-gradient(120deg, #2980b9, #8e44ad);
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: white;
-            /* White text for visibility on the gradient background */
-        }
-
-        .container {
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-            /* Added margin-top */
-        }
-
-        h1 {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        #info {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-
-        a {
-            color: white;
-            text-decoration: none;
-            font-size: 1em;
-            width: 80%;
-            /* Adjusted widths */
-            display: block;
-            /* Set display to block */
-            margin: 5px auto;
-            /* Center the blocks */
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .btn {
-            display: block;
-            /* Set display to block */
-        }
-
-        /* Different background colors for buttons */
-        .btn1 {
-            background-color: #3498db;
-            /* Blue */
-            width: 10%;
-        }
-
-        .btn2 {
-            background-color: #e67e22;
-            /* Orange */
-            width: 9%;
-        }
-
-        .btn3 {
-            background-color: #2ecc71;
-            /* Green */
-            width: 8%;
-        }
-
-        .btn4 {
-            background-color: #e74c3c;
-            /* Red */
-            width: 6%;
-        }
-
-        /* Improve button style */
-        .custom-button:hover {
-            background-color: #2980b9;
-        }
-    </style>
+    #tvdiv {
+      text-align: center;
+      /* Optional: Center the content horizontally */
+    }
+  </style>
 </head>
 
 <body>
-    <script type="text/javascript">
-        function changecolor() {
-            var b = document.getElementById("lightbtn");
-            if (b.style.backgroundColor == "red" && b.innerText == "off") {
-                b.style.backgroundColor = "green";  // Fix assignment operator
-                b.innerText = "on";  // Fix assignment operator
-            } else {
-                b.style.backgroundColor = "red";  // Fix assignment operator
-                b.innerText = "off";  // Fix assignment operator
-            }
-        }
-        function setTimer() {   // for put timer to toggle
-      var secondsValue = document.getElementById('seconds').value;
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/ledstate?tvseconds=' + encodeURIComponent(secondsValue), true);
-      xhr.send();
+   <script type="text/javascript">
+    function setTimer() {   // for put timer to toggle
+  var secondsValue = document.getElementById('seconds').value;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/ledstate?tvseconds=' + encodeURIComponent(secondsValue), true);
+  xhr.send();
+}
+
+    function toggleTVModal() {
+        // Get the TV modal element
+        var tvModal = document.getElementById("TVmod");
+
+        // Toggle the modal's display state
+        var modalDisplay = window.getComputedStyle(tvModal).display;
+        tvModal.style.display = modalDisplay === "none" ? "block" : "none";
     }
 
-        function toggleTVModal() {
-            // Get the TV modal element
-            var tvModal = document.getElementById("TVmod");
 
-            // Toggle the modal's display state
-            var modalDisplay = window.getComputedStyle(tvModal).display;
-            tvModal.style.display = modalDisplay === "none" ? "block" : "none";
-        }
-
-
-        function irsignal(code) {   // for put timer to toggle
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/ledstate?irsignal=' + encodeURIComponent(code), true);
-            xhr.send();
-        }
-
-        setInterval(function () {   updateLEDState();  }, 300); // for update the button
-
-    function updateLEDState() {
-
-
-      fetch('/ledstate')
-    .then(response => response.json())
-    .then(data => {
-      console.log('Received data:', data);
-
-
-          var timerlabel=document.getElementById("timerlabel");
-          var timetotoggle=data.tvtimer;
-          if(timetotoggle==-1)
-          {
-            timerlabel.innerHTML="set a timer";
-          }
-          else
-          {
-           timerlabel.innerHTML="TV will toggle after "+ data.tvtimer+" seconds";
-
-          }
-
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+    function irsignal(code) {   // for put timer to toggle
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/ledstate?irsignal=' + encodeURIComponent(code), true);
+        xhr.send();
     }
 
-    </script>
+    setInterval(function () {   updateLEDState();  }, 300); // for update the button
+
+function updateLEDState() {
 
 
+  fetch('/ledstate')
+.then(response => response.json())
+.then(data => {
+  console.log('Received data:', data);
 
 
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-md-6 mx-auto"> <!-- Added mx-auto for centering on larger screens -->
-                <h1>Room 1</h1>
-                <div class="container">
-                    <label for="lightbtn">Light:</label>
-                    <button id="lightbtn" class="btn btn-danger"
-                        style="border-radius: 100%; display: block; margin: 0 auto;"
-                        onclick="changecolor();">off</button>
-                </div>
+      var timerlabel=document.getElementById("timerlabel");
+      var timetotoggle=data.tvtimer;
+      if(timetotoggle==-1)
+      {
+        timerlabel.innerHTML="set a timer";
+      }
+      else
+      {
+       timerlabel.innerHTML="TV will toggle after "+ data.tvtimer+" seconds";
 
-                <div class="container mt-5">
-                    <!-- Update the TV button to call the toggleTVModal function -->
-                    <a href="#" class="btn btn-primary" onclick="toggleTVModal()"
-                        style="height: 50px; width: 50px;">TV</a>
-                    <!-- Modify data-bs-target attribute to use the id of the modal -->
-                    <div class="modal" id="TVmod">
-                        <div class="modal-dialog modal-md modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3>TV Remote</h3>
-                                    <button type="button" onclick="toggleTVModal()" class="btn-close"
-                                        data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body" style="align-content: center; text-align: center;">
-                                    <table>
-                                        <tr>
-                                            <td><button
-                                                    style="border-radius: 50%; background-color: red; width: 60px; height: 60px;"
-                                                    onclick="irsignal('on')">Red</button></td>
-                                            <td style="border-spacing: 15px;"></td>
-                                            <td><button style="background-color: white; width: 60px; height: 60px;"
-                                                    onclick="irsignal('x')">White</button></td>
+      }
 
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('1')">1</button></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('2')">2</button></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('3')">3</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('4')">4</button></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('5')">5</button></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('6')">6</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('7')">7</button></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('8')">8</button></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('9')">9</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="border-spacing: 15px;"></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('0')">0</button></td>
-                                            <td style="border-spacing: 15px;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('volup')">&#8679;</button></td>
-                                            <td style="border-spacing: 15px;"></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('chup')">&#8679;</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('voldown')">&#8681;</button></td>
-                                            <td style="border-spacing: 15px;"></td>
-                                            <td><button class="btn"
-                                                    style="background-color: black;width: 40px;height: 30px; color: white;"
-                                                    onclick="irsignal('chdown')">&#8681;</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <div class="action-container" id="actionContainer">
+})
+.catch(error => {
+  console.error('Error fetching data:', error);
+});
+}
 
-                                        <label for='seconds' id="timerlabel" style="color:black">Enter seconds:</label>
-                                        <input type='number' class='form-control' id='seconds' min='0'
-                                            oninput="validity.valid||(value='');">
-                                        <!--the last funciton to prevent negative sign-->
-                                        <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform
-                                            Action</button>
-                                    </div>
-                                    <div class="modal-footer">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+</script>
+
+  <script src="js/bootstrap.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <h1>Room 1</h1>
+  <div class="container">
+    <label for="lightbtn">Light:</label>
+    <button id="lightbtn" style="background-color: red;" onclick="changecolor();">off</button>
+  </div>
+
+  <div class="container mt-5">
+    <a href="#" data-bs-toggle="modal" onclick="toggleTVModal()" class="btn-primary btn1" data-bs-target="#TVmod"
+      style="height: 50px; width: 50px;">TV</a>
+    <div class="modal" id="TVmod" tabindex="-1" role="dialog" aria-labelledby="TVmodLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-md w-100" style="max-width: fit-content;">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #3498db; color: white;">
+            <h3 class="modal-title" id="TVmodLabel">TV Remote</h3>
+            <button type="button" onclick="toggleTVModal()" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div id="tvdiv" class="modal-body text-center">
+            <table>
+              <tr>
+                <td><button style="border-radius: 50%; background-color: red; width: 40px; height: 30px;"
+                    onclick="irsignal('on')">&#x2609</button></td>
+                <td style="border-spacing: 15px;"></td>
+                <td><button style="border-radius: 50%; width: 40px; height: 30px;"
+                    onclick="irsignal('x')">&#x293A;</button></td>
+
+              </tr>
+              <tr>
+                <td><button class="btn" onclick="irsignal('1')">1</button></td>
+                <td><button class="btn" onclick="irsignal('2')">2</button></td>
+                <td><button class="btn" onclick="irsignal('3')">3</button></td>
+              </tr>
+              <tr>
+                <td><button class="btn" onclick="irsignal('4')">4</button></td>
+                <td><button class="btn" onclick="irsignal('5')">5</button></td>
+                <td><button class="btn" onclick="irsignal('6')">6</button></td>
+              </tr>
+              <tr>
+                <td><button class="btn" onclick="irsignal('7')">7</button></td>
+                <td><button class="btn" onclick="irsignal('8')">8</button></td>
+                <td><button class="btn" onclick="irsignal('9')">9</button></td>
+              </tr>
+              <tr>
+                <td style="border-spacing: 15px;"></td>
+                <td><button class="btn" onclick="irsignal('0')">0</button></td>
+                <td style="border-spacing: 15px;"></td>
+              </tr>
+              <tr>
+                <td><button class="btn" onclick="irsignal('volup')">&#8679;</button></td>
+                <td style="border-spacing: 15px;"></td>
+                <td><button class="btn" onclick="irsignal('chup')">&#8679;</button>
+                </td>
+              </tr>
+              <tr>
+                <td><button class="btn" onclick="irsignal('voldown')">&#8681;</button></td>
+                <td style="border-spacing: 15px;"></td>
+                <td><button class="btn" onclick="irsignal('chdown')">&#8681;</button>
+                </td>
+              </tr>
+            </table>
+            <div class="action-container" id="actionContainer">
+              <label for='seconds' id="timerlabel" style="color:black">Enter seconds:</label>
+              <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');">
+              <button onclick="setTimer()"class=' btn-warning mt-3'  >set</button>
             </div>
+
+          </div>
+
         </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

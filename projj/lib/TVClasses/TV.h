@@ -43,6 +43,10 @@ public:
     {
         sendSignal("off");
     }
+    virtual String getName()
+    {
+        return "tv";
+    }
 
     virtual String getButton()
     {
@@ -94,9 +98,12 @@ public:
         {
             irsend.sendNECMSB(0x40BFE01F, 32);
         }
-        else if (userInput == "toggle")
-        {
-            irsend.sendNECMSB(0x40BF708F, 32);
+        else if (userInput == "toggle") // this causes some troubles with timer if i do it just once
+        {                               
+            for (int i = 0; i < 5; i++)
+            {
+                irsend.sendNECMSB(0x40BF708F, 32);
+            }
         }
         else if (userInput == "on")
         {

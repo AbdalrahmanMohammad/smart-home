@@ -12,7 +12,6 @@ private:
     boolean state;
     boolean hasbutton;
 
-
 public:
     LedClass(byte pin)
     {
@@ -80,6 +79,10 @@ public:
             on();
         }
     }
+    virtual String getName()
+    {
+        return "led";
+    }
 
     virtual void setButton(int i)
     {
@@ -105,8 +108,6 @@ public:
     {
         return digitalRead(buttonPin);
     }
-
-
 };
 
 #endif
