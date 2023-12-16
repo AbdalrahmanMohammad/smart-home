@@ -114,13 +114,18 @@
       text-align: center;
       /* Optional: Center the content horizontally */
     }
+
+    #myButton{
+      border-radius: 50%;
+
+    }
   </style>
 </head>
 
 <body>
    <script type="text/javascript">
     function setTimer() {   // for put timer to toggle
-  var secondsValue = document.getElementById('seconds').value;
+  var secondsValue = document.getElementById('tvseconds').value;
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/ledstate?tvseconds=' + encodeURIComponent(secondsValue), true);
   xhr.send();
@@ -177,9 +182,10 @@ function updateLEDState() {
     crossorigin="anonymous"></script>
   <h1>Room 1</h1>
   <div class="container">
-    <label for="lightbtn">Light:</label>
-    <button id="lightbtn" style="background-color: red;" onclick="changecolor();">off</button>
+    <h1 class="mt-5">LED</h1>
+    <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()" onmouseup="endTimer()" class=" btn-lg btn-danger mt-3">Off</button>
   </div>
+
 
   <div class="container mt-5">
     <a href="#" data-bs-toggle="modal" onclick="toggleTVModal()" class="btn-primary btn1" data-bs-target="#TVmod"
@@ -236,8 +242,8 @@ function updateLEDState() {
               </tr>
             </table>
             <div class="action-container" id="actionContainer">
-              <label for='seconds' id="timerlabel" style="color:black">Enter seconds:</label>
-              <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');">
+              <label for='tvseconds' id="timerlabel" style="color:black">Enter seconds:</label>
+              <input type='number' class='form-control' id='tvseconds' min='0' oninput="validity.valid||(value='');">
               <button onclick="setTimer()"class=' btn-warning mt-3'  >set</button>
             </div>
 
