@@ -29,7 +29,7 @@
   margin-top: 20px;
   text-align: center;
   position: relative;
-  display: none; /* Updated to use flexbox */
+  display: flex; /* Updated to use flexbox */
   justify-content: space-between; /* Spacing between the three containers */
   align-items: center; /* Center items vertically */
 }
@@ -80,7 +80,7 @@
       <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-danger mt-3">Off</button>
     </div>
 
-    <div class="action-container" id="actionContainer">
+    <div class="action-container d-none" id="actionContainer">
       <span class="hide-button" onclick="toggleVisibility()">x</span>
       <span class="return-button" onclick="undo()">&#9100</span>
 
@@ -181,14 +181,9 @@
     }
 
     function toggleVisibility() {
-      var container = document.getElementById("actionContainer");
-
-      if (container.style.display === "none" || container.style.display === "") {
-        container.style.display = "flex"; // Display as flex when toggled
-      } else {
-        container.style.display = "none";
-      }
-    }
+    var container = document.getElementById("actionContainer");
+    container.classList.toggle("d-none");
+  }
 
     function setColor() {
       var colorValue = document.getElementById('colorInput').value;
@@ -204,10 +199,6 @@
       xhr.send();
     }
   </script>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 

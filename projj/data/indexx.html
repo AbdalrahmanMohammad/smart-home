@@ -29,7 +29,6 @@
       margin-top: 20px;
       text-align: center;
       position: relative;
-      display: none; /* Initially hidden */
     }
     .hide-button {
       position: absolute;
@@ -47,7 +46,7 @@
       <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-danger mt-3">Off</button>
     </div>
 
-    <div class="action-container" id="actionContainer">
+    <div class="action-container d-none" id="actionContainer">
       <span class="hide-button" onclick="toggleVisibility()">x</span>
       <label for='seconds' id="timerlabel">Enter seconds:</label>
       <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');"> <!--the last funciton to prevent negative sign-->
@@ -124,19 +123,10 @@
     }
 
     function toggleVisibility() {
-      var container = document.getElementById("actionContainer");
-
-      if (container.style.display === "none" || container.style.display === "") {
-        container.style.display = "block";
-      } else {
-        container.style.display = "none";
-      }
-    }
+    var container = document.getElementById("actionContainer");
+    container.classList.toggle("d-none");
+  }
   </script>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 
