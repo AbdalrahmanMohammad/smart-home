@@ -4,38 +4,68 @@
 <head>
   <title>NodeMCU LED Control</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
   <style>
-    /* Custom CSS for centering content */
-    html, body {
+    html,
+    body {
       height: 100%;
     }
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-container {
-      text-align: center;
-      border-radius: 50%;
-    }
-    .btn {
-      border-radius: 50%;
-    }
-    /* Custom CSS for the new div */
+
     .action-container {
-      background-color: #f0f0f0; /* Set your desired background color */
-      padding: 10px;
+      background: linear-gradient(120deg, #2980b9, #8e44ad);
       border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      transition: background 0.3s, box-shadow 0.3s;
+      padding: 20px;
+      /* Keep the necessary padding */
       margin-top: 20px;
       text-align: center;
-      position: relative;
-      display: none; /* Initially hidden */
-    }
-    .hide-button {
       position: absolute;
-      top: 5px;
-      right: 5px;
-      cursor: pointer;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 80%;
+      max-width: 250px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    #leddiv:hover {
+      background: linear-gradient(120deg, #3498db, #9b59b6);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    #leddiv {
+      text-align: center;
+    }
+
+    body {
+      background: linear-gradient(120deg, #2980b9, #8e44ad);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+    }
+
+    .btn-container {
+      text-align: center;
+    }
+
+    .btn {
+      border-radius: 50%;
     }
   </style>
 </head>
@@ -44,14 +74,23 @@
   <div class="container">
     <div class="btn-container">
       <h1 class="mt-5">NodeMCU LED Control</h1>
-      <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-primary mt-3">(LED_STATE)</button>
+      <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()"
+        onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-danger mt-3">Off</button>
     </div>
 
-    <div class="action-container" id="actionContainer">
-      <span class="hide-button" onclick="toggleVisibility()">x</span>
-      <label for='seconds' id="timerlabel">Enter seconds:</label>
-      <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');"> <!--the last funciton to prevent negative sign-->
-      <button onclick="setTimer()" class='btn btn-warning mt-3'>Perform Action</button>
+    <div class="action-container " id="actionContainer">
+      <div>
+        <button type="button" class="btn-close" aria-label="Close" onclick="$('#actionContainer').toggle();">
+        </button>
+        <h3 class="modal-title" for='colorInput'>lED Light</h3>
+      </div>
+      <div id="leddiv" class="modal-body text-center">
+        <div>
+          <label for='seconds' id="timerlabel">set a timer</label>
+          <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');">
+          <button onclick="setTimer()" class='btn btn-warning mt-3'>Set</button>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -61,7 +100,7 @@
 
     function startTimer() {  // for long press on the button
       clickTimer = setTimeout(function () {
-        toggleVisibility();
+        $('#actionContainer').toggle();
       }, 1000); // if i click for 1000 millies then it will call togglevisibility()
     }
 
@@ -83,18 +122,18 @@
 
     }
 
-    setInterval(function () {   updateLEDState();  }, 300); // for update the button
+    setInterval(function () { updateLEDState(); }, 300); // for update the button
 
     function updateLEDState() {
 
       var button = document.getElementById("myButton");
 
       fetch('/ledstate')
-    .then(response => response.json())
-    .then(data => {
-      console.log('Received data:', data);
+        .then(response => response.json())
+        .then(data => {
+          console.log('Received data:', data);
 
-      if (data.state == "On") {
+          if (data.state == "On") {
             button.innerHTML = "Off";
             button.classList.remove("btn-success");
             button.classList.add("btn-danger");
@@ -104,39 +143,24 @@
             button.classList.add("btn-success");
           }
 
-          var timerlabel=document.getElementById("timerlabel");
-          var timetotoggle=data.secondsToToggle;
-          var nextstate=(data.state=="Off") ? "On" : "Off";
-          if(timetotoggle==-1)
-          {
-            timerlabel.innerHTML="set a timer";
+          var timerlabel = document.getElementById("timerlabel");
+          var timetotoggle = data.secondsToToggle;
+          var nextstate = (data.state == "Off") ? "On" : "Off";
+          if (timetotoggle == -1) {
+            timerlabel.innerHTML = "set a timer";
           }
-          else
-          {
-           timerlabel.innerHTML="Led will be "+nextstate+" after "+ data.secondsToToggle+" seconds";
+          else {
+            timerlabel.innerHTML = "Led will be " + nextstate + " after " + data.secondsToToggle + " seconds";
 
           }
 
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
     }
 
-    function toggleVisibility() {
-      var container = document.getElementById("actionContainer");
-
-      if (container.style.display === "none" || container.style.display === "") {
-        container.style.display = "block";
-      } else {
-        container.style.display = "none";
-      }
-    }
   </script>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 
