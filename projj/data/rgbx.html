@@ -10,6 +10,8 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
   <style>
     /* Custom CSS for centering content */
     html,
@@ -50,12 +52,13 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      display: flex;
+      display: none;
       flex-direction: column;
       align-items: center;
       width: 80%;
       max-width: 250px;
     }
+
     #rgbdiv:hover {
       background: linear-gradient(120deg, #3498db, #9b59b6);
       /* Slightly different gradient on hover */
@@ -68,6 +71,7 @@
       text-align: center;
       /* Optional: Center the content horizontally */
     }
+
     #left-container,
     #middle-container,
     #right-container {
@@ -142,9 +146,9 @@
         onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-danger mt-3">Off</button>
     </div>
 
-    <div class="action-container d-none" id="actionContainer">
+    <div class="action-container" id="actionContainer">
       <div class="rgb-box">
-        <button type="button" class="btn-close" aria-label="Close" onclick="toggleVisibility()">
+        <button type="button" class="btn-close" aria-label="Close" onclick="$('#actionContainer').toggle();">
         </button>
         <h3 class="modal-title" for='colorInput'>RGB Light</h3>
         <span class="return-button" onclick="undo()">&#9100</span>
@@ -181,7 +185,7 @@
 
     function startTimer() {
       clickTimer = setTimeout(function () {
-        toggleVisibility();
+        $('#actionContainer').toggle();
       }, 1000);
     }
 
@@ -247,11 +251,6 @@
         .catch(error => {
           console.error('Error fetching data:', error);
         });
-    }
-
-    function toggleVisibility() {
-      var container = document.getElementById("actionContainer");
-      container.classList.toggle("d-none");
     }
 
     function setColor() {
