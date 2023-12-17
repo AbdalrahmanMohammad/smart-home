@@ -214,12 +214,12 @@
   <h1>Room 1</h1>
   <div class="container">
     <h1 class="mt-5">LED</h1>
-    <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()"
+    <button id="myButton" ontouchstart="startTimer()" ontouchend="endTimer()"
       onmousedown="startTimer()" onmouseup="endTimer()" class=" btn-lg btn-danger mt-3">Off</button>
   </div>
 
   <div class="action-container " id="ledContainer">
-    <div class="rgb-box">
+    <div>
       <button type="button" class="btn-close" aria-label="Close" onclick="$('#ledContainer').toggle();">
       </button>
       <h3 class="modal-title" for='colorInput'>lED Light</h3>
@@ -228,7 +228,7 @@
       <div>
         <label for='seconds' id="timerlabel">set a timer</label>
         <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');">
-        <button onclick="setTimer()" class='btn btn-warning mt-3'>Set</button>
+        <button class='btn btn-warning mt-3'>Set</button>
       </div>
     </div>
   </div>
