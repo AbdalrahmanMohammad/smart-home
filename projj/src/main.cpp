@@ -84,8 +84,9 @@ void loop()
   togglergb(); // toggles the rgb led using the button
   toggleled(); // toggles the led using the button
   //////////////////////////////////////////////////
-  if (WiFi.status() == WL_CONNECTED)
+  if (WiFi.status() == WL_CONNECTED&&room1.ledbuttonclicked==true)
   {
+    room1.ledbuttonclicked=false;
     HTTPClient http;
     int httpCode;
     String LED_State = "";

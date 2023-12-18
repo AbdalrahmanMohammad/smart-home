@@ -33,6 +33,8 @@ private:
     Command *presstvbuttoncommand;
 
 public:
+    boolean ledbuttonclicked;
+
     ROOM1()
     {
         roomID = idCounter++; // takes id and increment by 1 so the second room takes another id
@@ -46,6 +48,7 @@ public:
         led = &NoLed::getInstance();
         rgb = &NoRgb::getInstance();
         tv = &NoTV::getInstance();
+        ledbuttonclicked=false;
     }
 
     void setLed(LedClass *l, Command *ledoncom)
@@ -127,6 +130,7 @@ public:
             {
                 this->excLedTog();
                 led->setPrevious(millis());
+                ledbuttonclicked=true;
             }
         }
         led->setBtnprevstate(led->getBtncurvstate());
