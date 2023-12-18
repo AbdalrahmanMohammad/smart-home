@@ -3,8 +3,9 @@
 #include <ESPAsyncWebServer.h>
 #include <LedClass.h>
 #include <RGB.h>
-#include <LoggingFunctions.h>
 #include <ROOM1.h>
+#include <HTTPClient.h>
+#include <Arduino_JSON.h>
 
 #define pr(x) Serial.println(x)
 
@@ -12,19 +13,12 @@
 const char *ssid = "PL";
 const char *password = "87654321";
 
-// Set your static IP address here
-IPAddress staticIP(192, 168, 8, 177);
-IPAddress gateway(192, 168, 8, 1);
-IPAddress subnet(255, 255, 255, 0);
-
-AsyncWebServer server(80);
 
 RGB rgb(5, 4, 8);
 LedClass wifiLed(32);
 LedClass ledPin(12, 17);
 TV tv(0, 2);
 
-ToggleCommand ledtogcom(&ledPin);
 DimUpCommand dimupcom(&rgb);
 DimDownCommand dimdowncom(&rgb);
 ChangeColorCommand chcolorcom(&rgb);
