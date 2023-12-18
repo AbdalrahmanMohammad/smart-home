@@ -1,7 +1,6 @@
 #ifndef ROOM1_H
 #define ROOM1_H
 
-#include <LoggingFunctions.h>
 #include <Command.h>
 #include <ToggleCommand.h>
 #include <DimUpCommand.h>
@@ -23,7 +22,7 @@ class ROOM1
 private:
     static int idCounter;
     int roomID;
-    Command *ledtogcommand; // i have to make it pointer because of polymorphism (that is how c++ works)
+    Command *ledoncommand; // i have to make it pointer because of polymorphism (that is how c++ works)
     Command *changecolorcommand;
     Command *dimupcommand;
     Command *dimdowncommand;
@@ -33,41 +32,12 @@ private:
     TV *tv;
     Command *presstvbuttoncommand;
 
-    void logRgb()
-    {
-        if (rgb == &NoRgb::getInstance())
-            return;
-
-        String redVlaue = String(rgb->getRed());
-        String greenVlaue = String(rgb->getGreen());
-        String blueVlaue = String(rgb->getBlue());
-
-        String redKey = String(roomID) + "red";
-        String greenKey = String(roomID) + "green";
-        String blueKey = String(roomID) + "blue";
-        String brightnessKey = String(roomID) + "rgbBrightness";
-        LoggingFunctions::writeLog(redKey, redVlaue);
-        LoggingFunctions::writeLog(greenKey, greenVlaue);
-        LoggingFunctions::writeLog(blueKey, blueVlaue);
-        LoggingFunctions::writeLog(brightnessKey, rgb->getBrightness());
-    }
-
-    void logLed()
-    {
-        if (led == &NoLed::getInstance())
-            return;
-
-        String key = String(roomID) + "led";
-        String value = String(led->isOn());
-        LoggingFunctions::writeLog(key, value);
-    }
-
 public:
     ROOM1()
     {
         roomID = idCounter++; // takes id and increment by 1 so the second room takes another id
         NoCommand *noCmd = &NoCommand::getInstance();
-        ledtogcommand = noCmd;
+        ledoncommand = noCmd;
         changecolorcommand = noCmd;
         dimupcommand = noCmd;
         dimdowncommand = noCmd;
@@ -78,10 +48,10 @@ public:
         tv = &NoTV::getInstance();
     }
 
-    void setLed(LedClass *l, Command *ledtogcom)
+    void setLed(LedClass *l, Command *ledoncom)
     {
         led = l;
-        ledtogcommand = ledtogcom;
+        ledoncommand = ledoncom;
     }
     void setRgb(RGB *r, Command *dimup, Command *dimdown, Command *changecolor)
     {
@@ -108,46 +78,34 @@ public:
         rgb->init(LOW);
         tv->init();
 
-        String ledkey = String(roomID) + "led";
-        String redKey = String(roomID) + "red";
-        String greenKey = String(roomID) + "green";
-        String blueKey = String(roomID) + "blue";
-        String brightnessKey = String(roomID) + "rgbBrightness";
-
-        if (LoggingFunctions::readLog(ledkey) != "not existed!!")
-        {
-            if (LoggingFunctions::readLog(ledkey).toInt() == 1)
-                excLed();
-        }
-        if (LoggingFunctions::readLog(brightnessKey) != "not existed!!") // brightness & colors are set together, so if one exists all of them exist
-        {
-            rgb->setBrightness(LoggingFunctions::readLog(brightnessKey).toInt());
-            int r, b, g;
-            r = LoggingFunctions::readLog(redKey).toInt();
-            g = LoggingFunctions::readLog(greenKey).toInt();
-            b = LoggingFunctions::readLog(blueKey).toInt();
-            excColor(r, g, b);
-        }
     }
 
     void excOnBoth()
     {
         onboth->execute();
-        logLed();
-        logRgb();
     }
 
     void excOffBoth()
     {
         onboth->undo();
-        logLed();
-        logRgb();
     }
 
-    void excLed()
+    void excLedOn()
     {
-        ledtogcommand->execute();
-        logLed();
+        ledoncommand->execute();
+    }
+
+        void excLedOff()
+    {
+        ledoncommand->undo();
+    }
+
+    void excLedTog()
+    {
+        if(led->isOn())
+        this->excLedOff();
+        else
+        this->excLedOn();
     }
 
     void excTvButton(String s)
@@ -167,7 +125,7 @@ public:
         {
             if (millis() - led->getPrevious() >= 500UL)
             {
-                this->excLed();
+                this->excLedTog();
                 led->setPrevious(millis());
             }
         }
@@ -205,7 +163,7 @@ public:
             if (device->getName() == "rgb")
                 this->excRgb();
             else if (device->getName() == "led")
-                this->excLed();
+                this->excLedTog();
             else if (device->getName() == "tv")
                 this->excTvButton("toggle");
         }
@@ -224,25 +182,21 @@ public:
         rgb->setGreen(g);
         rgb->setBlue(b);
         changecolorcommand->execute();
-        logRgb();
     }
 
     void excDimUp()
     {
         dimupcommand->execute();
-        logRgb();
     }
 
     void excDimDown()
     {
         dimdowncommand->execute();
-        logRgb();
     }
 
     void undoColor()
     {
         changecolorcommand->undo();
-        logRgb();
     }
 
     LedClass &getLed()
