@@ -40,24 +40,38 @@ void control_LEDs()
     return;
   }
 
-  if (strcmp(myObject["LED"], "ON") == 0&&room1.getLed().isOn()==false)
+  if (strcmp(myObject["LED"], "ON") == 0 && room1.getLed().isOn() == false)
   {
     room1.excLedOn();
   }
-  if (strcmp(myObject["LED"], "OFF") == 0&&room1.getLed().isOn()==true)
+  if (strcmp(myObject["LED"], "OFF") == 0 && room1.getLed().isOn() == true)
   {
     room1.excLedOff();
   }
-  //   if(strcmp(myObject["LED_01"], "ON") == 0)   {digitalWrite(LED_01, HIGH);   }
-  // if(strcmp(myObject["LED_01"], "OFF") == 0)  {digitalWrite(LED_01, LOW);   }
-  // Serial.println(myObject["LED"]);
+
+  if (strcmp(myObject["timer_flag"], "1") == 0)
+  {
+    String sec = myObject["timer"];
+    int seconds = (int)strtol(sec.c_str(), NULL, 10);
+    room1.getLed().setDuration(seconds * 1000);
+    room1.getLed().setStartTime(millis());
+    ///////////////////////////////////  now make the flag zero so i don't read it here anymore
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&timer=" + sec;
+    postData += "&timer_flag=0";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/updatetimer.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+  }
 }
 
 void loop()
 {
-  checkWifi();
-  room1.timers();
-
   if (Serial.available() > 0)
   {
     String userInput = Serial.readString();
@@ -74,19 +88,18 @@ void loop()
     httpCode = http.POST(postData);
     payload = http.getString();
     http.end();
-    //     Serial.print("httpCode : ");
-    // Serial.println(httpCode); //--> Print HTTP return code
-    //    Serial.print("payload  : ");
-    // Serial.println(payload);  //--> Print request response payload
     control_LEDs();
   }
   ///////////////////////////////////////////////////////////////////////
   togglergb(); // toggles the rgb led using the button
   toggleled(); // toggles the led using the button
+  checkWifi();
+  room1.timers();
+
   //////////////////////////////////////////////////
-  if (WiFi.status() == WL_CONNECTED&&room1.ledbuttonclicked==true)
+  if (WiFi.status() == WL_CONNECTED && room1.ledbuttonclicked == true)
   {
-    room1.ledbuttonclicked=false;
+    room1.ledbuttonclicked = false;
     HTTPClient http;
     int httpCode;
     String LED_State = "";

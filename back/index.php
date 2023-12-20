@@ -98,23 +98,23 @@
   <script>
     var clickTimer;
 
-    // function startTimer() {  // for long press on the button
-    //   clickTimer = setTimeout(function () {
-    //     $('#actionContainer').toggle();
-    //   }, 1000); // if i click for 1000 millies then it will call togglevisibility()
-    // }
+    function startTimer() {  // for long press on the button
+      clickTimer = setTimeout(function () {
+        $('#actionContainer').toggle();
+      }, 1000); // if i click for 1000 millies then it will call togglevisibility()
+    }
 
-    // function endTimer() {  // for long press on the button
-    //   clearTimeout(clickTimer);
-    // }
+    function endTimer() {  // for long press on the button
+      clearTimeout(clickTimer);
+    }
 
-    // function setTimer() {   // for put timer to toggle
-    //   var secondsValue = document.getElementById('seconds').value;
-    //   xmlhttp.open("POST", "updatedata.php", true);
-    //   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //   xmlhttp.send("id=" + "esp1" + "&timer=" + encodeURIComponent(secondsValue));
+    function setTimer() {   // for put timer to toggle
+      var secondsValue = document.getElementById('seconds').value;
+      xmlhttp.open("POST", "updatetimer.php", true);
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.send("id=" + "esp1" + "&timer=" + encodeURIComponent(secondsValue)+"&timer_flag=1"+"&timer_time=yes");
 
-    // }
+    }
 
 
 
@@ -149,7 +149,24 @@
       Get_Data("esp1");
     }
     //------------------------------------------------------------
+    function getTimeDifferenceInSeconds(databaseTime) {
 
+    var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
+
+    var now = new Date();
+    var noww = new Date();
+
+    now.setHours(hours);
+    now.setMinutes(minutes);
+    now.setSeconds(seconds);
+
+    var timeDifferenceInSeconds = Math.floor((now.getTime())-Date.now() )/1000;
+    var button = document.getElementById("myButton");
+      var btnnextstate=button.innerHTML=="OFF"?"OFF":"ON";
+    
+      if (timeDifferenceInSeconds<0) return "set a timer";
+    return "led will be "+btnnextstate+" after "+timeDifferenceInSeconds;
+}
     //------------------------------------------------------------
     function Get_Data(id) {
 
@@ -160,6 +177,11 @@
           const myObj = JSON.parse(this.responseText);
           if (myObj.id == "esp1") {
             var button = document.getElementById("myButton");
+            var timer = document.getElementById("timerlabel");
+
+            var previousDate = myObj.timer_time;
+            timer.innerHTML =  getTimeDifferenceInSeconds(previousDate);
+
 
             if (myObj.LED == "ON") {
               button.innerHTML = "OFF";

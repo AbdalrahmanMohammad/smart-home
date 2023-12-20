@@ -1,0 +1,38 @@
+<?php
+require 'database.php';
+
+if (!empty($_POST)) {
+    //........................................ keep track POST values
+    $id = $_POST['id'];
+    $timer = $_POST['timer'];
+    $timer_flag = $_POST['timer_flag'];// this flag for esp32 if it is 0 it doesn't read the time, else it reads it and write it 1
+    date_default_timezone_set("Asia/Jerusalem");
+    $timer_time = date("H:i:s");
+    $timer_time = date("H:i:s", strtotime($timer_time) + $timer);// stores the time that the led will toggle in, it is important to show how much time to toggle
+
+
+    //........................................
+
+
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sql = 'SELECT * FROM room WHERE id="' . $id . '"';
+    $q = $pdo->prepare($sql);
+    $q->execute();
+
+    $state = "unknown";
+    if ($row = $q->fetch(PDO::FETCH_ASSOC)) {
+        $state = $row['LED'];
+    }
+
+    $sql = "UPDATE room SET  timer = ?, timer_flag = ? , timer_time = ? WHERE id = ?";
+    $q = $pdo->prepare($sql);
+    $q->execute(array($timer, $timer_flag, $timer_time, $id));
+
+
+
+    Database::disconnect();
+    //........................................
+}
+?>

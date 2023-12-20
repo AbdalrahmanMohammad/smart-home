@@ -48,7 +48,7 @@ public:
         led = &NoLed::getInstance();
         rgb = &NoRgb::getInstance();
         tv = &NoTV::getInstance();
-        ledbuttonclicked=false;
+        ledbuttonclicked = false;
     }
 
     void setLed(LedClass *l, Command *ledoncom)
@@ -80,7 +80,6 @@ public:
         led->init(LOW);
         rgb->init(LOW);
         tv->init();
-
     }
 
     void excOnBoth()
@@ -98,17 +97,17 @@ public:
         ledoncommand->execute();
     }
 
-        void excLedOff()
+    void excLedOff()
     {
         ledoncommand->undo();
     }
 
     void excLedTog()
     {
-        if(led->isOn())
-        this->excLedOff();
+        if (led->isOn())
+            this->excLedOff();
         else
-        this->excLedOn();
+            this->excLedOn();
     }
 
     void excTvButton(String s)
@@ -130,7 +129,7 @@ public:
             {
                 this->excLedTog();
                 led->setPrevious(millis());
-                ledbuttonclicked=true;
+                ledbuttonclicked = true;
             }
         }
         led->setBtnprevstate(led->getBtncurvstate());
@@ -167,7 +166,10 @@ public:
             if (device->getName() == "rgb")
                 this->excRgb();
             else if (device->getName() == "led")
+            {
                 this->excLedTog();
+                ledbuttonclicked=true;
+            }
             else if (device->getName() == "tv")
                 this->excTvButton("toggle");
         }

@@ -17,6 +17,9 @@ if (!empty($_POST)) {
 
         $myObj->id = $row['id'];
         $myObj->LED = $row['LED'];
+        $myObj->timer = $row['timer'];
+        $myObj->timer_flag = $row['timer_flag'];
+        $myObj->timer_time = $row['timer_time'];
         $myObj->ls_time = $row['time'];
         $myObj->ls_date = $dateFormat;
 
