@@ -110,9 +110,10 @@
 
     // function setTimer() {   // for put timer to toggle
     //   var secondsValue = document.getElementById('seconds').value;
-    //   var xhr = new XMLHttpRequest();
-    //   xhr.open('GET', '/ledstate?seconds=' + encodeURIComponent(secondsValue), true);
-    //   xhr.send();
+    //   xmlhttp.open("POST", "updatedata.php", true);
+    //   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //   xmlhttp.send("id=" + "esp1" + "&timer=" + encodeURIComponent(secondsValue));
+
     // }
 
 
@@ -124,17 +125,17 @@
 
       xmlhttp.open("POST", "updatedata.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      if (button.innerHTML == "ON") {
+      if (button.innerHTML == "OFF") {
         xmlhttp.send("id=" + "esp1" + "&LED=" + "OFF");
-        button.innerHTML = "OFF";
-        button.classList.remove("btn-success");
-        button.classList.add("btn-danger");
-      }
-      else {
-        xmlhttp.send("id=" + "esp1" + "&LED=" + "ON");
         button.innerHTML = "ON";
         button.classList.remove("btn-danger");
         button.classList.add("btn-success");
+      }
+      else {
+        xmlhttp.send("id=" + "esp1" + "&LED=" + "ON");
+        button.innerHTML = "OFF";
+        button.classList.remove("btn-success");
+        button.classList.add("btn-danger");
 
       }
 
@@ -161,13 +162,13 @@
             var button = document.getElementById("myButton");
 
             if (myObj.LED == "ON") {
-              button.innerHTML = "ON";
-              button.classList.remove("btn-danger");
-              button.classList.add("btn-success");
-            } else if (myObj.LED == "OFF") {
               button.innerHTML = "OFF";
               button.classList.remove("btn-success");
               button.classList.add("btn-danger");
+            } else if (myObj.LED == "OFF") {
+              button.innerHTML = "ON";
+              button.classList.remove("btn-danger");
+              button.classList.add("btn-success");
             }
 
           }

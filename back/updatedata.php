@@ -18,7 +18,7 @@ if (!empty($_POST)) {
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = 'SELECT * FROM led WHERE id="' . $id . '"';
+    $sql = 'SELECT * FROM room WHERE id="' . $id . '"';
     $q = $pdo->prepare($sql);
     $q->execute();
 
@@ -28,7 +28,7 @@ if (!empty($_POST)) {
     }
 
     if ($state != $led_state && $state != "unknown") {
-        $sql = "UPDATE led SET LED = ?, time = ?, date = ? WHERE id = ?";
+        $sql = "UPDATE room SET LED = ?, time = ?, date = ? WHERE id = ?";
         $q = $pdo->prepare($sql);
         $q->execute(array($led_state, $tm, $dt, $id));
     }

@@ -10,7 +10,7 @@ if (!empty($_POST)) {
     //........................................ 
     $pdo = Database::connect();
 
-    $sql = 'SELECT * FROM led WHERE id="' . $id . '"';
+    $sql = 'SELECT * FROM room WHERE id="' . $id . '"';
     foreach ($pdo->query($sql) as $row) {
         $date = date_create($row['date']);
         $dateFormat = date_format($date, "d-m-Y");
