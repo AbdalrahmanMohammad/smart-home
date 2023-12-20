@@ -5,7 +5,7 @@ require 'database.php';
 if (!empty($_POST)) {
     //........................................ keep track POST values
     $id = $_POST['id'];
-    $led_state = $_POST['led'];
+    $led_state = $_POST['LED'];
     //........................................
 
     //........................................ Get the time and date.

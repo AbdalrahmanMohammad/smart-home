@@ -2,108 +2,187 @@
 <html>
 
 <head>
-  <title>Smart Home Control</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>NodeMCU LED Control</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
   <style>
-    /* Custom CSS for clock */
-    #clock {
-      font-size: 2.5em;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 20px;
-      color: white; /* White text for visibility on the gradient background */
+    html,
+    body {
+      height: 100%;
     }
 
-    /* Custom CSS for temperature and humidity display */
-    #temp-humidity {
-      text-align: center;
-      margin-bottom: 20px;
-      color: white; /* White text for visibility on the gradient background */
-    }
-
-    /* Custom CSS for login section */
-    #login-section {
-      max-width: 300px; /* Set a maximum width */
-      padding: 40px 20px; /* Increased vertical padding */
+    .action-container {
       background: linear-gradient(120deg, #2980b9, #8e44ad);
       border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle box shadow */
-      transition: background 0.3s, box-shadow 0.3s; /* Transitions on hover */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      transition: background 0.3s, box-shadow 0.3s;
+      padding: 20px;
+      /* Keep the necessary padding */
+      margin-top: 20px;
+      text-align: center;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 80%;
+      max-width: 250px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      text-align: center;
     }
 
-    /* Change background color on hover */
-    #login-section:hover {
-      background: linear-gradient(120deg, #3498db, #9b59b6); /* Slightly different gradient on hover */
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Shadow becomes slightly more prominent on hover */
+    #leddiv:hover {
+      background: linear-gradient(120deg, #3498db, #9b59b6);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     }
 
-    /* Custom CSS for login button */
-    .login-button {
-      background-color: #e74c3c; /* Alizarin red */
-      border: none;
-    }
-    .login-button:hover {
-      background-color: #c0392b; /* Darker red on hover */
+    #leddiv {
+      text-align: center;
     }
 
-    /* Custom CSS for the page background with linear gradient */
     body {
       background: linear-gradient(120deg, #2980b9, #8e44ad);
       min-height: 100vh;
       margin: 0;
       display: flex;
       flex-direction: column;
-      color: white; /* White text for visibility on the gradient background */
+      align-items: center;
+      color: white;
     }
 
-    /* Remove margin from the last child of the container */
-    .container>:last-child {
-      margin-bottom: 0;
+    .btn-container {
+      text-align: center;
+    }
+
+    .btn {
+      border-radius: 50%;
     }
   </style>
 </head>
 
 <body>
-  <div class="container mt-5">
-    <div id="clock" class="text-center"></div>
-    <div id="temp-humidity">Temperature: 25°C, Humidity: 50%</div>
-
-    <div id="login-section" class="mx-auto">
-      <h3 class="text-center mb-4">Login</h3>
-      <form>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" class="form-control" id="username" placeholder="Enter username">
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Password">
-        </div>
-        <button type="submit" class="btn btn-danger btn-block login-button">Login</button>
-      </form>
+  <div class="container">
+    <div class="btn-container">
+      <h1 class="mt-5">NodeMCU LED Control</h1>
+      <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()"
+        onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-danger mt-3">OFF</button>
     </div>
+
+    <div class="action-container " id="actionContainer">
+      <div>
+        <button type="button" class="btn-close" aria-label="Close" onclick="$('#actionContainer').toggle();">
+        </button>
+        <h3 class="modal-title" for='colorInput'>lED Light</h3>
+      </div>
+      <div id="leddiv" class="modal-body text-center">
+        <div>
+          <label for='seconds' id="timerlabel">set a timer</label>
+          <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');">
+          <button onclick="setTimer()" class='btn btn-warning mt-3'>Set</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
   <script>
-    // Update the clock every second
-     function updateClock() {
-            var now = new Date();
-            var hours = now.getHours().toString().padStart(2, '0');
-            var minutes = now.getMinutes().toString().padStart(2, '0');
-            var seconds = now.getSeconds().toString().padStart(2, '0');
+    var clickTimer;
 
-            document.getElementById('clock').innerText = hours + ':' + minutes + ':' + seconds;
+    // function startTimer() {  // for long press on the button
+    //   clickTimer = setTimeout(function () {
+    //     $('#actionContainer').toggle();
+    //   }, 1000); // if i click for 1000 millies then it will call togglevisibility()
+    // }
+
+    // function endTimer() {  // for long press on the button
+    //   clearTimeout(clickTimer);
+    // }
+
+    // function setTimer() {   // for put timer to toggle
+    //   var secondsValue = document.getElementById('seconds').value;
+    //   var xhr = new XMLHttpRequest();
+    //   xhr.open('GET', '/ledstate?seconds=' + encodeURIComponent(secondsValue), true);
+    //   xhr.send();
+    // }
+
+
+
+
+    function toggle() {
+      var button = document.getElementById("myButton");
+      xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.open("POST", "updatedata.php", true);
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      if (button.innerHTML == "ON") {
+        xmlhttp.send("id=" + "esp1" + "&LED=" + "OFF");
+        button.innerHTML = "OFF";
+        button.classList.remove("btn-success");
+        button.classList.add("btn-danger");
+      }
+      else {
+        xmlhttp.send("id=" + "esp1" + "&LED=" + "ON");
+        button.innerHTML = "ON";
+        button.classList.remove("btn-danger");
+        button.classList.add("btn-success");
+
+      }
+
+    }
+
+
+    setInterval(myTimer, 500);
+
+    //------------------------------------------------------------
+    function myTimer() {
+      Get_Data("esp1");
+    }
+    //------------------------------------------------------------
+
+    //------------------------------------------------------------
+    function Get_Data(id) {
+
+      xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const myObj = JSON.parse(this.responseText);
+          if (myObj.id == "esp1") {
+            var button = document.getElementById("myButton");
+
+            if (myObj.LED == "ON") {
+              button.innerHTML = "ON";
+              button.classList.remove("btn-danger");
+              button.classList.add("btn-success");
+            } else if (myObj.LED == "OFF") {
+              button.innerHTML = "OFF";
+              button.classList.remove("btn-success");
+              button.classList.add("btn-danger");
+            }
+
+          }
         }
+      };
+      xmlhttp.open("POST", "getdata.php", true);
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.send("id=" + id);
+    }
+    //------------------------------------------------------------
 
-    // Update the clock immediately and then every second
-    updateClock();
-    setInterval(updateClock, 1000);
+
+
   </script>
+
 </body>
 
 </html>

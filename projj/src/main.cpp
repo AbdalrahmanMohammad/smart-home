@@ -39,7 +39,7 @@ void control_LEDs()
     // Serial.println("returned");
     return;
   }
-  // put if statement if myObject["LED"]!=room1led.ison
+
   if (strcmp(myObject["LED"], "ON") == 0&&room1.getLed().isOn()==false)
   {
     room1.excLedOn();
@@ -69,7 +69,7 @@ void loop()
     int httpCode;
     postData = "id=esp1";
     payload = "";
-    http.begin("http://192.168.8.110/esp/getdata.php");
+    http.begin("http://192.168.8.110/GP/back/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -96,9 +96,9 @@ void loop()
       LED_State = "OFF";
 
     postData = "id=esp1";
-    postData += "&led=" + LED_State;
+    postData += "&LED=" + LED_State;
     payload = "";
-    http.begin("http://192.168.8.110/esp/updatedata.php");
+    http.begin("http://192.168.8.110/GP/back/updatedata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
