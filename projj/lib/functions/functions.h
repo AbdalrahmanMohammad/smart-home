@@ -28,7 +28,7 @@ void wificonnection()
 void checkWifi() // checks wifi connection every 3 seconds and shows the condition on wifiLed
 {
   if (millis() - wifiLed.getPrevious() >= 3000UL) // this uses the previous differently it uses it to repeat
-  {                                          // with constant period. (it doesn't have a button, so this is fine)
+  {                                               // with constant period. (it doesn't have a button, so this is fine)
     if (WiFi.status() == WL_CONNECTED)
     {
       wifiLed.on();
@@ -44,14 +44,14 @@ void checkWifi() // checks wifi connection every 3 seconds and shows the conditi
   }
 }
 
-void toggleled()// works when the led's pushbutton is pressed
+void toggleled() // works when the led's pushbutton is pressed
 {
-        room1.excLedPushbutton();
+  room1.excLedPushbutton();
 }
 
 void togglergb() // works when the rgb's pushbutton is pressed
 {
-        room1.excRgbPushbutton();
+  room1.excRgbPushbutton();
 }
 
 void control_room1()
@@ -68,12 +68,12 @@ void control_room1()
   {
     room1.excLedOn();
   }
-  if (strcmp(myObject["LED"], "OFF") == 0 && room1.getLed().isOn() == true)// control led off
+  if (strcmp(myObject["LED"], "OFF") == 0 && room1.getLed().isOn() == true) // control led off
   {
     room1.excLedOff();
   }
 
-  if (strcmp(myObject["timer_flag"], "1") == 0)   // control led timer
+  if (strcmp(myObject["timer_flag"], "1") == 0) // control led timer
   {
     String sec = myObject["timer"];
     int seconds = (int)strtol(sec.c_str(), NULL, 10);
@@ -83,6 +83,7 @@ void control_room1()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
+    postData += "&roomID=1";
     postData += "&timer=" + sec;
     postData += "&timer_flag=0";
     payload = "";
@@ -96,11 +97,12 @@ void control_room1()
 
 void room1get()
 {
-   if (WiFi.status() == WL_CONNECTED)
+  if (WiFi.status() == WL_CONNECTED)
   {
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
+    postData += "&roomID=1";
     payload = "";
     http.begin("http://192.168.8.110/GP/back/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -113,7 +115,7 @@ void room1get()
 
 void room1send()
 {
-   if (WiFi.status() == WL_CONNECTED && room1.ledbuttonclicked == true)
+  if (WiFi.status() == WL_CONNECTED && room1.ledbuttonclicked == true)
   {
     room1.ledbuttonclicked = false;
     HTTPClient http;
@@ -125,6 +127,7 @@ void room1send()
       LED_State = "OFF";
 
     postData = "id=esp1";
+    postData += "&roomID=1";
     postData += "&LED=" + LED_State;
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatedata.php");

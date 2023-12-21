@@ -112,7 +112,7 @@
       var secondsValue = document.getElementById('seconds').value;
       xmlhttp.open("POST", "updatetimer.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.send("id=" + "esp1" + "&timer=" + encodeURIComponent(secondsValue)+"&timer_flag=1"+"&timer_time=yes");
+      xmlhttp.send("id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue)+"&timer_flag=1");
 
     }
 
@@ -126,13 +126,13 @@
       xmlhttp.open("POST", "updatedata.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       if (button.innerHTML == "OFF") {
-        xmlhttp.send("id=" + "esp1" + "&LED=" + "OFF");
+        xmlhttp.send("id=esp1&roomID=1&LED=OFF");
         button.innerHTML = "ON";
         button.classList.remove("btn-danger");
         button.classList.add("btn-success");
       }
       else {
-        xmlhttp.send("id=" + "esp1" + "&LED=" + "ON");
+        xmlhttp.send("id=esp1&roomID=1&LED=ON");
         button.innerHTML = "OFF";
         button.classList.remove("btn-success");
         button.classList.add("btn-danger");
@@ -142,12 +142,8 @@
     }
 
 
-    setInterval(myTimer, 500);
+    setInterval(Get_Data, 500);
 
-    //------------------------------------------------------------
-    function myTimer() {
-      Get_Data("esp1");
-    }
     //------------------------------------------------------------
     function getTimeDifferenceInSeconds(databaseTime) {
 
@@ -160,7 +156,7 @@
     now.setMinutes(minutes);
     now.setSeconds(seconds);
 
-    var timeDifferenceInSeconds = Math.floor((now.getTime())-Date.now() )/1000;
+    var timeDifferenceInSeconds = Math.round((now.getTime())-Date.now() )/1000;
     var button = document.getElementById("myButton");
       var btnnextstate=button.innerHTML=="OFF"?"OFF":"ON";
     
@@ -175,7 +171,7 @@
       xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           const myObj = JSON.parse(this.responseText);
-          if (myObj.id == "esp1") {
+          if (myObj.id == "esp1"&&myObj.roomID == "1") {// it should always be true
             var button = document.getElementById("myButton");
             var timer = document.getElementById("timerlabel");
 
@@ -198,7 +194,7 @@
       };
       xmlhttp.open("POST", "getdata.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.send("id=" + id);
+      xmlhttp.send("id=esp1&roomID=1");
     }
     //------------------------------------------------------------
 
