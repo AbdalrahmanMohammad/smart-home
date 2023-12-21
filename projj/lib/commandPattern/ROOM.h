@@ -1,5 +1,5 @@
-#ifndef ROOM1_H
-#define ROOM1_H
+#ifndef ROOM_H
+#define ROOM_H
 
 #include <Command.h>
 #include <ToggleCommand.h>
@@ -17,11 +17,9 @@
 #include <NoTV.h>
 #include <PressTvButton.h>
 
-class ROOM1
+class ROOM
 {
 private:
-    static int idCounter;
-    int roomID;
     Command *ledoncommand; // i have to make it pointer because of polymorphism (that is how c++ works)
     Command *changecolorcommand;
     Command *dimupcommand;
@@ -35,9 +33,8 @@ private:
 public:
     boolean ledbuttonclicked;
 
-    ROOM1()
+    ROOM()
     {
-        roomID = idCounter++; // takes id and increment by 1 so the second room takes another id
         NoCommand *noCmd = &NoCommand::getInstance();
         ledoncommand = noCmd;
         changecolorcommand = noCmd;
@@ -218,6 +215,5 @@ public:
         return *tv;
     }
 };
-int ROOM1::idCounter = 0;
 
 #endif

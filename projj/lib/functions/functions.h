@@ -1,5 +1,3 @@
-#include <handlersFunctions.h>
-
 void wificonnection()
 { // it tries to connected to wifi for 6 seconds after this it will contiune wihtout connection
   if (WiFi.status() != WL_CONNECTED)

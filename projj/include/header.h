@@ -3,7 +3,7 @@
 #include <ESPAsyncWebServer.h>
 #include <LedClass.h>
 #include <RGB.h>
-#include <ROOM1.h>
+#include <ROOM.h>
 #include <HTTPClient.h>
 #include <Arduino_JSON.h>
 
@@ -28,4 +28,4 @@ Command *commands[] = {&ledoncom, &rgboncom};
 MacroCommand onboth(commands, 2);
 PressTvButton presstvbtncmd(&tv);
 
-ROOM1 room1;
+ROOM room1;
