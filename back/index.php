@@ -126,13 +126,13 @@
       xmlhttp.open("POST", "updatedata.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       if (button.innerHTML == "OFF") {
-        xmlhttp.send("id=esp1&roomID=1&LED=OFF");
+        xmlhttp.send("id=esp1&roomID=1&state=OFF");
         button.innerHTML = "ON";
         button.classList.remove("btn-danger");
         button.classList.add("btn-success");
       }
       else {
-        xmlhttp.send("id=esp1&roomID=1&LED=ON");
+        xmlhttp.send("id=esp1&roomID=1&state=ON");
         button.innerHTML = "OFF";
         button.classList.remove("btn-success");
         button.classList.add("btn-danger");
@@ -179,11 +179,11 @@
             timer.innerHTML =  getTimeDifferenceInSeconds(previousDate);
 
 
-            if (myObj.LED == "ON") {
+            if (myObj.state == "ON") {
               button.innerHTML = "OFF";
               button.classList.remove("btn-success");
               button.classList.add("btn-danger");
-            } else if (myObj.LED == "OFF") {
+            } else if (myObj.state == "OFF") {
               button.innerHTML = "ON";
               button.classList.remove("btn-danger");
               button.classList.add("btn-success");

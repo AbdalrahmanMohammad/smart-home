@@ -64,11 +64,11 @@ void control_room1()
     return;
   }
 
-  if (strcmp(myObject["LED"], "ON") == 0 && room1.getLed().isOn() == false) // control led on
+  if (strcmp(myObject["state"], "ON") == 0 && room1.getLed().isOn() == false) // control led on
   {
     room1.excLedOn();
   }
-  if (strcmp(myObject["LED"], "OFF") == 0 && room1.getLed().isOn() == true) // control led off
+  if (strcmp(myObject["state"], "OFF") == 0 && room1.getLed().isOn() == true) // control led off
   {
     room1.excLedOff();
   }
@@ -128,7 +128,7 @@ void room1send()
 
     postData = "id=esp1";
     postData += "&roomID=1";
-    postData += "&LED=" + LED_State;
+    postData += "&state=" + LED_State;
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatedata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");

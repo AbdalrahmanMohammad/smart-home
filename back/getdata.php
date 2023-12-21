@@ -11,13 +11,13 @@ if (!empty($_POST)) {
     //........................................ 
     $pdo = Database::connect();
 
-    $sql = 'SELECT * FROM room WHERE id="' . $id . '" AND roomID="' . $roomID . '"';
+    $sql = 'SELECT * FROM led WHERE id="' . $id . '" AND roomID="' . $roomID . '"';
     foreach ($pdo->query($sql) as $row) {
         $date = date_create($row['date']);
         $dateFormat = date_format($date, "d-m-Y");
 
         $myObj->id = $row['id'];
-        $myObj->LED = $row['LED'];
+        $myObj->state = $row['state'];
         $myObj->roomID = $row['roomID'];
         $myObj->timer = $row['timer'];
         $myObj->timer_flag = $row['timer_flag'];

@@ -18,16 +18,16 @@ if (!empty($_POST)) {
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = 'SELECT * FROM room WHERE id="' . $id . '" AND roomID="' . $roomID . '"';
+    $sql = 'SELECT * FROM led WHERE id="' . $id . '" AND roomID="' . $roomID . '"';
     $q = $pdo->prepare($sql);
     $q->execute();
 
     $state = "unknown";
     if ($row = $q->fetch(PDO::FETCH_ASSOC)) {
-        $state = $row['LED'];
+        $state = $row['state'];
     }
 
-    $sql = "UPDATE room SET timer = ?, timer_flag = ?, timer_time = ? WHERE id = ? AND roomID = ?";
+    $sql = "UPDATE led SET timer = ?, timer_flag = ?, timer_time = ? WHERE id = ? AND roomID = ?";
     $q = $pdo->prepare($sql);
     $q->execute(array($timer, $timer_flag, $timer_time, $id, $roomID));
     
