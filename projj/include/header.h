@@ -12,7 +12,8 @@
 // Set your network credentials
 const char *ssid = "PL";
 const char *password = "87654321";
-
+String postData = "";
+String payload = "";
 
 RGB rgb(5, 4, 8);
 LedClass wifiLed(32);
