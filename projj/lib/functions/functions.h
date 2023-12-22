@@ -106,16 +106,17 @@ void control_room2()
     return;
   }
 
-  if (strcmp(myObject["state"], "ON") == 0 && room2.getRgb().isOn() == false) // control led on
+    if (strcmp(myObject["state"], "ON") == 0 && room2.getRgb().isOn() == false) // control rgb on
   {
     room2.excRgb(); // toggles the led so it will be on
   }
-  if (strcmp(myObject["state"], "OFF") == 0 && room2.getRgb().isOn() == true) // control led off
+
+  if (strcmp(myObject["state"], "OFF") == 0 && room2.getRgb().isOn() == true) // control rgb off
   {
     room2.excRgb(); // toggles the led so it will be off
   }
 
-  if (strcmp(myObject["timer"], "-1") != 0) // control led timer
+  if (strcmp(myObject["timer"], "-1") != 0) // control rgb timer
   {
     String sec = myObject["timer"];
     int seconds = (int)strtol(sec.c_str(), NULL, 10);
@@ -136,6 +137,91 @@ void control_room2()
     payload = http.getString();
     http.end();
   }
+
+    if (strcmp(myObject["color"], "-1") != 0)
+  {
+    String colorValue = myObject["color"];
+    int red = (int)strtol(colorValue.substring(1, 3).c_str(), NULL, 16);
+    int green = (int)strtol(colorValue.substring(3, 5).c_str(), NULL, 16);
+    int blue = (int)strtol(colorValue.substring(5, 7).c_str(), NULL, 16);
+    room2.excColor(red, green, blue);
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&roomID=1";
+    postData += "&color=-1";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+    
+  }
+
+  if (strcmp(myObject["dimup_flag"], "-1") != 0)
+  {
+    room2.excDimUp();
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&roomID=1";
+    postData += "&dimup_flag=-1";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+  }
+
+  if (strcmp(myObject["dimdown_flag"], "-1") != 0)
+  {
+    room2.excDimDown();
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&roomID=1";
+    postData += "&dimdown_flag=-1";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+  }
+
+    if (strcmp(myObject["undo_flag"], "-1") != 0)
+  {
+    room2.undoColor();
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&roomID=1";
+    postData += "&undo_flag=-1";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+  }
+
+  if (strcmp(myObject["brightness"], String(room2.getRgb().getBrightness()).c_str()) != 0)
+{   
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&roomID=1";
+    postData += "&brightness=" + String(room2.getRgb().getBrightness());
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+  }
+
 }
 
 void room1get()
@@ -226,6 +312,7 @@ void room2send()
     payload = http.getString(); // return nothing
     http.end();
   }
+  // i put sending brightness in control_room2
 }
 
 void senddata()

@@ -247,8 +247,6 @@
                 xmlhttp.open("POST", "updatedata.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
-                    console.log("i made it on");
-
                     xmlhttp.send("table=rgb&id=esp1&roomID=1&state=OFF");
                     button.innerHTML = "ON";
                     button.classList.remove("btn-danger");
@@ -256,8 +254,6 @@
                 }
                 else {
                     xmlhttp.send("table=rgb&id=esp1&roomID=1&state=ON");
-                    console.log("i made it off");
-
                     button.innerHTML = "OFF";
                     button.classList.remove("btn-success");
                     button.classList.add("btn-danger");
@@ -298,10 +294,12 @@
                         if (myObj.id == "esp1" && myObj.roomID == "1") {// it should always be true
                             var button = document.getElementById("myButton");
                             var timer = document.getElementById("timerlabel");
-
+                            var brightnessLabel = document.getElementById("brightlabel");
+                            
                             var previousDate = myObj.timer_time;
                             timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
 
+                            brightnessLabel.innerHTML=myObj.brightness;
 
                             if (myObj.state == "ON") {
                                 button.innerHTML = "OFF";
@@ -321,29 +319,34 @@
                 xmlhttp.send("table=rgb&id=esp1&roomID=1");
             }
 
-            
 
 
-            // function buttonClick(buttonName) {
-            //     // Handle button click logic here
-            //     var intensity = (buttonName == 'button1') ? "up" : "down";
-            //     var xhr = new XMLHttpRequest();
-            //     xhr.open('GET', '/ledstate?intensity=' + encodeURIComponent(intensity), true);
-            //     xhr.send();
-            // }
 
-            // function setColor() {
-            //     var colorValue = document.getElementById('colorInput').value;
-            //     var xhr = new XMLHttpRequest();
-            //     xhr.open('GET', '/ledstate?color=' + encodeURIComponent(colorValue), true);
-            //     xhr.send();
-            // }
+            function buttonClick(buttonName) {
+                xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("POST", "updatergb.php", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                if ((buttonName == 'button1'))
+                    xmlhttp.send("id=esp1&roomID=1&dimup_flag=1");
+                else
+                    xmlhttp.send("id=esp1&roomID=1&dimdown_flag=1");
 
-            // function undo() {
-            //     var xhr = new XMLHttpRequest();
-            //     xhr.open('GET', '/ledstate?undo=' + "yes", true);
-            //     xhr.send();
-            // }
+            }
+
+            function setColor() {
+                xmlhttp = new XMLHttpRequest();
+                var colorValue = document.getElementById('colorInput').value;
+                xmlhttp.open("POST", "updatergb.php", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlhttp.send("id=esp1&roomID=1&color="+encodeURIComponent(colorValue));
+            }
+
+            function undo() {
+                xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("POST", "updatergb.php", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send("id=esp1&roomID=1&undo_flag=51");
+            }
         </script>
 
 </body>

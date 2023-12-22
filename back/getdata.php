@@ -28,8 +28,11 @@ if (!empty($_POST)) {
         $myObj->ls_time = $row['time'];
         $myObj->ls_date = $dateFormat;
         if ($table == 'rgb') {
-            // Put the rgb attributes
-
+            $myObj->color = $row['color'];
+            $myObj->dimup_flag = $row['dimup_flag'];
+            $myObj->dimdown_flag = $row['dimdown_flag'];
+            $myObj->undo_flag = $row['undo_flag'];
+            $myObj->brightness = $row['brightness'];
         }
 
         $myJSON = json_encode($myObj);
