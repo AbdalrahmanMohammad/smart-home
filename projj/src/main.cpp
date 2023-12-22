@@ -6,12 +6,13 @@ void setup()
   Serial.begin(9600);
 
   room1.setLed(&ledPin, &ledoncom);
-  room1.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
-  room1.setOnBoth(&onboth);
-  room1.setTV(&tv, &presstvbtncmd);
+  room2.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
+  // room1.setOnBoth(&onboth);
+  // room1.setTV(&tv, &presstvbtncmd);
 
   wifiLed.init(LOW);
   room1.init();
+  room2.init();
 
   wificonnection();
 
@@ -37,6 +38,7 @@ void loop()
   toggleled(); // toggles the led using the button
   checkWifi();
   room1.timers();
+  room2.timers();
   //////////////////////////////////////////////////
   senddata();
 }

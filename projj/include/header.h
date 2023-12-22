@@ -29,3 +29,4 @@ MacroCommand onboth(commands, 2);
 PressTvButton presstvbtncmd(&tv);
 
 ROOM room1;
+ROOM room2;

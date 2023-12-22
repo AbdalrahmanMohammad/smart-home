@@ -51,7 +51,7 @@ void toggleled() // works when the led's pushbutton is pressed
 
 void togglergb() // works when the rgb's pushbutton is pressed
 {
-  room1.excRgbPushbutton();
+  room2.excRgbPushbutton();
 }
 
 void control_room1()
