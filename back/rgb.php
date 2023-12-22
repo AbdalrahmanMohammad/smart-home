@@ -236,7 +236,7 @@
 
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (itemID == 'rgbseconds') {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue) + "&timer_flag=1");
+                    xmlhttp.send("table=rgb&id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue));
                 }
             }
 

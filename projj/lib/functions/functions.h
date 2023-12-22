@@ -73,20 +73,20 @@ void control_room1()
     room1.excLedOff();
   }
 
-  if (strcmp(myObject["timer_flag"], "1") == 0) // control led timer
+  if (strcmp(myObject["timer"], "-1") != 0) // control led timer
   {
     String sec = myObject["timer"];
     int seconds = (int)strtol(sec.c_str(), NULL, 10);
     room1.getLed().setDuration(seconds * 1000);
     room1.getLed().setStartTime(millis());
-    ///////////////////////////////////  now make the flag zero so i don't read it here anymore
+    ///////////////////////////////////  now make the timer -1 so i don't read it here anymore
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
     postData += "&roomID=1";
     postData += "&table=led";
-    postData += "&timer=" + sec;
-    postData += "&timer_flag=0";
+    postData += "&timer=-1";
+    postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -115,20 +115,20 @@ void control_room2()
     room2.excRgb(); // toggles the led so it will be off
   }
 
-  if (strcmp(myObject["timer_flag"], "1") == 0) // control led timer
+  if (strcmp(myObject["timer"], "-1") != 0) // control led timer
   {
     String sec = myObject["timer"];
     int seconds = (int)strtol(sec.c_str(), NULL, 10);
     room2.getRgb().setDuration(seconds * 1000);
     room2.getRgb().setStartTime(millis());
-    ///////////////////////////////////  now make the flag zero so i don't read it here anymore
+    ///////////////////////////////////  now make the timer -1 so i don't read it here anymore
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
     postData += "&roomID=1";
     postData += "&table=rgb";
-    postData += "&timer=" + sec;
-    postData += "&timer_flag=0";
+    postData += "&timer=-1";
+    postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");

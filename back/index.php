@@ -114,7 +114,7 @@
 
       xmlhttp.open("POST", "updatetimer.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.send("table=led&id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue)+"&timer_flag=1");
+      xmlhttp.send("table=led&id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue));
 
     }
 
