@@ -110,9 +110,11 @@
 
     function setTimer() {   // for put timer to toggle
       var secondsValue = document.getElementById('seconds').value;
+      xmlhttp = new XMLHttpRequest();
+
       xmlhttp.open("POST", "updatetimer.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.send("id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue)+"&timer_flag=1");
+      xmlhttp.send("table=led&id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue)+"&timer_flag=1");
 
     }
 
@@ -126,13 +128,13 @@
       xmlhttp.open("POST", "updatedata.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       if (button.innerHTML == "OFF") {
-        xmlhttp.send("id=esp1&roomID=1&state=OFF");
+        xmlhttp.send("table=led&id=esp1&roomID=1&state=OFF");
         button.innerHTML = "ON";
         button.classList.remove("btn-danger");
         button.classList.add("btn-success");
       }
       else {
-        xmlhttp.send("id=esp1&roomID=1&state=ON");
+        xmlhttp.send("table=led&id=esp1&roomID=1&state=ON");
         button.innerHTML = "OFF";
         button.classList.remove("btn-success");
         button.classList.add("btn-danger");
@@ -194,7 +196,7 @@
       };
       xmlhttp.open("POST", "getdata.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.send("id=esp1&roomID=1");
+      xmlhttp.send("id=esp1&table=led&roomID=1");
     }
     //------------------------------------------------------------
 

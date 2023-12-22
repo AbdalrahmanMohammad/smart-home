@@ -6,7 +6,9 @@ if (!empty($_POST)) {
     //........................................ keep track POST values
     $id = $_POST['id'];
     $roomID = $_POST['roomID'];
-    $led_state = $_POST['state'];
+    $state_from_post = $_POST['state'];
+    $table = $_POST['table'];
+
 
     //........................................
 
@@ -20,19 +22,19 @@ if (!empty($_POST)) {
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = 'SELECT * FROM led WHERE id="' . $id . '" AND roomID="' . $roomID . '"';
+    $sql = "SELECT * FROM $table WHERE id=? AND roomID=?";
     $q = $pdo->prepare($sql);
-    $q->execute();
+    $q->execute(array($id,$roomID));
 
-    $state = "unknown";
+    $previous_state = "unknown";
     if ($row = $q->fetch(PDO::FETCH_ASSOC)) {
-        $state = $row['state'];
+        $previous_state = $row['state'];
     }
 
-    if ($state != $led_state && $state != "unknown") {
-        $sql = "UPDATE led SET state = ?, time = ?, date = ? WHERE id = ? AND roomID = ?";
+    if ($previous_state != $state_from_post && $previous_state != "unknown") {
+        $sql = "UPDATE $table SET state = ?, time = ?, date = ? WHERE id = ? AND roomID = ?";
         $q = $pdo->prepare($sql);
-        $q->execute(array($led_state, $tm, $dt, $id, $roomID));
+        $q->execute(array($state_from_post, $tm, $dt, $id, $roomID));
     }
 
     Database::disconnect();

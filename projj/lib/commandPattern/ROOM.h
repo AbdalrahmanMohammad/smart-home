@@ -32,6 +32,7 @@ private:
 
 public:
     boolean ledbuttonclicked;
+    boolean rgbbuttonclicked;
 
     ROOM()
     {
@@ -46,6 +47,7 @@ public:
         rgb = &NoRgb::getInstance();
         tv = &NoTV::getInstance();
         ledbuttonclicked = false;
+        rgbbuttonclicked = false;
     }
 
     void setLed(LedClass *l, Command *ledoncom)
@@ -150,6 +152,7 @@ public:
             {
                 this->excRgb();
                 rgb->setPrevious(millis());
+                rgbbuttonclicked = true;
             }
         }
         rgb->setBtnprevstate(rgb->getBtncurvstate());
@@ -161,11 +164,14 @@ public:
         {
             device->setDuration(0); // Reset the delay
             if (device->getName() == "rgb")
+            {
                 this->excRgb();
+                rgbbuttonclicked = true;
+            }
             else if (device->getName() == "led")
             {
                 this->excLedTog();
-                ledbuttonclicked=true;
+                ledbuttonclicked = true;
             }
             else if (device->getName() == "tv")
                 this->excTvButton("toggle");

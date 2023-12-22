@@ -84,6 +84,49 @@ void control_room1()
     int httpCode;
     postData = "id=esp1";
     postData += "&roomID=1";
+    postData += "&table=led";
+    postData += "&timer=" + sec;
+    postData += "&timer_flag=0";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/updatetimer.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+  }
+}
+
+void control_room2()
+{
+
+  JSONVar myObject = JSON.parse(payload);
+
+  if (JSON.typeof(myObject) == "undefined")
+  {
+    return;
+  }
+
+  if (strcmp(myObject["state"], "ON") == 0 && room2.getRgb().isOn() == false) // control led on
+  {
+    room2.excRgb(); // toggles the led so it will be on
+  }
+  if (strcmp(myObject["state"], "OFF") == 0 && room2.getRgb().isOn() == true) // control led off
+  {
+    room2.excRgb(); // toggles the led so it will be off
+  }
+
+  if (strcmp(myObject["timer_flag"], "1") == 0) // control led timer
+  {
+    String sec = myObject["timer"];
+    int seconds = (int)strtol(sec.c_str(), NULL, 10);
+    room2.getRgb().setDuration(seconds * 1000);
+    room2.getRgb().setStartTime(millis());
+    ///////////////////////////////////  now make the flag zero so i don't read it here anymore
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&roomID=1";
+    postData += "&table=rgb";
     postData += "&timer=" + sec;
     postData += "&timer_flag=0";
     payload = "";
@@ -102,6 +145,7 @@ void room1get()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
+    postData += "&table=led";
     postData += "&roomID=1";
     payload = "";
     http.begin("http://192.168.8.110/GP/back/getdata.php");
@@ -110,6 +154,25 @@ void room1get()
     payload = http.getString();
     http.end();
     control_room1();
+  }
+}
+
+void room2get()
+{
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&table=rgb";
+    postData += "&roomID=1";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/getdata.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+    control_room2();
   }
 }
 
@@ -128,6 +191,33 @@ void room1send()
 
     postData = "id=esp1";
     postData += "&roomID=1";
+    postData += "&table=led";
+    postData += "&state=" + LED_State;
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/updatedata.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString(); // return nothing
+    http.end();
+  }
+}
+
+void room2send()
+{
+  if (WiFi.status() == WL_CONNECTED && room2.rgbbuttonclicked == true)
+  {
+    room2.rgbbuttonclicked = false;
+    HTTPClient http;
+    int httpCode;
+    String LED_State = "";
+    if (room2.getRgb().isOn() == true)
+      LED_State = "ON";
+    else if (room2.getRgb().isOn() == false)
+      LED_State = "OFF";
+
+    postData = "id=esp1";
+    postData += "&roomID=1";
+    postData += "&table=rgb";
     postData += "&state=" + LED_State;
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatedata.php");
@@ -141,9 +231,11 @@ void room1send()
 void senddata()
 {
   room1send();
+  room2send();
 }
 
 void getdata()
 {
   room1get();
+  room2get();
 }
