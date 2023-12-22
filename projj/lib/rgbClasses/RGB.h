@@ -83,7 +83,7 @@ public:
         else
         {
             strip.brightness(brightness); // important if i set a pixle after the LED was off
-            rgb_t Color = {r, g, b};
+            rgb_t Color = {static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b)};
             rgb_t colors[numpixles];
             std::fill_n(colors, numpixles, Color);
             esp_err_t result = strip.setPixels(0, numpixles, colors, true);
@@ -101,7 +101,7 @@ public:
             return;
         }
         state = HIGH;
-        rgb_t desiredColor = {r, g, b};
+        rgb_t desiredColor = {static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b)};
         strip.setPixel(i, desiredColor);
         strip.show();
     }
