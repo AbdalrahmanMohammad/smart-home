@@ -1,8 +1,9 @@
+
 #ifndef RGB_h
 #define RGB_h
 
 #include <Arduino.h>
-#include <Adafruit_NeoPixel.h>
+#include <LiteLED.h>
 #include <Toggelable.h>
 
 class RGB : public Togglable
@@ -14,10 +15,12 @@ private:
     bool state;
     int brightness; // from 0 to 255
     int numpixles;
-    Adafruit_NeoPixel strip;
+    // Declare a LiteLED object instead of a Adafruit_NeoPixel object
+    LiteLED strip;
     int red;
     int green;
     int blue;
+    led_strip_type_t stripType = LED_STRIP_WS2812;
 
 public:
     RGB(byte pin, byte buttonPin, int num) : RGB(pin, num)
@@ -25,11 +28,10 @@ public:
         setButton(buttonPin);
     }
 
-    RGB(byte pin, int num)
+    RGB(byte pin, int num) : strip(stripType, false)
     {
         this->pin = pin;
         numpixles = num;
-        strip = Adafruit_NeoPixel(numpixles, pin, NEO_GRB + NEO_KHZ800);
         state = LOW;
         brightness = 255;
         red = 0;
@@ -48,7 +50,7 @@ public:
 
     virtual void init()
     {
-        strip.begin();
+        strip.begin(pin, numpixles);
         strip.show();
         if (hasbutton)
         {
@@ -73,29 +75,34 @@ public:
 
     virtual void setAll(int r, int g, int b)
     {
+ 
         if (r == g && g == b && b == 0)
         {
             this->off();
         }
-        for (int i = 0; i < numpixles; i++)
+        else
         {
-            setpixle(r, g, b, i);
-            red = r;
-            green = g;
-            blue = b;
+            strip.brightness(brightness); // important if i set a pixle after the LED was off
+            rgb_t Color = {r, g, b};
+            rgb_t colors[numpixles];
+            std::fill_n(colors, numpixles, Color);
+            esp_err_t result = strip.setPixels(0, numpixles, colors, true);
+            state = HIGH;
         }
     }
 
-    virtual void setpixle(int r, int g, int b, int i)
+    virtual void setpixle(int r, int g, int b, int i) // this is unused so far
     {
-        strip.setBrightness(brightness); // important if i set a pixle after the LED was off
+        // Use the setBrightness() method to adjust the overall brightness of the LED strip
+        strip.brightness(brightness); // important if i set a pixle after the LED was off
 
         if (r == g && g == b && b == 0) // you can't use this function to turn the led off, in order to keep state clean
         {
             return;
         }
         state = HIGH;
-        strip.setPixelColor(i, strip.Color(r, g, b));
+        rgb_t desiredColor = {r, g, b};
+        strip.setPixel(i, desiredColor);
         strip.show();
     }
 
@@ -106,12 +113,11 @@ public:
 
     virtual void off() override
     {
-        setBrightness(0);
-        for (int i = 0; i < numpixles; i++)
-        {
-            strip.setPixelColor(i, strip.Color(0, 0, 0));
-        }
-        strip.show();
+
+        rgb_t offColor = {0, 0, 0};
+        rgb_t colors[numpixles];
+        std::fill_n(colors, numpixles, offColor);
+        esp_err_t result = strip.setPixels(0, numpixles, colors, true);
         state = LOW;
         red = 0;
         green = 0;
@@ -131,7 +137,7 @@ public:
             return;
         }
         brightness = a;
-        strip.setBrightness(a);
+        strip.brightness(a);
         strip.show();
     }
 
