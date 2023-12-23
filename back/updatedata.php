@@ -32,7 +32,11 @@ if (!empty($_POST)) {
     }
 
     if ($previous_state != $state_from_post && $previous_state != "unknown") {
+        if($table=="rgb")
+        $sql = "UPDATE $table SET state = ?, color = '#ffffff', time = ?, date = ? WHERE id = ? AND roomID = ?";
+        else 
         $sql = "UPDATE $table SET state = ?, time = ?, date = ? WHERE id = ? AND roomID = ?";
+
         $q = $pdo->prepare($sql);
         $q->execute(array($state_from_post, $tm, $dt, $id, $roomID));
     }
