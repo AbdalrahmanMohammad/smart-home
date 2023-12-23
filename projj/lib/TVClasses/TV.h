@@ -4,29 +4,21 @@
 #include <Arduino.h>
 #include <IRremote.h>
 
-class TV : public Togglable
-{
-private:
+class TV : public Togglable// important: for esps32 you need to go to IRremote.hpp and #define IR_SEND_PIN 2
+{                          // replace 2 with any gpio you want to connect irSender to. if you don't do that
+private:                    // it won't send anything. (by default it will be choosen 0, but 0 shouldn't be grounded at booting)
     byte pin;
-    byte helperPin; // for the esp32 i use no pin can transmit IR signals but pin 0, and pin 0 shouldn't
-                    // be connected to ground at booting, otherwise esp will get forzen.
-                    // so i use a transistor as a switch which connects pin to ground after esp boots up.
-                    // and helper pin is the pin that control the transistor(the transistor is normally off and when microcontroller is in void setUP(it has booted) i make make pin helper high to close the circuit)
     IRsend irsend;
-
     String button; // last button i pressed (importat for PressTvButton class)
 
 public:
-    TV(byte pin, byte helper) // you have to use 0 for pin, but i will keep it like this in case another microcontroler is used
+    TV(byte pin) 
     {
         this->pin = pin;
-        this->helperPin = helper;
     }
 
     virtual void init()
     {
-        pinMode(helperPin, OUTPUT);
-        digitalWrite(helperPin, HIGH);
         irsend.begin(pin);
     }
 

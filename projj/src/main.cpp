@@ -8,7 +8,7 @@ void setup()
   room1.setLed(&ledPin, &ledoncom);
   room2.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
   // room1.setOnBoth(&onboth);
-  // room1.setTV(&tv, &presstvbtncmd);
+  room1.setTV(&tv, &presstvbtncmd);
 
   wifiLed.init(LOW);
   room1.init();
@@ -22,14 +22,11 @@ void setup()
 
 void loop()
 {
-  if (Serial.available() > 0)
+    if (Serial.available() > 0)
   {
     String userInput = Serial.readString();
-    if(userInput=="1")
-    room1.excDimUp();
-        if(userInput=="0")
-    room1.excDimDown();
 
+    room1.excTvButton(userInput);
   }
 
   getdata();

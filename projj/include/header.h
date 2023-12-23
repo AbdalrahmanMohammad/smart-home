@@ -17,7 +17,7 @@ boolean startEspException2 = true; // this will goes to every part of control_ro
 RGB rgb(5, 4, 8);
 LedClass wifiLed(32);
 LedClass ledPin(12, 17);
-TV tv(0, 2);
+TV tv(2);
 
 DimUpCommand dimupcom(&rgb);
 DimDownCommand dimdowncom(&rgb);

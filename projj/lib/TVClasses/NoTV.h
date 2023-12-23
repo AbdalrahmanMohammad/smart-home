@@ -7,7 +7,7 @@
 class NoTV : public TV
 {
 private:
-    NoTV() : TV(-1, -1) {}
+    NoTV() : TV(-1) {}
 
 public:
     static NoTV &getInstance()
