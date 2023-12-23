@@ -295,11 +295,11 @@
                             var button = document.getElementById("myButton");
                             var timer = document.getElementById("timerlabel");
                             var brightnessLabel = document.getElementById("brightlabel");
-                            
+
                             var previousDate = myObj.timer_time;
                             timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
 
-                            brightnessLabel.innerHTML=myObj.brightness;
+                            brightnessLabel.innerHTML = myObj.brightness;
 
                             if (myObj.state == "ON") {
                                 button.innerHTML = "OFF";
@@ -334,12 +334,20 @@
             }
 
             function setColor() {
-                xmlhttp = new XMLHttpRequest();
-                var colorValue = document.getElementById('colorInput').value;
-                xmlhttp.open("POST", "updatergb.php", true);
-                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xmlhttp.send("id=esp1&roomID=2&color="+encodeURIComponent(colorValue));
+                var colorInput = document.getElementById('colorInput');
+                var colorValue = colorInput.value;
+                if (colorValue.toUpperCase() === "#000000") { // if the color is black turn off the rgb
+                    var myButton = document.getElementById('myButton');
+                    myButton.innerHTML = "OFF";
+                    myButton.click();
+                } else {
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open("POST", "updatergb.php", true);
+                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlhttp.send("id=esp1&roomID=2&color=" + encodeURIComponent(colorValue));
+                }
             }
+
 
             function undo() {
                 xmlhttp = new XMLHttpRequest();

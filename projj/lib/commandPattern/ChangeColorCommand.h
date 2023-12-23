@@ -34,14 +34,20 @@ public:
 
     void undo() override
     {
-        rgb->setAll(previousRed, previousGreen, previousBlue);
-        previousRed = newRed;
-        previousGreen = newGreen;
-        previousBlue = newBlue;
-        newRed = rgb->getRed();
-        newGreen = rgb->getGreen();
-        newBlue = rgb->getBlue();
+        int tempRed = newRed;
+        newRed = previousRed;
+        previousRed = tempRed;
+
+        int tempGreen = newGreen;
+        newGreen = previousGreen;
+        previousGreen = tempGreen;
+
+        int tempBlue = newBlue;
+        newBlue = previousBlue;
+        previousBlue = tempBlue;
+        rgb->setAll(newRed, newGreen, newBlue);
     }
+  
 };
 
 #endif
