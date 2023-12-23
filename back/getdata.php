@@ -32,6 +32,7 @@ if (!empty($_POST)) {
             $myObj->dimup_flag = $row['dimup_flag'];
             $myObj->dimdown_flag = $row['dimdown_flag'];
             $myObj->undo_flag = $row['undo_flag'];
+            $myObj->color_flag = $row['color_flag'];
             $myObj->brightness = $row['brightness'];
         }
 

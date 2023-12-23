@@ -8,6 +8,7 @@ if (!empty($_POST)) {
     $dimup_flag = $_POST['dimup_flag'] ?? null; // this means if it is set get its value else put it null
     $dimdown_flag = $_POST['dimdown_flag'] ?? null;
     $undo_flag = $_POST['undo_flag'] ?? null;
+    $color_flag = $_POST['color_flag'] ?? null;
     $color = $_POST["color"] ?? null;
     $brightness = $_POST["brightness"] ?? null;
 
@@ -45,6 +46,11 @@ if (!empty($_POST)) {
         $sql = "UPDATE rgb SET undo_flag = ? WHERE id = ? AND roomID = ?";
         $q = $pdo->prepare($sql);
         $q->execute(array($undo_flag, $id, $roomID));
+    }
+    if ($color_flag !== null) {
+        $sql = "UPDATE rgb SET color_flag = ? WHERE id = ? AND roomID = ?";
+        $q = $pdo->prepare($sql);
+        $q->execute(array($color_flag, $id, $roomID));
     }
 
 

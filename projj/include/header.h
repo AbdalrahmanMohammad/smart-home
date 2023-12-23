@@ -12,8 +12,8 @@ const char *ssid = "PL";
 const char *password = "87654321";
 String postData = "";
 String payload = "";
-
-
+boolean startEspException2 = true; // this will goes to every part of control_room2 that is necessary to read when starting up
+                                  // and then in the end when it come out will be false
 RGB rgb(5, 4, 8);
 LedClass wifiLed(32);
 LedClass ledPin(12, 17);

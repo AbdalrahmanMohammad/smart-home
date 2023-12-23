@@ -344,7 +344,7 @@
                     var xmlhttp = new XMLHttpRequest();
                     xmlhttp.open("POST", "updatergb.php", true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xmlhttp.send("id=esp1&roomID=2&color=" + encodeURIComponent(colorValue));
+                    xmlhttp.send("id=esp1&roomID=2&color_flag=1&color=" + encodeURIComponent(colorValue));
                 }
             }
 
@@ -353,7 +353,7 @@
                 xmlhttp = new XMLHttpRequest();
                 xmlhttp.open("POST", "updatergb.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlhttp.send("id=esp1&roomID=2&undo_flag=51");
+                xmlhttp.send("id=esp1&roomID=2&undo_flag=1");
             }
         </script>
 

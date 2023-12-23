@@ -106,7 +106,7 @@ void control_room2()
     return;
   }
 
-    if (strcmp(myObject["state"], "ON") == 0 && room2.getRgb().isOn() == false) // control rgb on
+  if (strcmp(myObject["state"], "ON") == 0 && room2.getRgb().isOn() == false) // control rgb on
   {
     room2.excRgb(); // toggles the led so it will be on
   }
@@ -138,7 +138,7 @@ void control_room2()
     http.end();
   }
 
-    if (strcmp(myObject["color"], "-1") != 0)
+  if (strcmp(myObject["color_flag"], "-1") != 0 || startEspException2)//second condition to set color value after restarting
   {
     String colorValue = myObject["color"];
     int red = (int)strtol(colorValue.substring(1, 3).c_str(), NULL, 16);
@@ -149,14 +149,13 @@ void control_room2()
     int httpCode;
     postData = "id=esp1";
     postData += "&roomID=2";
-    postData += "&color=-1";
+    postData += "&color_flag=-1";
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
     http.end();
-    
   }
 
   if (strcmp(myObject["dimup_flag"], "-1") != 0)
@@ -191,7 +190,7 @@ void control_room2()
     http.end();
   }
 
-    if (strcmp(myObject["undo_flag"], "-1") != 0)
+  if (strcmp(myObject["undo_flag"], "-1") != 0)
   {
     room2.undoColor();
     HTTPClient http;
@@ -208,7 +207,7 @@ void control_room2()
   }
 
   if (strcmp(myObject["brightness"], String(room2.getRgb().getBrightness()).c_str()) != 0)
-{   
+  {
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
@@ -222,6 +221,12 @@ void control_room2()
     http.end();
   }
 
+  if (startEspException2) // to set brightness value after restarting
+  {
+    String brightness = JSON.stringify(myObject["brightness"]);
+    brightness = brightness.substring(1, brightness.length() - 1);// because stringify returns the value between double quotations
+    room2.getRgb().setBrightness(brightness.toInt());
+  }
 }
 
 void room1get()
@@ -259,6 +264,7 @@ void room2get()
     payload = http.getString();
     http.end();
     control_room2();
+    startEspException2 = false;
   }
 }
 
