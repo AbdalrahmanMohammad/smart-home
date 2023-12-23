@@ -6,13 +6,14 @@ void setup()
   Serial.begin(9600);
 
   room1.setLed(&ledPin, &ledoncom);
+    // room1.setOnBoth(&onboth);
   room2.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
-  // room1.setOnBoth(&onboth);
-  room1.setTV(&tv, &presstvbtncmd);
+  room3.setTV(&tv, &presstvbtncmd);
 
   wifiLed.init(LOW);
   room1.init();
   room2.init();
+  room3.init();
 
   wificonnection();
 
@@ -26,7 +27,7 @@ void loop()
   {
     String userInput = Serial.readString();
 
-    room1.excTvButton(userInput);
+    room3.excTvButton(userInput);
   }
 
   getdata();
@@ -36,6 +37,7 @@ void loop()
   checkWifi();
   room1.timers();
   room2.timers();
+  room3.timers();
   //////////////////////////////////////////////////
   senddata();
 }

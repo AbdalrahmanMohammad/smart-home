@@ -20,8 +20,10 @@ if (!empty($_POST)) {
         $date = date_create($row['date']);
         $dateFormat = date_format($date, "d-m-Y");
 
+        if ($table != "tv")// just for led & rgb
+            $myObj->state = $row['state'];
+
         $myObj->id = $row['id'];
-        $myObj->state = $row['state'];
         $myObj->roomID = $row['roomID'];
         $myObj->timer = $row['timer'];
         $myObj->timer_time = $row['timer_time'];
@@ -34,6 +36,9 @@ if (!empty($_POST)) {
             $myObj->undo_flag = $row['undo_flag'];
             $myObj->color_flag = $row['color_flag'];
             $myObj->brightness = $row['brightness'];
+        }
+        if ($table == "tv") {
+            $myObj->signal_value = $row['signal_value'];
         }
 
         $myJSON = json_encode($myObj);

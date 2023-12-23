@@ -30,3 +30,4 @@ PressTvButton presstvbtncmd(&tv);
 
 ROOM room1;
 ROOM room2;
+ROOM room3;
