@@ -126,7 +126,7 @@ void control_room2()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
-    postData += "&roomID=1";
+    postData += "&roomID=2";
     postData += "&table=rgb";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
@@ -148,7 +148,7 @@ void control_room2()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
-    postData += "&roomID=1";
+    postData += "&roomID=2";
     postData += "&color=-1";
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatergb.php");
@@ -165,7 +165,7 @@ void control_room2()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
-    postData += "&roomID=1";
+    postData += "&roomID=2";
     postData += "&dimup_flag=-1";
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatergb.php");
@@ -181,7 +181,7 @@ void control_room2()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
-    postData += "&roomID=1";
+    postData += "&roomID=2";
     postData += "&dimdown_flag=-1";
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatergb.php");
@@ -197,7 +197,7 @@ void control_room2()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
-    postData += "&roomID=1";
+    postData += "&roomID=2";
     postData += "&undo_flag=-1";
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatergb.php");
@@ -212,7 +212,7 @@ void control_room2()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
-    postData += "&roomID=1";
+    postData += "&roomID=2";
     postData += "&brightness=" + String(room2.getRgb().getBrightness());
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatergb.php");
@@ -251,7 +251,7 @@ void room2get()
     int httpCode;
     postData = "id=esp1";
     postData += "&table=rgb";
-    postData += "&roomID=1";
+    postData += "&roomID=2";
     payload = "";
     http.begin("http://192.168.8.110/GP/back/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -302,7 +302,7 @@ void room2send()
       LED_State = "OFF";
 
     postData = "id=esp1";
-    postData += "&roomID=1";
+    postData += "&roomID=2";
     postData += "&table=rgb";
     postData += "&state=" + LED_State;
     payload = "";
