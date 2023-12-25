@@ -85,6 +85,12 @@
             color: white;
         }
 
+        .btn:active {
+            background-color: #111;
+            /* Change the background color when clicked */
+        }
+
+
         .modal-content {
             max-width: 300px;
             /* Set a maximum width */
@@ -323,34 +329,6 @@
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send("id=esp1&table=tv&roomID=3");
         }
-
-        // setInterval(function () { updateLEDState(); }, 300); // for update the button
-
-        // function updateLEDState() {
-
-
-        //     fetch('/ledstate')
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log('Received data:', data);
-
-
-        //             var timerlabel = document.getElementById("timerlabel");
-        //             var timetotoggle = data.tvtimer;
-        //             if (timetotoggle == -1) {
-        //                 timerlabel.innerHTML = "set a timer";
-        //             }
-        //             else {
-        //                 timerlabel.innerHTML = "TV will toggle after " + data.tvtimer + " seconds";
-
-        //             }
-
-        //         })
-        //         .catch(error => {
-        //             console.error('Error fetching data:', error);
-        //         });
-        // }
-
 
     </script>
 
