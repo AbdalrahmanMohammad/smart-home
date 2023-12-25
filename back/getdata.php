@@ -20,7 +20,7 @@ if (!empty($_POST)) {
         $date = date_create($row['date']);
         $dateFormat = date_format($date, "d-m-Y");
 
-        if ($table != "tv")// just for led & rgb
+        if ($table != "tv")// just for led & rgb & plug
             $myObj->state = $row['state'];
 
         $myObj->id = $row['id'];
