@@ -2,7 +2,6 @@
 #define ROOM_H
 
 #include <Command.h>
-#include <ToggleCommand.h>
 #include <DimUpCommand.h>
 #include <DimDownCommand.h>
 #include <ChangeColorCommand.h>
@@ -15,7 +14,7 @@
 #include <TurnOnCommand.h>
 #include <TV.h>
 #include <NoTV.h>
-#include <PressTvButton.h>
+#include <SendIRCommand.h>
 
 class ROOM
 {
@@ -28,7 +27,7 @@ private:
     LedClass *led;
     RGB *rgb;
     TV *tv;
-    Command *presstvbuttoncommand;
+    Command *presstvbuttoncommand;// it is of type SendIRCommand
 
 public:
     boolean ledbuttonclicked;

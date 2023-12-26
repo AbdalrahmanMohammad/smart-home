@@ -1,11 +1,11 @@
-#ifndef PressTvButton_H
-#define PressTvButton_H
+#ifndef SendIRCommand_H
+#define SendIRCommand_H
 
 #include <Command.h>
 #include <Arduino.h>
 #include <TV.h>
 
-class PressTvButton : public Command
+class SendIRCommand : public Command
 {
 private:
     TV *tv;
@@ -13,7 +13,7 @@ private:
     String prevButton;
 
 public:
-    PressTvButton(TV *t) : tv(t)
+    SendIRCommand(TV *t) : tv(t)
     {
         button = "";
         prevButton = "";

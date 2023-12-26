@@ -26,7 +26,7 @@ TurnOnCommand ledoncom(&ledPin);
 TurnOnCommand rgboncom(&rgb);
 Command *commands[] = {&ledoncom, &rgboncom};
 MacroCommand onboth(commands, 2);
-PressTvButton presstvbtncmd(&tv);
+SendIRCommand presstvbtncmd(&tv);
 
 ROOM room1;
 ROOM room2;
