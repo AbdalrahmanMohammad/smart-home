@@ -39,6 +39,11 @@ if (!empty($_POST)) {
 
         $q = $pdo->prepare($sql);
         $q->execute(array($state_from_post, $tm, $dt, $id, $roomID));
+
+        // insert into records
+        $sql = "INSERT INTO records (id, roomID, `table`, state, time, date) VALUES (?, ?, ?, ?, ?, ?)";
+        $q = $pdo->prepare($sql);
+        $q->execute(array($id, $roomID, $table, $state_from_post, $tm, $dt));
     }
 
     Database::disconnect();

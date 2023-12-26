@@ -109,7 +109,7 @@ void senddata()
     postData += "&table=plug";
     postData += "&state=" + LED_State;
     payload = "";
-    http.begin(client, "http://192.168.8.110/GP/back/updatedata.php");
+    http.begin(client, "http://192.168.8.110/GP/back/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing

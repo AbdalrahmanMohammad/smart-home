@@ -244,7 +244,7 @@
                 var button = document.getElementById("myButton");
                 xmlhttp = new XMLHttpRequest();
 
-                xmlhttp.open("POST", "updatedata.php", true);
+                xmlhttp.open("POST", "updatestate.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
                     xmlhttp.send("table=rgb&id=esp1&roomID=2&state=OFF");
