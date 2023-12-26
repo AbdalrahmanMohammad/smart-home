@@ -276,7 +276,7 @@
                 now.setMinutes(minutes);
                 now.setSeconds(seconds);
 
-                var timeDifferenceInSeconds = Math.round((now.getTime()) - Date.now()) / 1000;
+                var timeDifferenceInSeconds = Math.floor(((now.getTime())-Date.now())/1000);
                 var button = document.getElementById("myButton");
                 var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
 

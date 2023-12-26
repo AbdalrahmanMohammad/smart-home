@@ -302,7 +302,7 @@
             now.setMinutes(minutes);
             now.setSeconds(seconds);
 
-            var timeDifferenceInSeconds = Math.round((now.getTime()) - Date.now()) / 1000;
+            var timeDifferenceInSeconds = Math.floor(((now.getTime())-Date.now())/1000);
 
             if (timeDifferenceInSeconds < 0) return "set a timer";
             return "TV will toggle after " + timeDifferenceInSeconds;
