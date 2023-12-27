@@ -18,6 +18,8 @@ RGB rgb(5, 4, 8);
 LedClass wifiLed(32);
 LedClass ledPin(12, 17);
 TV tv(2);
+// RGB rgb(16, 23, 8);
+// LedClass ledPin(21, 22);
 
 DimUpCommand dimupcom(&rgb);
 DimDownCommand dimdowncom(&rgb);
