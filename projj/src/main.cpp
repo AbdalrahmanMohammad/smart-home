@@ -5,10 +5,10 @@ void setup()
 {
   Serial.begin(9600);
 
-  room1.setLed(&ledPin, &ledoncom);
+  room1.setLed(&room1led, &room1ledoncom);
     // room1.setOnBoth(&onboth);
-  room2.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
-  room3.setTV(&tv, &presstvbtncmd);
+  room2.setRgb(&room2rgb, &room2dimupcom, &room2dimdowncom, &room2chcolorcom);
+  room3.setTV(&room3tv, &room3presstvbtncmd);
 
   wifiLed.init(LOW);
   room1.init();

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Room1</title>
+    <title>Room3</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -163,7 +163,7 @@
 </head>
 
 <body>
-    <h1>Room 1</h1>
+    <h1>Room 3</h1>
     <div class="container">
         <h1 class="mt-5">LED</h1>
         <button id="myButton" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()"
