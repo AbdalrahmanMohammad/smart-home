@@ -16,17 +16,23 @@ boolean startEspException2 = true; // this will goes to every part of control_ro
                                   // and then in the end when it come out will be false
 RGB room2rgb(5, 4, 8);
 LedClass wifiLed(32);
-LedClass room1led(12, 17);
+LedClass room3led(12, 17);
 TV room3tv(2);
-// RGB rgb(16, 23, 8);
+RGB room1rgb(16, 23, 8);
 LedClass room2led(21, 22);
 
 DimUpCommand room2dimupcom(&room2rgb);
 DimDownCommand room2dimdowncom(&room2rgb);
 ChangeColorCommand room2chcolorcom(&room2rgb);
-TurnOnCommand room1ledoncom(&room1led);
-TurnOnCommand room2ledoncom(&room2led);
 TurnOnCommand room2rgboncom(&room2rgb);
+/////////////////////////////////////////////
+DimUpCommand room1dimupcom(&room1rgb);
+DimDownCommand room1dimdowncom(&room1rgb);
+ChangeColorCommand room1chcolorcom(&room1rgb);
+TurnOnCommand room1rgboncom(&room1rgb);
+/////////////////////////////////////////////
+TurnOnCommand room3ledoncom(&room3led);
+TurnOnCommand room2ledoncom(&room2led);
 // Command *commands[] = {&ledoncom, &rgboncom};
 // MacroCommand onboth(commands, 2);
 SendIRCommand room3presstvbtncmd(&room3tv);
