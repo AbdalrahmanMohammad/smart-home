@@ -138,7 +138,7 @@ void control_room2()
     http.end();
   }
 
-  if (strcmp(myObject["color_flag"], "-1") != 0 || startEspException2)//second condition to set color value after restarting
+  if (strcmp(myObject["color_flag"], "-1") != 0 || startEspException2) // second condition to set color value after restarting
   {
     String colorValue = myObject["color"];
     int red = (int)strtol(colorValue.substring(1, 3).c_str(), NULL, 16);
@@ -242,7 +242,7 @@ void control_room3()
   if (strcmp(myObject["signal_value"], "-1") != 0) // control tv signal
   {
     String signal_value = JSON.stringify(myObject["signal_value"]);
-    signal_value = signal_value.substring(1, signal_value.length() - 1);// because it returns the value betewen double quotations
+    signal_value = signal_value.substring(1, signal_value.length() - 1); // because it returns the value betewen double quotations
     room3.excTvButton(signal_value);
     //////////////////////////////////
     HTTPClient http;
@@ -355,7 +355,8 @@ void room1send()
     postData = "id=esp1";
     postData += "&roomID=1";
     postData += "&table=led";
-    postData += "&changed_by=button";
+    postData += "&changed_by=";
+    postData+= (room1.ledbuttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + LED_State;
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatestate.php");
@@ -363,6 +364,7 @@ void room1send()
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
     http.end();
+    room1.ledbuttonclickedbytimer = false;
   }
 }
 
@@ -382,14 +384,15 @@ void room2send()
     postData = "id=esp1";
     postData += "&roomID=2";
     postData += "&table=rgb";
-    postData += "&changed_by=button";
-    postData += "&state=" + LED_State;
+    postData += "&changed_by=";
+    postData+= (room2.rgbbuttonclickedbytimer ? "timer" : "button");    postData += "&state=" + LED_State;
     payload = "";
     http.begin("http://192.168.8.110/GP/back/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
     http.end();
+    room2.rgbbuttonclickedbytimer=false;
   }
   // i put sending brightness in control_room2
 }
@@ -398,7 +401,7 @@ void senddata()
 {
   room1send();
   room2send();
-  //there is no room3send
+  // there is no room3send
 }
 
 void getdata()

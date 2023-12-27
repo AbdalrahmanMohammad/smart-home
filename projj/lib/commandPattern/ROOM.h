@@ -32,6 +32,8 @@ private:
 public:
     boolean ledbuttonclicked;
     boolean rgbbuttonclicked;
+    boolean ledbuttonclickedbytimer;
+    boolean rgbbuttonclickedbytimer;
 
     ROOM()
     {
@@ -47,6 +49,8 @@ public:
         tv = &NoTV::getInstance();
         ledbuttonclicked = false;
         rgbbuttonclicked = false;
+        ledbuttonclickedbytimer = false;
+        rgbbuttonclickedbytimer = false;
     }
 
     void setLed(LedClass *l, Command *ledoncom)
@@ -166,11 +170,13 @@ public:
             {
                 this->excRgb();
                 rgbbuttonclicked = true;
+                rgbbuttonclickedbytimer=true;
             }
             else if (device->getName() == "led")
             {
                 this->excLedTog();
                 ledbuttonclicked = true;
+                ledbuttonclickedbytimer=true;
             }
             else if (device->getName() == "tv")
                 this->excTvButton("toggle");
