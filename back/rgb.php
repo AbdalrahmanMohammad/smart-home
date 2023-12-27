@@ -247,13 +247,13 @@
                 xmlhttp.open("POST", "updatestate.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=2&state=OFF");
+                    xmlhttp.send("table=rgb&id=esp1&roomID=2&state=OFF&changed_by=rgbroom");
                     button.innerHTML = "ON";
                     button.classList.remove("btn-danger");
                     button.classList.add("btn-success");
                 }
                 else {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=2&state=ON");
+                    xmlhttp.send("table=rgb&id=esp1&roomID=2&state=ON&changed_by=rgbroom");
                     button.innerHTML = "OFF";
                     button.classList.remove("btn-success");
                     button.classList.add("btn-danger");

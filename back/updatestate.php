@@ -8,6 +8,7 @@ if (!empty($_POST)) {
     $roomID = $_POST['roomID'];
     $state_from_post = $_POST['state'];
     $table = $_POST['table'];
+    $changed_by = $_POST['changed_by'];
 
 
     //........................................
@@ -41,9 +42,9 @@ if (!empty($_POST)) {
         $q->execute(array($state_from_post, $tm, $dt, $id, $roomID));
 
         // insert into records
-        $sql = "INSERT INTO records (id, roomID, `table`, state, time, date) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO records (id, roomID, `table`, state, time, date,changed_by) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $q = $pdo->prepare($sql);
-        $q->execute(array($id, $roomID, $table, $state_from_post, $tm, $dt));
+        $q->execute(array($id, $roomID, $table, $state_from_post, $tm, $dt,$changed_by));
     }
 
     Database::disconnect();
