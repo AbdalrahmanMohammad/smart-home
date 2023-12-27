@@ -19,12 +19,13 @@ LedClass wifiLed(32);
 LedClass room1led(12, 17);
 TV room3tv(2);
 // RGB rgb(16, 23, 8);
-// LedClass ledPin(21, 22);
+LedClass room2led(21, 22);
 
 DimUpCommand room2dimupcom(&room2rgb);
 DimDownCommand room2dimdowncom(&room2rgb);
 ChangeColorCommand room2chcolorcom(&room2rgb);
 TurnOnCommand room1ledoncom(&room1led);
+TurnOnCommand room2ledoncom(&room2led);
 TurnOnCommand room2rgboncom(&room2rgb);
 // Command *commands[] = {&ledoncom, &rgboncom};
 // MacroCommand onboth(commands, 2);

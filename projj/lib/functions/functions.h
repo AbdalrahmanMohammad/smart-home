@@ -48,14 +48,15 @@ void checkWifi() // checks wifi connection every 3 seconds and shows the conditi
   }
 }
 
-void toggleled() // works when the led's pushbutton is pressed
+void room1toggles() // works when the led's pushbutton is pressed
 {
   room1.excLedPushbutton();
 }
 
-void togglergb() // works when the rgb's pushbutton is pressed
+void room2toggles() // works when the rgb's pushbutton is pressed
 {
   room2.excRgbPushbutton();
+  room2.excLedPushbutton();
 }
 
 void senddata()

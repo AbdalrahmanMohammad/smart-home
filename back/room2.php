@@ -96,6 +96,12 @@
             margin-bottom: 10px;
         }
 
+        #ledseconds
+        {
+            width: 100%;
+        }
+
+
         .btn-close {
             position: absolute;
             top: 20px;
@@ -140,9 +146,8 @@
         }
 
 
-        #myButtonled {
+        #ledButton {
             border-radius: 50%;
-
         }
     </style>
 </head>
@@ -151,13 +156,13 @@
     <div class="container">
         <div class="btn-container">
             <h1 class="mt-5">RGB LED Control</h1>
-            <button id="myButton" onclick="toggle()" ontouchstart="startTimer('#actionContainer')"
+            <button id="rgbButton" onclick="toggle('rgbButton')" ontouchstart="startTimer('#actionContainer')"
                 ontouchend="endTimer()" onmousedown="startTimer('#actionContainer')" onmouseup="endTimer()"
                 class="btn btn-lg btn-danger mt-3">OFF</button>
 
             <h1 class="mt-5">LED</h1>
-            <button id="myButtonled" ontouchstart="startTimer('#ledContainer')" ontouchend="endTimer()"
-                onmousedown="startTimer('#ledContainer')" onmouseup="endTimer()"
+            <button id="ledButton" onclick="toggle('ledButton')" ontouchstart="startTimer('#ledContainer')"
+                ontouchend="endTimer()" onmousedown="startTimer('#ledContainer')" onmouseup="endTimer()"
                 class=" btn-lg btn-danger mt-3">OFF</button>
         </div>
 
@@ -187,7 +192,7 @@
 
                 <!-- Left Container: Input and Perform Action button -->
                 <div id="left-container">
-                    <label for='rgbseconds' id="timerlabel">set a timer</label>
+                    <label for='rgbseconds' id="rgbtimerlabel">set a timer</label>
                     <input type='number' class='form-control' id='rgbseconds' min='0'
                         oninput="validity.valid||(value='');">
                     <button onclick="setTimer('rgbseconds')" id="rgbtimerbutton"
@@ -209,7 +214,7 @@
         </div>
         <div id="leddiv" class="modal-body text-center">
             <div>
-                <labelid="timerlabel">set a timer</label>
+                <label id="ledtimerlabel">set a timer</label>
                     <input type='number' class='form-control' id='ledseconds' min='0'
                         oninput="validity.valid||(value='');">
                     <button onclick="setTimer('ledseconds')" class='btn btn-warning mt-3'>Set</button>
@@ -238,22 +243,31 @@
                 if (itemID == 'rgbseconds') {
                     xmlhttp.send("table=rgb&id=esp1&roomID=2&timer=" + encodeURIComponent(secondsValue));
                 }
+                if (itemID == 'ledseconds') {
+                    xmlhttp.send("table=led&id=esp1&roomID=2&timer=" + encodeURIComponent(secondsValue));
+                }
             }
 
-            function toggle() {
-                var button = document.getElementById("myButton");
+            function toggle(itemID) {
+                var button = document.getElementById(itemID);
                 xmlhttp = new XMLHttpRequest();
 
                 xmlhttp.open("POST", "updatestate.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=2&state=OFF&changed_by=rgbroom");
+                    if (itemID == 'rgbButton')
+                        xmlhttp.send("table=rgb&id=esp1&roomID=2&state=OFF&changed_by=room2page");
+                    else if (itemID == 'ledButton')
+                        xmlhttp.send("table=led&id=esp1&roomID=2&state=OFF&changed_by=room2page");
                     button.innerHTML = "ON";
                     button.classList.remove("btn-danger");
                     button.classList.add("btn-success");
                 }
                 else {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=2&state=ON&changed_by=rgbroom");
+                    if (itemID == 'rgbButton')
+                        xmlhttp.send("table=rgb&id=esp1&roomID=2&state=ON&changed_by=room2page");
+                    else if (itemID == 'ledButton')
+                        xmlhttp.send("table=led&id=esp1&roomID=2&state=ON&changed_by=room2page");
                     button.innerHTML = "OFF";
                     button.classList.remove("btn-success");
                     button.classList.add("btn-danger");
@@ -265,7 +279,7 @@
             setInterval(Get_Data, 500);
 
             //------------------------------------------------------------
-            function getTimeDifferenceInSeconds(databaseTime) {
+            function getTimeDifferenceInSeconds(databaseTime,buttonID) {
 
                 var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
 
@@ -276,15 +290,53 @@
                 now.setMinutes(minutes);
                 now.setSeconds(seconds);
 
-                var timeDifferenceInSeconds = Math.floor(((now.getTime())-Date.now())/1000);
-                var button = document.getElementById("myButton");
+                var timeDifferenceInSeconds = Math.floor(((now.getTime()) - Date.now()) / 1000);
+                var button = document.getElementById(buttonID);
                 var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
 
                 if (timeDifferenceInSeconds < 0) return "set a timer";
                 return "led will be " + btnnextstate + " after " + timeDifferenceInSeconds;
             }
             //------------------------------------------------------------
-            function Get_Data(id) {
+            function Get_Data() {
+                updateled();
+                updatergb();
+            }
+
+            function updateled() {
+                xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        const myObj = JSON.parse(this.responseText);
+                        if (myObj.id == "esp1" && myObj.roomID == "2") {// it should always be true
+                            var button = document.getElementById("ledButton");
+                            var timer = document.getElementById("ledtimerlabel");
+
+                            var previousDate = myObj.timer_time;
+                            timer.innerHTML = getTimeDifferenceInSeconds(previousDate,"ledButton");
+
+
+                            if (myObj.state == "ON") {
+                                button.innerHTML = "OFF";
+                                button.classList.remove("btn-success");
+                                button.classList.add("btn-danger");
+                            } else if (myObj.state == "OFF") {
+                                button.innerHTML = "ON";
+                                button.classList.remove("btn-danger");
+                                button.classList.add("btn-success");
+                            }
+
+                        }
+                    }
+                };
+                xmlhttp.open("POST", "getdata.php", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send("id=esp1&table=led&roomID=2");
+
+            }
+
+            function updatergb() {
 
                 xmlhttp = new XMLHttpRequest();
 
@@ -292,12 +344,12 @@
                     if (this.readyState == 4 && this.status == 200) {
                         const myObj = JSON.parse(this.responseText);
                         if (myObj.id == "esp1" && myObj.roomID == "2") {// it should always be true
-                            var button = document.getElementById("myButton");
-                            var timer = document.getElementById("timerlabel");
+                            var button = document.getElementById("rgbButton");
+                            var timer = document.getElementById("rgbtimerlabel");
                             var brightnessLabel = document.getElementById("brightlabel");
 
                             var previousDate = myObj.timer_time;
-                            timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
+                            timer.innerHTML = getTimeDifferenceInSeconds(previousDate,"rgbButton");
 
                             brightnessLabel.innerHTML = myObj.brightness;
 
@@ -317,12 +369,11 @@
                 xmlhttp.open("POST", "getdata.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xmlhttp.send("table=rgb&id=esp1&roomID=2");
+
             }
 
 
-
-
-            function buttonClick(buttonName) {
+            function buttonClick(buttonName) { // dimdown and up
                 xmlhttp = new XMLHttpRequest();
                 xmlhttp.open("POST", "updatergb.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -337,7 +388,7 @@
                 var colorInput = document.getElementById('colorInput');
                 var colorValue = colorInput.value;
                 if (colorValue.toUpperCase() === "#000000") { // if the color is black turn off the rgb
-                    var myButton = document.getElementById('myButton');
+                    var myButton = document.getElementById('rgbButton');
                     myButton.innerHTML = "OFF";
                     myButton.click();
                 } else {
