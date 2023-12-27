@@ -53,16 +53,22 @@ void room1toggles() // works when the led's pushbutton is pressed
   room1.excLedPushbutton();
 }
 
-void room2toggles() // works when the rgb's pushbutton is pressed
+void room2toggles() // works when the led's or rgb's pushbutton is pressed
 {
   room2.excRgbPushbutton();
   room2.excLedPushbutton();
+}
+
+void room3toggles()
+{
+  room3.excLedPushbutton();
 }
 
 void senddata()
 {
   room1send();
   room2send();
+  room3send();
   // there is no room3send
 }
 

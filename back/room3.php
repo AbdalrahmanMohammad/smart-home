@@ -83,6 +83,7 @@
             width: 40px;
             height: 30px;
             color: white;
+            border-radius: 50%;
         }
 
         .btn:active {
@@ -159,6 +160,7 @@
         #leddiv {
             text-align: center;
         }
+
     </style>
 </head>
 
@@ -167,7 +169,7 @@
     <div class="container">
         <h1 class="mt-5">LED</h1>
         <button id="myButton" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()"
-            onmouseup="endTimer()" class=" btn-lg btn-danger mt-3">Off</button>
+            onmouseup="endTimer()" onclick="toggle()" class=" btn-lg btn-danger mt-3">OFF</button>
     </div>
 
     <div class="action-container " id="ledContainer">
@@ -178,17 +180,18 @@
         </div>
         <div id="leddiv" class="modal-body text-center">
             <div>
-                <label for='seconds' id="ledtimerlabel">set a timer</label>
-                <input type='number' class='form-control' id='seconds' min='0' oninput="validity.valid||(value='');">
-                <button class='btn btn-warning mt-3'>Set</button>
+                <label for='ledseconds' id="ledtimerlabel">set a timer</label>
+                <input type='number' class='form-control' id='ledseconds' min='0' oninput="validity.valid||(value='');">
+                <button class=' btn-warning mt-3' onclick="setTimer('ledseconds')">Set</button>
             </div>
         </div>
     </div>
 
 
     <div class="container mt-5">
-        <a href="#" data-bs-toggle="modal" onclick="$('#TVmod').toggle();" class="btn-primary btn1"
-            data-bs-target="#TVmod" style="height: 50px; width: 50px;">TV</a>
+        <a data-bs-toggle="modal" onclick="$('#TVmod').toggle();" class="btn-primary btn1" data-bs-target="#TVmod"
+            style="height: 50px; width: 50px;">TV</a>
+
         <div class="modal" id="TVmod" tabindex="-1" role="dialog" aria-labelledby="TVmodLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-md w-100" style="max-width: fit-content;">
                 <div class="modal-content">
@@ -245,7 +248,7 @@
                             <label for='tvseconds' id="timerlabel" style="color:black">Enter seconds:</label>
                             <input type='number' class='form-control' id='tvseconds' min='0'
                                 oninput="validity.valid||(value='');">
-                            <button onclick="setTimer()" class=' btn-warning mt-3'>set</button>
+                            <button onclick="setTimer('tvseconds')" class=' btn-warning mt-3'>set</button>
                         </div>
 
                     </div>
@@ -269,13 +272,39 @@
             clearTimeout(clickTimer);
         }
 
-        function setTimer() {   // for put timer to toggleflag
-            var secondsValue = document.getElementById('tvseconds').value;
+        function setTimer(itemID) {   // for put timer to toggleflag
+            var secondsValue = document.getElementById(itemID).value;
             xmlhttp = new XMLHttpRequest();
-
             xmlhttp.open("POST", "updatetimer.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send("table=tv&id=esp1&roomID=3&timer=" + encodeURIComponent(secondsValue));
+            if (itemID == 'tvseconds') {
+                xmlhttp.send("table=tv&id=esp1&roomID=3&timer=" + encodeURIComponent(secondsValue));
+            }
+            else if (itemID == 'ledseconds') {
+                xmlhttp.send("table=led&id=esp1&roomID=3&timer=" + encodeURIComponent(secondsValue));
+            }
+
+        }
+
+        function toggle() {
+            var button = document.getElementById("myButton");
+            xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.open("POST", "updatestate.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            if (button.innerHTML == "OFF") {
+                xmlhttp.send("table=led&id=esp1&roomID=3&state=OFF&changed_by=room3page");
+                button.innerHTML = "ON";
+                button.classList.remove("btn-danger");
+                button.classList.add("btn-success");
+            }
+            else {
+                xmlhttp.send("table=led&id=esp1&roomID=3&state=ON&changed_by=room3page");
+                button.innerHTML = "OFF";
+                button.classList.remove("btn-success");
+                button.classList.add("btn-danger");
+
+            }
 
         }
 
@@ -291,7 +320,7 @@
         setInterval(Get_Data, 500);
 
         //------------------------------------------------------------
-        function getTimeDifferenceInSeconds(databaseTime) {
+        function getTimeDifferenceInSeconds(databaseTime, buttonID) {
 
             var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
 
@@ -302,14 +331,26 @@
             now.setMinutes(minutes);
             now.setSeconds(seconds);
 
-            var timeDifferenceInSeconds = Math.floor(((now.getTime())-Date.now())/1000);
+            var timeDifferenceInSeconds = Math.floor(((now.getTime()) - Date.now()) / 1000);
 
             if (timeDifferenceInSeconds < 0) return "set a timer";
-            return "TV will toggle after " + timeDifferenceInSeconds;
+            if (buttonID == "tv")
+                return "TV will toggle after " + timeDifferenceInSeconds;
+            else {
+                var button = document.getElementById(buttonID);
+                var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
+
+                if (timeDifferenceInSeconds < 0) return "set a timer";
+                return "led will be " + btnnextstate + " after " + timeDifferenceInSeconds;
+            }
         }
         //------------------------------------------------------------
         function Get_Data() {
+            updatetv();
+            updateled();
+        }
 
+        function updatetv() {
             xmlhttp = new XMLHttpRequest();
 
             xmlhttp.onreadystatechange = function () {
@@ -320,7 +361,7 @@
                         var timer = document.getElementById("timerlabel");
 
                         var previousDate = myObj.timer_time;
-                        timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
+                        timer.innerHTML = getTimeDifferenceInSeconds(previousDate, "tv");
 
                     }
                 }
@@ -328,6 +369,38 @@
             xmlhttp.open("POST", "getdata.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send("id=esp1&table=tv&roomID=3");
+        }
+
+        function updateled() {
+            xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const myObj = JSON.parse(this.responseText);
+                    if (myObj.id == "esp1" && myObj.roomID == "3") {// it should always be true
+                        var button = document.getElementById("myButton");
+                        var timer = document.getElementById("ledtimerlabel");
+                        var previousDate = myObj.timer_time;
+                        timer.innerHTML = getTimeDifferenceInSeconds(previousDate, "myButton");
+
+
+                        if (myObj.state == "ON") {
+                            button.innerHTML = "OFF";
+                            button.classList.remove("btn-success");
+                            button.classList.add("btn-danger");
+                        } else if (myObj.state == "OFF") {
+                            button.innerHTML = "ON";
+                            button.classList.remove("btn-danger");
+                            button.classList.add("btn-success");
+                        }
+
+                    }
+                }
+            };
+            xmlhttp.open("POST", "getdata.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("id=esp1&table=led&roomID=3");
+
         }
 
     </script>
