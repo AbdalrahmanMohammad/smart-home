@@ -16,7 +16,7 @@ RGB room2rgb(5, 4, 8, RMT_CHANNEL_0);
 LedClass wifiLed(32);
 LedClass room3led(12, 17);
 TV room3tv(2);
-RGB room1rgb(2, 23, 8, RMT_CHANNEL_1);
+RGB room1rgb(15, 23, 8, RMT_CHANNEL_1);
 LedClass room2led(21, 22);
 
 DimUpCommand room2dimupcom(&room2rgb);
