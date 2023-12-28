@@ -34,6 +34,7 @@ public:
     boolean rgbbuttonclicked;
     boolean ledbuttonclickedbytimer;
     boolean rgbbuttonclickedbytimer;
+    boolean startException;// necessary for setting color and brightness after restarting esp
 
     ROOM()
     {
@@ -51,6 +52,7 @@ public:
         rgbbuttonclicked = false;
         ledbuttonclickedbytimer = false;
         rgbbuttonclickedbytimer = false;
+        startException=true;
     }
 
     void setLed(LedClass *l, Command *ledoncom)

@@ -41,7 +41,7 @@ void control_room2_rgb()
     http.end();
   }
 
-  if (strcmp(myObject["color_flag"], "-1") != 0 || startEspException2) // second condition to set color value after restarting
+  if (strcmp(myObject["color_flag"], "-1") != 0 || room2.startException) // second condition to set color value after restarting
   {
     String colorValue = myObject["color"];
     int red = (int)strtol(colorValue.substring(1, 3).c_str(), NULL, 16);
@@ -124,7 +124,7 @@ void control_room2_rgb()
     http.end();
   }
 
-  if (startEspException2) // to set brightness value after restarting
+  if (room2.startException) // to set brightness value after restarting
   {
     String bright = myObject["brightness"];
     int brightness = (int)strtol(bright.c_str(), NULL, 10);
@@ -191,7 +191,7 @@ void room2get()
     payload = http.getString();
     http.end();
     control_room2_rgb();
-    startEspException2 = false;
+    room2.startException = false;
   }
 
     if (WiFi.status() == WL_CONNECTED)

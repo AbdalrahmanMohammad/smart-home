@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Room2</title>
+    <title>Room1</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -215,13 +215,13 @@
                 xmlhttp.open("POST", "updatestate.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=1&state=OFF&changed_by=rgbroom");
+                    xmlhttp.send("table=rgb&id=esp1&roomID=1&state=OFF&changed_by=room1page");
                     button.innerHTML = "ON";
                     button.classList.remove("btn-danger");
                     button.classList.add("btn-success");
                 }
                 else {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=1&state=ON&changed_by=rgbroom");
+                    xmlhttp.send("table=rgb&id=esp1&roomID=1&state=ON&changed_by=room1page");
                     button.innerHTML = "OFF";
                     button.classList.remove("btn-success");
                     button.classList.add("btn-danger");
@@ -252,18 +252,17 @@
                 return "rgb will be " + btnnextstate + " after " + timeDifferenceInSeconds;
             }
             //------------------------------------------------------------
-            function Get_Data(id) {
+            function Get_Data() {
 
                 xmlhttp = new XMLHttpRequest();
 
                 xmlhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         const myObj = JSON.parse(this.responseText);
-                        if (myObj.id == "esp1" && myObj.roomID == "2") {// it should always be true
+                        if (myObj.id == "esp1" && myObj.roomID == "1") {// it should always be true
                             var button = document.getElementById("myButton");
                             var timer = document.getElementById("timerlabel");
                             var brightnessLabel = document.getElementById("brightlabel");
-
                             var previousDate = myObj.timer_time;
                             timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
 
@@ -287,9 +286,6 @@
                 xmlhttp.send("table=rgb&id=esp1&roomID=1");
             }
 
-
-
-
             function buttonClick(buttonName) {
                 xmlhttp = new XMLHttpRequest();
                 xmlhttp.open("POST", "updatergb.php", true);
@@ -298,7 +294,6 @@
                     xmlhttp.send("id=esp1&roomID=1&dimup_flag=1");
                 else
                     xmlhttp.send("id=esp1&roomID=1&dimdown_flag=1");
-
             }
 
             function setColor() {
@@ -315,7 +310,6 @@
                     xmlhttp.send("id=esp1&roomID=1&color_flag=1&color=" + encodeURIComponent(colorValue));
                 }
             }
-
 
             function undo() {
                 xmlhttp = new XMLHttpRequest();

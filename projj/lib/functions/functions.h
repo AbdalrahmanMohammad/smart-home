@@ -69,7 +69,6 @@ void senddata()
   room1send();
   room2send();
   room3send();
-  // there is no room3send
 }
 
 void getdata()
