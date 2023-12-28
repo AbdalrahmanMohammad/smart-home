@@ -9,7 +9,7 @@ class TV : public Togglable// important: for esps32 you need to go to IRremote.h
 private:                    // it won't send anything. (by default it will be choosen 0, but 0 shouldn't be grounded at booting)
     byte pin;
     IRsend irsend;
-    String button; // last button i pressed (importat for PressTvButton class)
+    String button; // last button i pressed (importat for SendIRCommand class)
 
 public:
     TV(byte pin) 

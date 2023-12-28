@@ -7,7 +7,7 @@
 class NoRgb : public RGB
 {
 private:
-    NoRgb() : RGB(-1, -1) {}
+    NoRgb() : RGB(-1, -1,RMT_CHANNEL_7) {}
 
 public:
     static NoRgb& getInstance() {

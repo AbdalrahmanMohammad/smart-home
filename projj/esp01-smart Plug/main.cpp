@@ -12,6 +12,7 @@ String postData = "";
 String payload = "";
 LedClass ledPin(0, 3);
 boolean buttonclicked = false;
+boolean buttonclickedbytimer = false;
 
 void setup()
 {
@@ -107,13 +108,16 @@ void senddata()
     postData = "id=esp01";
     postData += "&roomID=-";
     postData += "&table=plug";
+    postData += "&changed_by=";
+    postData+= (buttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + LED_State;
     payload = "";
-    http.begin(client, "http://192.168.8.110/GP/back/updatedata.php");
+    http.begin(client, "http://192.168.8.110/GP/back/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
     http.end();
+    buttonclickedbytimer=false;
   }
 }
 
@@ -124,6 +128,7 @@ void Timer()
     ledPin.setDuration(0); // Reset the delay
     ledPin.toggle();
     buttonclicked = true;
+    buttonclickedbytimer = true;
   }
 }
 

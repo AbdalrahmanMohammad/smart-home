@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>RGB page</title>
+    <title>Room1</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -59,7 +59,6 @@
             max-width: 250px;
         }
 
-        #leddiv:hover,
         #rgbdiv:hover {
             background: linear-gradient(120deg, #3498db, #9b59b6);
             /* Slightly different gradient on hover */
@@ -68,7 +67,6 @@
         }
 
 
-        #leddiv,
         #rgbdiv {
             text-align: center;
             /* Optional: Center the content horizontally */
@@ -90,7 +88,6 @@
         }
 
         #rgbseconds,
-        #ledseconds,
         #colorInput {
             width: 80%;
             margin-bottom: 10px;
@@ -139,26 +136,16 @@
             position: relative;
         }
 
-
-        #myButtonled {
-            border-radius: 50%;
-
-        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="btn-container">
-            <h1 class="mt-5">RGB LED Control</h1>
+            <h1 class="mt-5">RGB Control</h1>
             <button id="myButton" onclick="toggle()" ontouchstart="startTimer('#actionContainer')"
                 ontouchend="endTimer()" onmousedown="startTimer('#actionContainer')" onmouseup="endTimer()"
                 class="btn btn-lg btn-danger mt-3">OFF</button>
-
-            <h1 class="mt-5">LED</h1>
-            <button id="myButtonled" ontouchstart="startTimer('#ledContainer')" ontouchend="endTimer()"
-                onmousedown="startTimer('#ledContainer')" onmouseup="endTimer()"
-                class=" btn-lg btn-danger mt-3">OFF</button>
         </div>
 
         <div class="action-container" id="actionContainer">
@@ -197,25 +184,6 @@
         </div>
     </div>
 
-    <div class="container">
-
-    </div>
-
-    <div class="action-container " id="ledContainer">
-        <div class="btn-container">
-            <button type="button" class="btn-close" aria-label="Close" onclick="$('#ledContainer').toggle();">
-            </button>
-            <h3 class="modal-title" for='colorInput'>lED Light</h3>
-        </div>
-        <div id="leddiv" class="modal-body text-center">
-            <div>
-                <labelid="timerlabel">set a timer</label>
-                    <input type='number' class='form-control' id='ledseconds' min='0'
-                        oninput="validity.valid||(value='');">
-                    <button onclick="setTimer('ledseconds')" class='btn btn-warning mt-3'>Set</button>
-            </div>
-        </div>
-
         <script>
             var clickTimer;
 
@@ -236,7 +204,7 @@
 
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (itemID == 'rgbseconds') {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=2&timer=" + encodeURIComponent(secondsValue));
+                    xmlhttp.send("table=rgb&id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue));
                 }
             }
 
@@ -244,16 +212,16 @@
                 var button = document.getElementById("myButton");
                 xmlhttp = new XMLHttpRequest();
 
-                xmlhttp.open("POST", "updatedata.php", true);
+                xmlhttp.open("POST", "updatestate.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=2&state=OFF");
+                    xmlhttp.send("table=rgb&id=esp1&roomID=1&state=OFF&changed_by=room1page");
                     button.innerHTML = "ON";
                     button.classList.remove("btn-danger");
                     button.classList.add("btn-success");
                 }
                 else {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=2&state=ON");
+                    xmlhttp.send("table=rgb&id=esp1&roomID=1&state=ON&changed_by=room1page");
                     button.innerHTML = "OFF";
                     button.classList.remove("btn-success");
                     button.classList.add("btn-danger");
@@ -276,26 +244,25 @@
                 now.setMinutes(minutes);
                 now.setSeconds(seconds);
 
-                var timeDifferenceInSeconds = Math.round((now.getTime()) - Date.now()) / 1000;
+                var timeDifferenceInSeconds = Math.floor(((now.getTime())-Date.now())/1000);
                 var button = document.getElementById("myButton");
                 var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
 
                 if (timeDifferenceInSeconds < 0) return "set a timer";
-                return "led will be " + btnnextstate + " after " + timeDifferenceInSeconds;
+                return "rgb will be " + btnnextstate + " after " + timeDifferenceInSeconds;
             }
             //------------------------------------------------------------
-            function Get_Data(id) {
+            function Get_Data() {
 
                 xmlhttp = new XMLHttpRequest();
 
                 xmlhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         const myObj = JSON.parse(this.responseText);
-                        if (myObj.id == "esp1" && myObj.roomID == "2") {// it should always be true
+                        if (myObj.id == "esp1" && myObj.roomID == "1") {// it should always be true
                             var button = document.getElementById("myButton");
                             var timer = document.getElementById("timerlabel");
                             var brightnessLabel = document.getElementById("brightlabel");
-
                             var previousDate = myObj.timer_time;
                             timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
 
@@ -316,21 +283,17 @@
                 };
                 xmlhttp.open("POST", "getdata.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlhttp.send("table=rgb&id=esp1&roomID=2");
+                xmlhttp.send("table=rgb&id=esp1&roomID=1");
             }
-
-
-
 
             function buttonClick(buttonName) {
                 xmlhttp = new XMLHttpRequest();
                 xmlhttp.open("POST", "updatergb.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if ((buttonName == 'button1'))
-                    xmlhttp.send("id=esp1&roomID=2&dimup_flag=1");
+                    xmlhttp.send("id=esp1&roomID=1&dimup_flag=1");
                 else
-                    xmlhttp.send("id=esp1&roomID=2&dimdown_flag=1");
-
+                    xmlhttp.send("id=esp1&roomID=1&dimdown_flag=1");
             }
 
             function setColor() {
@@ -344,16 +307,15 @@
                     var xmlhttp = new XMLHttpRequest();
                     xmlhttp.open("POST", "updatergb.php", true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xmlhttp.send("id=esp1&roomID=2&color_flag=1&color=" + encodeURIComponent(colorValue));
+                    xmlhttp.send("id=esp1&roomID=1&color_flag=1&color=" + encodeURIComponent(colorValue));
                 }
             }
-
 
             function undo() {
                 xmlhttp = new XMLHttpRequest();
                 xmlhttp.open("POST", "updatergb.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlhttp.send("id=esp1&roomID=2&undo_flag=1");
+                xmlhttp.send("id=esp1&roomID=1&undo_flag=1");
             }
         </script>
 

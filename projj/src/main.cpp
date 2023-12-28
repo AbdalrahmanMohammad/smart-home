@@ -5,10 +5,12 @@ void setup()
 {
   Serial.begin(9600);
 
-  room1.setLed(&ledPin, &ledoncom);
     // room1.setOnBoth(&onboth);
-  room2.setRgb(&rgb, &dimupcom, &dimdowncom, &chcolorcom);
-  room3.setTV(&tv, &presstvbtncmd);
+  room1.setRgb(&room1rgb, &room1dimupcom, &room1dimdowncom, &room1chcolorcom);
+  room2.setRgb(&room2rgb, &room2dimupcom, &room2dimdowncom, &room2chcolorcom);
+  room2.setLed(&room2led,&room2ledoncom);
+  room3.setTV(&room3tv, &room3presstvbtncmd);
+  room3.setLed(&room3led, &room3ledoncom);
 
   wifiLed.init(LOW);
   room1.init();
@@ -32,8 +34,9 @@ void loop()
 
   getdata();
   ///////////////////////////////////////////////////////////////////////
-  togglergb(); // toggles the rgb led using the button
-  toggleled(); // toggles the led using the button
+  room1toggles(); // toggles the rgb led using the button
+  room2toggles(); // toggles the led using the button
+  room3toggles();
   checkWifi();
   room1.timers();
   room2.timers();
