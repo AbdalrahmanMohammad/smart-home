@@ -13,12 +13,12 @@ const char *password = "87654321";
 String postData = "";
 String payload = "";
 boolean startEspException2 = true; // this will goes to every part of control_room2 that is necessary to read when starting up
-                                  // and then in the end when it come out will be false
-RGB room2rgb(5, 4, 8);
+                                   // and then in the end when it come out will be false
+RGB room2rgb(5, 4, 8, RMT_CHANNEL_0);
 LedClass wifiLed(32);
 LedClass room3led(12, 17);
 TV room3tv(2);
-RGB room1rgb(16, 23, 8);
+RGB room1rgb(2, 23, 8, RMT_CHANNEL_1);
 LedClass room2led(21, 22);
 
 DimUpCommand room2dimupcom(&room2rgb);

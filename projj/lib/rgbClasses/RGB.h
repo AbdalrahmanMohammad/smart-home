@@ -23,12 +23,12 @@ private:
     led_strip_type_t stripType = LED_STRIP_WS2812;
 
 public:
-    RGB(byte pin, byte buttonPin, int num) : RGB(pin, num)
+    RGB(byte pin, byte buttonPin, int num, rmt_channel_t channel) : RGB(pin, num, channel)
     {
         setButton(buttonPin);
     }
 
-    RGB(byte pin, int num) : strip(stripType, false)
+    RGB(byte pin, int num, rmt_channel_t channel) : strip(stripType, false, channel)
     {
         this->pin = pin;
         numpixles = num;
@@ -75,7 +75,7 @@ public:
 
     virtual void setAll(int r, int g, int b)
     {
- 
+
         if (r == g && g == b && b == 0)
         {
             this->off();
