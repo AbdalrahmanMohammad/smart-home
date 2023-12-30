@@ -80,4 +80,5 @@ void getdata()
   room2get();
   room3get();
   smoke_sensor_get();
+  door_get();
 }

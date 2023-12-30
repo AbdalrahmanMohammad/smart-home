@@ -66,3 +66,49 @@ void smoke_sensor_get()
     }
   }
 }
+
+void door_get()
+{
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/controldoor.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+    JSONVar myObject = JSON.parse(payload);
+
+    if (JSON.typeof(myObject) == "undefined")
+    {
+      return;
+
+    }
+    if (strcmp(myObject["flag"], "1") == 0)
+    {
+      String doorstate;
+      if (strcmp(myObject["state"], "open") == 0)
+      {
+        myStepper.step(512);
+        doorstate = "open";
+      }
+      else if (strcmp(myObject["state"], "closed") == 0)
+      {
+        myStepper.step(-512);
+        doorstate = "closed";
+      }
+      postData = "id=esp1";
+      postData += "&state="+doorstate;
+      postData += "&flag=0";
+      payload = "";
+      http.begin("http://192.168.8.110/GP/back/controldoor.php");
+      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+      httpCode = http.POST(postData);
+      payload = http.getString();// returns nothing
+      http.end();
+    }
+  }
+}

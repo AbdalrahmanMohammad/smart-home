@@ -7,6 +7,7 @@ void setup()
 
   dht.begin();
   smk.init();
+  myStepper.setSpeed(10);
 
   // room1.setOnBoth(&onboth);
   room1.setRgb(&room1rgb, &room1dimupcom, &room1dimdowncom, &room1chcolorcom);
@@ -29,7 +30,10 @@ void loop()
   {
     String userInput = Serial.readString();
 
-    room3.excTvButton(userInput);
+    if (userInput == "1")
+      myStepper.step(512);
+    if (userInput == "0")
+      myStepper.step(-512);
   }
 
   getdata();

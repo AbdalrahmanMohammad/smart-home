@@ -2,6 +2,7 @@
 #include <LedClass.h>
 #include "DHT.h"
 #include "Timer.h"
+#include <Stepper.h>
 #include "SmokeSensor.h"
 #include <RGB.h>
 #include <ROOM.h>
@@ -13,7 +14,9 @@
 DHT dht(13, DHT11);
 Timer dhtTimer(20UL);
 /// smoke Sensor //////////////// 
-SmokeSensor smk(34, 25);
+SmokeSensor smk(34, 32);
+/// door motor //////////////// 
+Stepper myStepper(2048,27,25,26,33);
 
 
 // Set your network credentials
