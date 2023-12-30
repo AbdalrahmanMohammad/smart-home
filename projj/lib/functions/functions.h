@@ -71,6 +71,7 @@ void senddata()
   room2send();
   room3send();
   temp_sensor();
+  smoke_sensor();
 }
 
 void getdata()
@@ -78,4 +79,5 @@ void getdata()
   room1get();
   room2get();
   room3get();
+  smoke_sensor_get();
 }
