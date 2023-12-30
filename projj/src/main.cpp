@@ -5,6 +5,7 @@ void setup()
 {
   Serial.begin(9600);
 
+  dht.begin();
     // room1.setOnBoth(&onboth);
   room1.setRgb(&room1rgb, &room1dimupcom, &room1dimdowncom, &room1chcolorcom);
   room2.setRgb(&room2rgb, &room2dimupcom, &room2dimdowncom, &room2chcolorcom);

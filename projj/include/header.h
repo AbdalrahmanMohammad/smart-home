@@ -1,12 +1,15 @@
 #include <WiFi.h>
 #include <LedClass.h>
+#include "DHT.h"
+#include "Timer.h"
 #include <RGB.h>
 #include <ROOM.h>
 #include <HTTPClient.h>
 #include <Arduino_JSON.h>
 
 #define pr(x) Serial.println(x)
-
+DHT dht(13, DHT11);
+Timer dhtTimer(20UL);
 // Set your network credentials
 const char *ssid = "PL";
 const char *password = "87654321";
