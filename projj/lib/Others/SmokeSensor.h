@@ -32,8 +32,10 @@ public:
 
     boolean thereIsFire()
     {
-        if (analogRead(pin) > 3000)
+        // Serial.println(analogRead(pin));
+        if (analogRead(pin) > 3000){
             return true;
+        }
         else
             return false;
     }

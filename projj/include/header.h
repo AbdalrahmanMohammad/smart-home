@@ -11,12 +11,12 @@
 
 #define pr(x) Serial.println(x)
 /// dht sensor ////////////////
-DHT dht(13, DHT11);
+DHT dht(33, DHT11);
 Timer dhtTimer(20UL);
 /// smoke Sensor //////////////// 
-SmokeSensor smk(34, 32);
+SmokeSensor smk(36, 19);
 /// door motor //////////////// 
-Stepper myStepper(2048,27,25,26,33);
+Stepper myStepper(2048,27,25,26,21);
 
 
 // Set your network credentials
@@ -24,12 +24,12 @@ const char *ssid = "PL";
 const char *password = "87654321";
 String postData = "";
 String payload = "";
-RGB room2rgb(5, 4, 8, RMT_CHANNEL_0);
-LedClass wifiLed(14);
-LedClass room3led(12, 17);
+RGB room2rgb(23, 39, 8, RMT_CHANNEL_0);
+LedClass wifiLed(13);
+LedClass room3led(12, 32);
 TV room3tv(2);
-RGB room1rgb(15, 23, 8, RMT_CHANNEL_1);
-LedClass room2led(21, 22);
+RGB room1rgb(22, 34, 8, RMT_CHANNEL_1);
+LedClass room2led(14, 35);
 
 DimUpCommand room2dimupcom(&room2rgb);
 DimDownCommand room2dimdowncom(&room2rgb);
