@@ -85,7 +85,6 @@ void door_get()
     if (JSON.typeof(myObject) == "undefined")
     {
       return;
-
     }
     if (strcmp(myObject["flag"], "1") == 0)
     {
@@ -101,14 +100,78 @@ void door_get()
         doorstate = "closed";
       }
       postData = "id=esp1";
-      postData += "&state="+doorstate;
+      postData += "&state=" + doorstate;
       postData += "&flag=0";
       payload = "";
       http.begin("http://192.168.8.110/GP/back/controldoor.php");
       http.addHeader("Content-Type", "application/x-www-form-urlencoded");
       httpCode = http.POST(postData);
-      payload = http.getString();// returns nothing
+      payload = http.getString(); // returns nothing
       http.end();
+    }
+  }
+}
+
+void printTemp()
+{
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temper.: ");
+  lcd.print(dht.readTemperature());
+  lcd.print(" C");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Humidity: ");
+  lcd.print(dht.readHumidity());
+  lcd.print(" %");
+}
+
+void printTime(String time, String date)
+{
+  time = time.substring(1, time.length() - 1);
+  date = date.substring(1, date.length() - 1);
+
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Date: ");
+  lcd.print(date);
+
+  lcd.setCursor(0, 1);
+  lcd.print("Time: ");
+  lcd.print(time);
+}
+
+void lcd_get()
+{
+  if (lcdTimer.clause() && WiFi.status() == WL_CONNECTED) // there is fire, and the user still didn't tell me that he managed the situation
+  {
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/getlcd.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+    JSONVar myObject = JSON.parse(payload);
+    if (JSON.typeof(myObject) == "undefined")
+    {
+      return;
+    }
+
+    if (strcmp(myObject["show"], "temp") == 0)
+    {
+      printTemp();
+    }
+    if (strcmp(myObject["show"], "time") == 0)
+    {
+      String time = JSON.stringify(myObject["time"]);
+      String date = JSON.stringify(myObject["date"]);
+
+      printTime(time, date);
     }
   }
 }

@@ -8,6 +8,8 @@ void setup()
   dht.begin();
   smk.init();
   myStepper.setSpeed(10);
+  lcd.begin(16, 2);
+  lcd.print("Welcome Home");
 
   // room1.setOnBoth(&onboth);
   room1.setRgb(&room1rgb, &room1dimupcom, &room1dimdowncom, &room1chcolorcom);
