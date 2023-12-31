@@ -1,3 +1,43 @@
+void printTemp()
+{
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temper.: ");
+  lcd.print(dht.readTemperature());
+  lcd.print(" C");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Humidity: ");
+  lcd.print(dht.readHumidity());
+  lcd.print("%");
+}
+
+void printTime(String time, String date)
+{
+  time = time.substring(1, time.length() - 1);
+  date = date.substring(1, date.length() - 1);
+
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Date: ");
+  lcd.print(date);
+
+  lcd.setCursor(0, 1);
+  lcd.print("Time: ");
+  lcd.print(time);
+}
+
+void printFire()
+{
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("FIRE!!!!!!!!!!");
+  lcd.setCursor(0, 1);
+  lcd.print("**************");
+}
+
 void temp_sensor()
 {
   if (dhtTimer.clause() && WiFi.status() == WL_CONNECTED) // first clause is timer each 1 minute
@@ -26,6 +66,7 @@ void smoke_sensor()
   if (smk.thereIsFire() && smk.ison() == false && WiFi.status() == WL_CONNECTED) // if there is fire, and it just happened now (i didn't send to data base), so i just send for once
   {
     smk.startAlarm();
+    printFire();
     HTTPClient http;
     int httpCode;
 
@@ -112,37 +153,6 @@ void door_get()
   }
 }
 
-void printTemp()
-{
-  lcd.clear();
-
-  lcd.setCursor(0, 0);
-  lcd.print("Temper.: ");
-  lcd.print(dht.readTemperature());
-  lcd.print(" C");
-
-  lcd.setCursor(0, 1);
-  lcd.print("Humidity: ");
-  lcd.print(dht.readHumidity());
-  lcd.print(" %");
-}
-
-void printTime(String time, String date)
-{
-  time = time.substring(1, time.length() - 1);
-  date = date.substring(1, date.length() - 1);
-
-  lcd.clear();
-
-  lcd.setCursor(0, 0);
-  lcd.print("Date: ");
-  lcd.print(date);
-
-  lcd.setCursor(0, 1);
-  lcd.print("Time: ");
-  lcd.print(time);
-}
-
 void lcd_get()
 {
   if (lcdTimer.clause() && WiFi.status() == WL_CONNECTED) // there is fire, and the user still didn't tell me that he managed the situation
@@ -162,16 +172,23 @@ void lcd_get()
       return;
     }
 
-    if (strcmp(myObject["show"], "temp") == 0)
+    if (strcmp(myObject["fire"], "true") == 0)
     {
-      printTemp();
+      printFire();
     }
-    if (strcmp(myObject["show"], "time") == 0)
+    else
     {
-      String time = JSON.stringify(myObject["time"]);
-      String date = JSON.stringify(myObject["date"]);
+      if (strcmp(myObject["show"], "temp") == 0)
+      {
+        printTemp();
+      }
+      if (strcmp(myObject["show"], "time") == 0)
+      {
+        String time = JSON.stringify(myObject["time"]);
+        String date = JSON.stringify(myObject["date"]);
 
-      printTime(time, date);
+        printTime(time, date);
+      }
     }
   }
 }

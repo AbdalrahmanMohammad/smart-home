@@ -18,6 +18,7 @@ if (!empty($_POST)) {
     if ($stmt->rowCount() > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        $myObj->id = $row['id'];
         $myObj->show = $row['show'];
 
         // Get the current date and time for Jerusalem, Palestine timezone
@@ -28,13 +29,20 @@ if (!empty($_POST)) {
         $myObj->date = $datetime->format('Y-m-d');
         $myObj->time = $datetime->format('H:i');
 
-        // Convert the object to JSON
-        $myJSON = json_encode($myObj);
-
-        // Echo the JSON data
-        echo $myJSON;
     }
 
+    $sql = "SELECT * FROM smoke_sensor WHERE id=?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array($id));
+
+    if ($stmt->rowCount() > 0) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $myObj->fire = $row['fire'];
+    }
+
+    $myJSON = json_encode($myObj);
+    echo $myJSON;
     // Disconnect from the database
     Database::disconnect();
 }
