@@ -59,7 +59,8 @@
             max-width: 250px;
         }
 
-        #rgbdiv:hover {
+        #rgbdiv:hover,
+        #fandiv:hover {
             background: linear-gradient(120deg, #3498db, #9b59b6);
             /* Slightly different gradient on hover */
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -67,7 +68,8 @@
         }
 
 
-        #rgbdiv {
+        #rgbdiv,
+        #fandiv {
             text-align: center;
             /* Optional: Center the content horizontally */
         }
@@ -120,7 +122,8 @@
             margin-bottom: 10px;
         }
 
-        #rgbtimerbutton {
+        #rgbtimerbutton,
+        #fantimerbutton {
             width: 80%;
             border-radius: 0;
         }
@@ -135,7 +138,6 @@
             width: 100%;
             position: relative;
         }
-
     </style>
 </head>
 
@@ -143,9 +145,14 @@
     <div class="container">
         <div class="btn-container">
             <h1 class="mt-5">RGB Control</h1>
-            <button id="myButton" onclick="toggle()" ontouchstart="startTimer('#actionContainer')"
+            <button id="myButton" onclick="toggle('myButton')" ontouchstart="startTimer('#actionContainer')"
                 ontouchend="endTimer()" onmousedown="startTimer('#actionContainer')" onmouseup="endTimer()"
                 class="btn btn-lg btn-danger mt-3">OFF</button>
+
+            <h1 class="mt-5">Fan</h1>
+            <button id="fanButton" onclick="toggle('fanButton')" ontouchstart="startTimer('#fanContainer')"
+                ontouchend="endTimer()" onmousedown="startTimer('#fanContainer')" onmouseup="endTimer()"
+                class=" btn-lg btn-danger mt-3">OFF</button>
         </div>
 
         <div class="action-container" id="actionContainer">
@@ -182,36 +189,63 @@
                 </div>
             </div>
         </div>
+
+        <div class="action-container" id="fanContainer">
+
+            <div class="rgb-box">
+                <button type="button" class="btn-close" aria-label="Close" onclick="$('#fanContainer').toggle();">
+                </button>
+                <h3 class="modal-title" for='colorInput'>Fan controller</h3>
+            </div>
+            <div id="fandiv" class="modal-body text-center">
+
+                <div id="middle-container">
+                    <label id="brightlabel" for="control">Control:</label>
+                    <button onclick="fanbuttonClick('button1')" class='btn btn-info'>&#8593</button>
+                    <button onclick="fanbuttonClick('button2')" class='btn btn-info'>&#8595</button>
+                </div>
+
+                <div id="left-container">
+                    <label for='fanseconds' id="timerlabel">set a timer</label>
+                    <input type='number' class='form-control' id='fanseconds' min='0'
+                        oninput="validity.valid||(value='');">
+                    <button onclick="setTimer('fanseconds')" id="fantimerbutton"
+                        class='btn btn-warning mt-3'>Set</button>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
-        <script>
-            var clickTimer;
+    <script>
+        var clickTimer;
 
-            function startTimer(itemID) {
-                clickTimer = setTimeout(function () {
-                    $(itemID).toggle();
-                }, 1000);
-            }
+        function startTimer(itemID) {
+            clickTimer = setTimeout(function () {
+                $(itemID).toggle();
+            }, 1000);
+        }
 
-            function endTimer() {
-                clearTimeout(clickTimer);
-            }
+        function endTimer() {
+            clearTimeout(clickTimer);
+        }
 
-            function setTimer(itemID) {
-                var secondsValue = document.getElementById(itemID).value;
-                xmlhttp = new XMLHttpRequest();
-                xmlhttp.open("POST", "updatetimer.php", true);
+        function setTimer(itemID) {
+            var secondsValue = document.getElementById(itemID).value;
+            var table = (itemID == 'fanseconds') ? 'fan' : 'rgb';
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "updatetimer.php", true);
 
-                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                if (itemID == 'rgbseconds') {
-                    xmlhttp.send("table=rgb&id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue));
-                }
-            }
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue) + "&table=" + table);
+            console.log(table);
+        }
 
-            function toggle() {
-                var button = document.getElementById("myButton");
-                xmlhttp = new XMLHttpRequest();
-
+        function toggle(itemID) {
+            var button = document.getElementById(itemID);
+            xmlhttp = new XMLHttpRequest();
+            if (itemID == 'myButton') {
                 xmlhttp.open("POST", "updatestate.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
@@ -227,97 +261,124 @@
                     button.classList.add("btn-danger");
 
                 }
-
             }
-
-            setInterval(Get_Data, 500);
-
-            //------------------------------------------------------------
-            function getTimeDifferenceInSeconds(databaseTime) {
-
-                var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
-
-                var now = new Date();
-                var noww = new Date();
-
-                now.setHours(hours);
-                now.setMinutes(minutes);
-                now.setSeconds(seconds);
-
-                var timeDifferenceInSeconds = Math.floor(((now.getTime())-Date.now())/1000);
-                var button = document.getElementById("myButton");
-                var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
-
-                if (timeDifferenceInSeconds < 0) return "set a timer";
-                return "rgb will be " + btnnextstate + " after " + timeDifferenceInSeconds;
-            }
-            //------------------------------------------------------------
-            function Get_Data() {
-
-                xmlhttp = new XMLHttpRequest();
-
-                xmlhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        const myObj = JSON.parse(this.responseText);
-                        if (myObj.id == "esp1" && myObj.roomID == "1") {// it should always be true
-                            var button = document.getElementById("myButton");
-                            var timer = document.getElementById("timerlabel");
-                            var brightnessLabel = document.getElementById("brightlabel");
-                            var previousDate = myObj.timer_time;
-                            timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
-
-                            brightnessLabel.innerHTML = myObj.brightness;
-
-                            if (myObj.state == "ON") {
-                                button.innerHTML = "OFF";
-                                button.classList.remove("btn-success");
-                                button.classList.add("btn-danger");
-                            } else if (myObj.state == "OFF") {
-                                button.innerHTML = "ON";
-                                button.classList.remove("btn-danger");
-                                button.classList.add("btn-success");
-                            }
-
-                        }
-                    }
-                };
-                xmlhttp.open("POST", "getdata.php", true);
+            else if (itemID == 'fanButton') {
+                xmlhttp.open("POST", "updatestate.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlhttp.send("table=rgb&id=esp1&roomID=1");
-            }
+                if (button.innerHTML == "OFF") {
+                    xmlhttp.send("table=fan&id=esp1&roomID=1&state=OFF&changed_by=room1page");
+                    button.innerHTML = "ON";
+                    button.classList.remove("btn-danger");
+                    button.classList.add("btn-success");
+                }
+                else {
+                    xmlhttp.send("table=fan&id=esp1&roomID=1&state=ON&changed_by=room1page");
+                    button.innerHTML = "OFF";
+                    button.classList.remove("btn-success");
+                    button.classList.add("btn-danger");
 
-            function buttonClick(buttonName) {
-                xmlhttp = new XMLHttpRequest();
-                xmlhttp.open("POST", "updatergb.php", true);
-                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                if ((buttonName == 'button1'))
-                    xmlhttp.send("id=esp1&roomID=1&dimup_flag=1");
-                else
-                    xmlhttp.send("id=esp1&roomID=1&dimdown_flag=1");
-            }
-
-            function setColor() {
-                var colorInput = document.getElementById('colorInput');
-                var colorValue = colorInput.value;
-                if (colorValue.toUpperCase() === "#000000") { // if the color is black turn off the rgb
-                    var myButton = document.getElementById('myButton');
-                    myButton.innerHTML = "OFF";
-                    myButton.click();
-                } else {
-                    var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open("POST", "updatergb.php", true);
-                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xmlhttp.send("id=esp1&roomID=1&color_flag=1&color=" + encodeURIComponent(colorValue));
                 }
             }
+        }
 
-            function undo() {
-                xmlhttp = new XMLHttpRequest();
+        setInterval(Get_Data, 500);
+
+        //------------------------------------------------------------
+        function getTimeDifferenceInSeconds(databaseTime) {
+
+            var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
+
+            var now = new Date();
+            var noww = new Date();
+
+            now.setHours(hours);
+            now.setMinutes(minutes);
+            now.setSeconds(seconds);
+
+            var timeDifferenceInSeconds = Math.floor(((now.getTime()) - Date.now()) / 1000);
+            var button = document.getElementById("myButton");
+            var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
+
+            if (timeDifferenceInSeconds < 0) return "set a timer";
+            return "rgb will be " + btnnextstate + " after " + timeDifferenceInSeconds;
+        }
+        //------------------------------------------------------------
+        function Get_Data() {
+
+            xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const myObj = JSON.parse(this.responseText);
+                    if (myObj.id == "esp1" && myObj.roomID == "1") {// it should always be true
+                        var button = document.getElementById("myButton");
+                        var timer = document.getElementById("timerlabel");
+                        var brightnessLabel = document.getElementById("brightlabel");
+                        var previousDate = myObj.timer_time;
+                        timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
+
+                        brightnessLabel.innerHTML = myObj.brightness;
+
+                        if (myObj.state == "ON") {
+                            button.innerHTML = "OFF";
+                            button.classList.remove("btn-success");
+                            button.classList.add("btn-danger");
+                        } else if (myObj.state == "OFF") {
+                            button.innerHTML = "ON";
+                            button.classList.remove("btn-danger");
+                            button.classList.add("btn-success");
+                        }
+
+                    }
+                }
+            };
+            xmlhttp.open("POST", "getdata.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("table=rgb&id=esp1&roomID=1");
+        }
+
+        function buttonClick(buttonName) {
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "updatergb.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            if ((buttonName == 'button1'))
+                xmlhttp.send("id=esp1&roomID=1&dimup_flag=1");
+            else
+                xmlhttp.send("id=esp1&roomID=1&dimdown_flag=1");
+        }
+
+        function fanbuttonClick(buttonName) {
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "updatefan.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            if ((buttonName == 'button1'))
+                xmlhttp.send("id=esp1&roomID=1&speedup_flag=1");
+            else
+                xmlhttp.send("id=esp1&roomID=1&speeddown_flag=1");
+        }
+
+        function setColor() {
+            var colorInput = document.getElementById('colorInput');
+            var colorValue = colorInput.value;
+            if (colorValue.toUpperCase() === "#000000") { // if the color is black turn off the rgb
+                var myButton = document.getElementById('myButton');
+                myButton.innerHTML = "OFF";
+                myButton.click();
+            } else {
+                var xmlhttp = new XMLHttpRequest();
                 xmlhttp.open("POST", "updatergb.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlhttp.send("id=esp1&roomID=1&undo_flag=1");
+                xmlhttp.send("id=esp1&roomID=1&color_flag=1&color=" + encodeURIComponent(colorValue));
             }
-        </script>
+        }
+
+        function undo() {
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "updatergb.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("id=esp1&roomID=1&undo_flag=1");
+        }
+    </script>
 
 </body>
 

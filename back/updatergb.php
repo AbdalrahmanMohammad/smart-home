@@ -19,7 +19,7 @@ if (!empty($_POST)) {
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($brightness !== null) { // it is from web page
+    if ($brightness !== null) { // this is reached only from the esp
         $sql = "UPDATE rgb SET brightness = ? WHERE id = ? AND roomID = ?";
         $q = $pdo->prepare($sql);
         $q->execute(array($brightness, $id, $roomID));
