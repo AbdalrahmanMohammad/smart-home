@@ -51,8 +51,6 @@ SpeedUpCommand room1speedupcom(&room1fan);
 TurnOnCommand room3ledoncom(&room3led);
 TurnOnCommand room2ledoncom(&room2led);
 TurnOnCommand room1fanoncom(&room1fan);
-// Command *commands[] = {&ledoncom, &rgboncom};
-// MacroCommand onboth(commands, 2);
 SendIRCommand room3presstvbtncmd(&room3tv);
 
 ROOM room1;

@@ -11,7 +11,6 @@ void setup()
   lcd.begin(16, 2);
   lcd.print("Welcome Home");
 
-  // room1.setOnBoth(&onboth);
   room1.setRgb(&room1rgb, &room1dimupcom, &room1dimdowncom, &room1chcolorcom);
   room1.setFan(&room1fan, &room1fanoncom, &room1speedupcom);
   room2.setRgb(&room2rgb, &room2dimupcom, &room2dimdowncom, &room2chcolorcom);

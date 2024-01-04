@@ -26,7 +26,6 @@ private:
     Command *changecolorcommand;
     Command *dimupcommand;
     Command *dimdowncommand;
-    Command *onboth;
     Command *fanoncommand;
     Command *speedupcommand;
     LedClass *led;
@@ -50,7 +49,6 @@ public:
         changecolorcommand = noCmd;
         dimupcommand = noCmd;
         dimdowncommand = noCmd;
-        onboth = noCmd;
         presstvbuttoncommand = noCmd;
         speedupcommand = noCmd;
         led = &NoLed::getInstance();
@@ -84,11 +82,6 @@ public:
         changecolorcommand = changecolor;
     }
 
-    void setOnBoth(MacroCommand *m)
-    {
-        onboth = m;
-    }
-
     void setTV(TV *t, Command *pressbtncmd)
     {
         tv = t;
@@ -101,16 +94,6 @@ public:
         rgb->init(LOW);
         tv->init();
         fan->init(LOW);
-    }
-
-    void excOnBoth()
-    {
-        onboth->execute();
-    }
-
-    void excOffBoth()
-    {
-        onboth->undo();
     }
 
     void excLedOn()
