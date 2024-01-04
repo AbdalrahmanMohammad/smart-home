@@ -38,7 +38,6 @@ public:
 
     virtual void on() override
     {
-        speed = 255;
         analogWrite(pin, speed);
         state = HIGH;
     }

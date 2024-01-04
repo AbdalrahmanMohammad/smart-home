@@ -133,6 +133,13 @@ void control_room1_rgb()
 void control_room1_fan()
 {
   JSONVar myObject = JSON.parse(payload);
+  
+  if (room1.startException) // to set speed value after restarting
+  {
+    String speed = myObject["speed"];
+    int speeed = (int)strtol(speed.c_str(), NULL, 10);
+    room1.getFan().setSpeed(speeed);
+  }
 
   if (JSON.typeof(myObject) == "undefined")
   {
@@ -170,7 +177,7 @@ void control_room1_fan()
     payload = http.getString();
     http.end();
   }
-  if (strcmp(myObject["speedup_flag"], "-1") != 0)
+  if (strcmp(myObject["speedup_flag"], "-1") != 0 && room1.getFan().isOn())
   {
     room1.excSpeedUp();
     HTTPClient http;
@@ -186,7 +193,7 @@ void control_room1_fan()
     http.end();
   }
 
-  if (strcmp(myObject["speeddown_flag"], "-1") != 0)
+  if (strcmp(myObject["speeddown_flag"], "-1") != 0 && room1.getFan().isOn())
   {
     room1.excSpeedDown();
     HTTPClient http;
@@ -217,12 +224,7 @@ void control_room1_fan()
     http.end();
   }
 
-  if (room1.startException) // to set speed value after restarting
-  {
-    String speed = myObject["speed"];
-    int speeed = (int)strtol(speed.c_str(), NULL, 10);
-    room1.getFan().setSpeed(speeed);
-  }
+
 }
 
 void room1get()
