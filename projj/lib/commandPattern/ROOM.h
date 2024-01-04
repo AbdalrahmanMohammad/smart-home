@@ -10,8 +10,11 @@
 #include <NoCommand.h>
 #include <NoRgb.h>
 #include <NoLed.h>
+#include <NoFan.h>
 #include <MacroCommand.h>
 #include <TurnOnCommand.h>
+#include <SpeedUpCommand.h>
+#include <Fan.h>
 #include <TV.h>
 #include <NoTV.h>
 #include <SendIRCommand.h>
@@ -24,17 +27,20 @@ private:
     Command *dimupcommand;
     Command *dimdowncommand;
     Command *onboth;
+    Command *fanoncommand;
+    Command *speedupcommand;
     LedClass *led;
     RGB *rgb;
     TV *tv;
-    Command *presstvbuttoncommand;// it is of type SendIRCommand
+    Fan *fan;
+    Command *presstvbuttoncommand; // it is of type SendIRCommand
 
 public:
     boolean ledbuttonclicked;
     boolean rgbbuttonclicked;
     boolean ledbuttonclickedbytimer;
     boolean rgbbuttonclickedbytimer;
-    boolean startException;// necessary for setting color and brightness after restarting esp
+    boolean startException; // necessary for setting color and brightness after restarting esp
 
     ROOM()
     {
@@ -45,20 +51,28 @@ public:
         dimdowncommand = noCmd;
         onboth = noCmd;
         presstvbuttoncommand = noCmd;
+        speedupcommand = noCmd;
         led = &NoLed::getInstance();
         rgb = &NoRgb::getInstance();
         tv = &NoTV::getInstance();
+        fan = &NoFan::getInstance();
         ledbuttonclicked = false;
         rgbbuttonclicked = false;
         ledbuttonclickedbytimer = false;
         rgbbuttonclickedbytimer = false;
-        startException=true;
+        startException = true;
     }
 
     void setLed(LedClass *l, Command *ledoncom)
     {
         led = l;
         ledoncommand = ledoncom;
+    }
+    void setFan(Fan *f, Command *fanoncom, Command *speedupcom)
+    {
+        fan = f;
+        fanoncommand = fanoncom;
+        speedupcommand = speedupcom;
     }
     void setRgb(RGB *r, Command *dimup, Command *dimdown, Command *changecolor)
     {
@@ -84,6 +98,7 @@ public:
         led->init(LOW);
         rgb->init(LOW);
         tv->init();
+        fan->init(LOW);
     }
 
     void excOnBoth()
@@ -104,6 +119,16 @@ public:
     void excLedOff()
     {
         ledoncommand->undo();
+    }
+
+    void excFanOn()
+    {
+        fanoncommand->execute();
+    }
+
+    void excFanOff()
+    {
+        fanoncommand->undo();
     }
 
     void excLedTog()
@@ -172,13 +197,13 @@ public:
             {
                 this->excRgb();
                 rgbbuttonclicked = true;
-                rgbbuttonclickedbytimer=true;
+                rgbbuttonclickedbytimer = true;
             }
             else if (device->getName() == "led")
             {
                 this->excLedTog();
                 ledbuttonclicked = true;
-                ledbuttonclickedbytimer=true;
+                ledbuttonclickedbytimer = true;
             }
             else if (device->getName() == "tv")
                 this->excTvButton("toggle");
@@ -215,6 +240,16 @@ public:
         changecolorcommand->undo();
     }
 
+    void excSpeedUp()
+    {
+        fan->speedUp();
+    }
+
+    void excSpeedDown()
+    {
+        fan->speedDown();
+    }
+
     LedClass &getLed()
     {
         return *led;
@@ -226,6 +261,10 @@ public:
     TV &getTV()
     {
         return *tv;
+    }
+    Fan &getFan()
+    {
+        return *fan;
     }
 };
 

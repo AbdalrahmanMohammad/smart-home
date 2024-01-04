@@ -35,6 +35,7 @@ LedClass room3led(12, 32);
 TV room3tv(2);
 RGB room1rgb(22, 34, 8, RMT_CHANNEL_1);
 LedClass room2led(14, 35);
+Fan room1fan(18);
 
 DimUpCommand room2dimupcom(&room2rgb);
 DimDownCommand room2dimdowncom(&room2rgb);
@@ -45,9 +46,11 @@ DimUpCommand room1dimupcom(&room1rgb);
 DimDownCommand room1dimdowncom(&room1rgb);
 ChangeColorCommand room1chcolorcom(&room1rgb);
 TurnOnCommand room1rgboncom(&room1rgb);
+SpeedUpCommand room1speedupcom(&room1fan);
 /////////////////////////////////////////////
 TurnOnCommand room3ledoncom(&room3led);
 TurnOnCommand room2ledoncom(&room2led);
+TurnOnCommand room1fanoncom(&room1fan);
 // Command *commands[] = {&ledoncom, &rgboncom};
 // MacroCommand onboth(commands, 2);
 SendIRCommand room3presstvbtncmd(&room3tv);

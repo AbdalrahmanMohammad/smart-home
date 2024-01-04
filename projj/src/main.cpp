@@ -13,6 +13,7 @@ void setup()
 
   // room1.setOnBoth(&onboth);
   room1.setRgb(&room1rgb, &room1dimupcom, &room1dimdowncom, &room1chcolorcom);
+  room1.setFan(&room1fan, &room1fanoncom, &room1speedupcom);
   room2.setRgb(&room2rgb, &room2dimupcom, &room2dimdowncom, &room2chcolorcom);
   room2.setLed(&room2led, &room2ledoncom);
   room3.setTV(&room3tv, &room3presstvbtncmd);
@@ -33,9 +34,14 @@ void loop()
     String userInput = Serial.readString();
 
     if (userInput == "1")
-      myStepper.step(512);
+      room1.excFanOn();
     if (userInput == "0")
-      myStepper.step(-512);
+      room1.excFanOff();
+    if (userInput == "88")
+      room1.excSpeedUp();
+    if (userInput == "22")
+      room1.excSpeedDown();
+    Serial.println(room1.getFan().getSpeed());
   }
 
   getdata();
