@@ -26,7 +26,8 @@ public:
     String getName() override { return ""; }
     void speedUp() override {}
     void speedDown() override {}
-    int getSpeed() override {return -1;}
+    int getSpeed() override { return -1; }
+    void setSpeed(int s) {}
 };
 
 #endif

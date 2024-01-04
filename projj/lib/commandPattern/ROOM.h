@@ -40,6 +40,7 @@ public:
     boolean rgbbuttonclicked;
     boolean ledbuttonclickedbytimer;
     boolean rgbbuttonclickedbytimer;
+    boolean fantoggledbytimer;
     boolean startException; // necessary for setting color and brightness after restarting esp
 
     ROOM()
@@ -60,6 +61,7 @@ public:
         rgbbuttonclicked = false;
         ledbuttonclickedbytimer = false;
         rgbbuttonclickedbytimer = false;
+        fantoggledbytimer = false;
         startException = true;
     }
 
@@ -129,6 +131,14 @@ public:
     void excFanOff()
     {
         fanoncommand->undo();
+    }
+
+    void excFanTog()
+    {
+        if (fan->isOn())
+            this->excFanOff();
+        else
+            this->excFanOn();
     }
 
     void excLedTog()
@@ -206,7 +216,14 @@ public:
                 ledbuttonclickedbytimer = true;
             }
             else if (device->getName() == "tv")
+            {
                 this->excTvButton("toggle");
+            }
+            else if (device->getName() == "fan")
+            {
+                this->excFanTog();
+                fantoggledbytimer = true;
+            }
         }
     }
 
@@ -215,6 +232,7 @@ public:
         this->Timer(led);
         this->Timer(rgb);
         this->Timer(tv);
+        this->Timer(fan);
     }
 
     void excColor(int r, int g, int b)

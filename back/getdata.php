@@ -20,8 +20,10 @@ if (!empty($_POST)) {
         $date = date_create($row['date']);
         $dateFormat = date_format($date, "d-m-Y");
 
-        if ($table != "tv")// just for led & rgb & plug
+        if ($table != "tv")// just for led & rgb & plug & fan
+        {
             $myObj->state = $row['state'];
+        }
 
         $myObj->id = $row['id'];
         $myObj->roomID = $row['roomID'];
@@ -36,6 +38,11 @@ if (!empty($_POST)) {
             $myObj->undo_flag = $row['undo_flag'];
             $myObj->color_flag = $row['color_flag'];
             $myObj->brightness = $row['brightness'];
+        }
+        if($table == 'fan'){
+            $myObj->speedup_flag = $row['speedup_flag'];
+            $myObj->speeddown_flag = $row['speeddown_flag'];
+            $myObj->speed = $row['speed'];
         }
         if ($table == "tv") {
             $myObj->signal_value = $row['signal_value'];

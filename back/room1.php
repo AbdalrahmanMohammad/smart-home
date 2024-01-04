@@ -38,6 +38,10 @@
             border-radius: 50%;
         }
 
+        #fanButton {
+            border-radius: 50%;
+        }
+
         .action-container {
             background: linear-gradient(120deg, #2980b9, #8e44ad);
             border-radius: 10px;
@@ -200,13 +204,13 @@
             <div id="fandiv" class="modal-body text-center">
 
                 <div id="middle-container">
-                    <label id="brightlabel" for="control">Control:</label>
+                    <label id="speedlabel" for="control">Control:</label>
                     <button onclick="fanbuttonClick('button1')" class='btn btn-info'>&#8593</button>
                     <button onclick="fanbuttonClick('button2')" class='btn btn-info'>&#8595</button>
                 </div>
 
                 <div id="left-container">
-                    <label for='fanseconds' id="timerlabel">set a timer</label>
+                    <label for='fanseconds' id="timerlabelfan">set a timer</label>
                     <input type='number' class='form-control' id='fanseconds' min='0'
                         oninput="validity.valid||(value='');">
                     <button onclick="setTimer('fanseconds')" id="fantimerbutton"
@@ -239,7 +243,6 @@
 
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send("id=esp1&roomID=1&timer=" + encodeURIComponent(secondsValue) + "&table=" + table);
-            console.log(table);
         }
 
         function toggle(itemID) {
@@ -284,7 +287,7 @@
         setInterval(Get_Data, 500);
 
         //------------------------------------------------------------
-        function getTimeDifferenceInSeconds(databaseTime) {
+        function getTimeDifferenceInSeconds(databaseTime, table) {
 
             var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
 
@@ -296,14 +299,27 @@
             now.setSeconds(seconds);
 
             var timeDifferenceInSeconds = Math.floor(((now.getTime()) - Date.now()) / 1000);
-            var button = document.getElementById("myButton");
-            var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
+            if (table == "rgb") {
+                var button = document.getElementById("myButton");
+                var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
 
-            if (timeDifferenceInSeconds < 0) return "set a timer";
-            return "rgb will be " + btnnextstate + " after " + timeDifferenceInSeconds;
+                if (timeDifferenceInSeconds < 0) return "set a timer";
+                return "rgb will be " + btnnextstate + " after " + timeDifferenceInSeconds;
+            }
+            if (table == "fan") {
+                var button = document.getElementById("fanButton");
+                var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
+
+                if (timeDifferenceInSeconds < 0) return "set a timer";
+                return "fan will be " + btnnextstate + " after " + timeDifferenceInSeconds;
+            }
         }
         //------------------------------------------------------------
         function Get_Data() {
+            Get_Data_rgb();
+            Get_Data_fan();
+        }
+        function Get_Data_rgb() {
 
             xmlhttp = new XMLHttpRequest();
 
@@ -315,7 +331,7 @@
                         var timer = document.getElementById("timerlabel");
                         var brightnessLabel = document.getElementById("brightlabel");
                         var previousDate = myObj.timer_time;
-                        timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
+                        timer.innerHTML = getTimeDifferenceInSeconds(previousDate, "rgb");
 
                         brightnessLabel.innerHTML = myObj.brightness;
 
@@ -335,6 +351,40 @@
             xmlhttp.open("POST", "getdata.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send("table=rgb&id=esp1&roomID=1");
+        }
+
+        function Get_Data_fan() {
+
+            xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const myObj = JSON.parse(this.responseText);
+                    if (myObj.id == "esp1" && myObj.roomID == "1") {// it should always be true
+                        var button = document.getElementById("fanButton");
+                        var timer = document.getElementById("timerlabelfan");
+                        var speedLabel = document.getElementById("speedlabel");
+                        var previousDate = myObj.timer_time;
+                        timer.innerHTML = getTimeDifferenceInSeconds(previousDate, "fan");
+
+                        speedLabel.innerHTML = myObj.speed;
+
+                        if (myObj.state == "ON") {
+                            button.innerHTML = "OFF";
+                            button.classList.remove("btn-success");
+                            button.classList.add("btn-danger");
+                        } else if (myObj.state == "OFF") {
+                            button.innerHTML = "ON";
+                            button.classList.remove("btn-danger");
+                            button.classList.add("btn-success");
+                        }
+
+                    }
+                }
+            };
+            xmlhttp.open("POST", "getdata.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("table=fan&id=esp1&roomID=1");
         }
 
         function buttonClick(buttonName) {

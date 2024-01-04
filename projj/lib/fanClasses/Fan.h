@@ -44,8 +44,8 @@ public:
     }
     virtual void off() override
     {
-        speed = 0;
-        analogWrite(pin, speed);
+        speed = 255;
+        analogWrite(pin, 0);
         state = LOW;
     }
 
@@ -96,6 +96,11 @@ public:
     virtual int getSpeed()
     {
         return speed;
+    }
+
+    virtual void setSpeed(int s)
+    {
+        speed=s;
     }
 };
 
