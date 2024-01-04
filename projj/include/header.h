@@ -38,12 +38,10 @@ LedClass room2led(14, 35);
 Fan room1fan(18);
 
 DimUpCommand room2dimupcom(&room2rgb);
-DimDownCommand room2dimdowncom(&room2rgb);
 ChangeColorCommand room2chcolorcom(&room2rgb);
 TurnOnCommand room2rgboncom(&room2rgb);
 /////////////////////////////////////////////
 DimUpCommand room1dimupcom(&room1rgb);
-DimDownCommand room1dimdowncom(&room1rgb);
 ChangeColorCommand room1chcolorcom(&room1rgb);
 TurnOnCommand room1rgboncom(&room1rgb);
 SpeedUpCommand room1speedupcom(&room1fan);

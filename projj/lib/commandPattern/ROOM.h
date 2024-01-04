@@ -3,7 +3,6 @@
 
 #include <Command.h>
 #include <DimUpCommand.h>
-#include <DimDownCommand.h>
 #include <ChangeColorCommand.h>
 #include <LedClass.h>
 #include <RGB.h>
@@ -25,7 +24,6 @@ private:
     Command *ledoncommand; // i have to make it pointer because of polymorphism (that is how c++ works)
     Command *changecolorcommand;
     Command *dimupcommand;
-    Command *dimdowncommand;
     Command *fanoncommand;
     Command *speedupcommand;
     LedClass *led;
@@ -48,7 +46,6 @@ public:
         ledoncommand = noCmd;
         changecolorcommand = noCmd;
         dimupcommand = noCmd;
-        dimdowncommand = noCmd;
         presstvbuttoncommand = noCmd;
         speedupcommand = noCmd;
         led = &NoLed::getInstance();
@@ -74,11 +71,10 @@ public:
         fanoncommand = fanoncom;
         speedupcommand = speedupcom;
     }
-    void setRgb(RGB *r, Command *dimup, Command *dimdown, Command *changecolor)
+    void setRgb(RGB *r, Command *dimup, Command *changecolor)
     {
         rgb = r;
         dimupcommand = dimup;
-        dimdowncommand = dimdown;
         changecolorcommand = changecolor;
     }
 
@@ -233,7 +229,7 @@ public:
 
     void excDimDown()
     {
-        dimdowncommand->execute();
+        dimupcommand->undo();
     }
 
     void undoColor()
