@@ -29,12 +29,12 @@ const char *ssid = "PL";
 const char *password = "87654321";
 String postData = "";
 String payload = "";
-RGB room2rgb(23, 39, 8, RMT_CHANNEL_0);
+RGB room2rgb(23, 34, 8, RMT_CHANNEL_0);
 LedClass wifiLed(13);
-LedClass room3led(12, 32);
+LedClass room3led(12, 39);
 TV room3tv(2);
-RGB room1rgb(22, 34, 8, RMT_CHANNEL_1);
-LedClass room2led(14, 35);
+RGB room1rgb(22, 35, 8, RMT_CHANNEL_1);
+LedClass room2led(14, 32);
 Fan room1fan(18);
 
 DimUpCommand room2dimupcom(&room2rgb);
