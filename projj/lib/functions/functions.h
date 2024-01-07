@@ -1,6 +1,7 @@
 #include "room1functions.h"
 #include "room2functions.h"
 #include "room3functions.h"
+#include "sensors.h"
 
 void wificonnection()
 { // it tries to connected to wifi for 6 seconds after this it will contiune wihtout connection
@@ -69,6 +70,8 @@ void senddata()
   room1send();
   room2send();
   room3send();
+  temp_sensor();
+  smoke_sensor();
 }
 
 void getdata()
@@ -76,4 +79,8 @@ void getdata()
   room1get();
   room2get();
   room3get();
+  smoke_sensor_get();
+  door_get();
+  lcd_get();
 }
+

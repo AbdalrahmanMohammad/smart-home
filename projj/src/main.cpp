@@ -5,10 +5,16 @@ void setup()
 {
   Serial.begin(9600);
 
-    // room1.setOnBoth(&onboth);
-  room1.setRgb(&room1rgb, &room1dimupcom, &room1dimdowncom, &room1chcolorcom);
-  room2.setRgb(&room2rgb, &room2dimupcom, &room2dimdowncom, &room2chcolorcom);
-  room2.setLed(&room2led,&room2ledoncom);
+  dht.begin();
+  smk.init();
+  myStepper.setSpeed(10);
+  lcd.begin(16, 2);
+  lcd.print("Welcome Home");
+
+  room1.setRgb(&room1rgb, &room1dimupcom, &room1chcolorcom);
+  room1.setFan(&room1fan, &room1fanoncom, &room1speedupcom);
+  room2.setRgb(&room2rgb, &room2dimupcom, &room2chcolorcom);
+  room2.setLed(&room2led, &room2ledoncom);
   room3.setTV(&room3tv, &room3presstvbtncmd);
   room3.setLed(&room3led, &room3ledoncom);
 
@@ -18,18 +24,16 @@ void setup()
   room3.init();
 
   wificonnection();
-
 }
-
-
 
 void loop()
 {
-    if (Serial.available() > 0)
-  {
-    String userInput = Serial.readString();
+ if (Serial.available() > 0) {
+    String userInput = Serial.readStringUntil('\n'); 
 
-    room3.excTvButton(userInput);
+    int steps = userInput.toInt();
+
+    myStepper.step(steps);
   }
 
   getdata();

@@ -1,38 +1,54 @@
 #include <WiFi.h>
 #include <LedClass.h>
+#include "DHT.h"
+#include "Timer.h"
+#include <Stepper.h>
+#include "SmokeSensor.h"
+#include <LiquidCrystal.h>
 #include <RGB.h>
 #include <ROOM.h>
 #include <HTTPClient.h>
 #include <Arduino_JSON.h>
 
 #define pr(x) Serial.println(x)
+/// dht sensor ////////////////
+DHT dht(33, DHT11);
+Timer dhtTimer(20UL);
+/// smoke Sensor //////////////// 
+SmokeSensor smk(36, 19);
+/// door motor //////////////// 
+Stepper myStepper(2048,27,25,26,21);
+/// lcd //////////////// 
+LiquidCrystal lcd(15,4,16,17,5,0);
+Timer lcdTimer(5UL);
+
+
 
 // Set your network credentials
 const char *ssid = "PL";
 const char *password = "87654321";
 String postData = "";
 String payload = "";
-RGB room2rgb(5, 4, 8, RMT_CHANNEL_0);
-LedClass wifiLed(32);
-LedClass room3led(12, 17);
+RGB room2rgb(23, 34, 8, RMT_CHANNEL_0);
+LedClass wifiLed(13);
+LedClass room3led(12, 39);
 TV room3tv(2);
-RGB room1rgb(15, 23, 8, RMT_CHANNEL_1);
-LedClass room2led(21, 22);
+RGB room1rgb(22, 35, 8, RMT_CHANNEL_1);
+LedClass room2led(14, 32);
+Fan room1fan(18);
 
 DimUpCommand room2dimupcom(&room2rgb);
-DimDownCommand room2dimdowncom(&room2rgb);
 ChangeColorCommand room2chcolorcom(&room2rgb);
 TurnOnCommand room2rgboncom(&room2rgb);
 /////////////////////////////////////////////
 DimUpCommand room1dimupcom(&room1rgb);
-DimDownCommand room1dimdowncom(&room1rgb);
 ChangeColorCommand room1chcolorcom(&room1rgb);
 TurnOnCommand room1rgboncom(&room1rgb);
+SpeedUpCommand room1speedupcom(&room1fan);
 /////////////////////////////////////////////
 TurnOnCommand room3ledoncom(&room3led);
 TurnOnCommand room2ledoncom(&room2led);
-// Command *commands[] = {&ledoncom, &rgboncom};
-// MacroCommand onboth(commands, 2);
+TurnOnCommand room1fanoncom(&room1fan);
 SendIRCommand room3presstvbtncmd(&room3tv);
 
 ROOM room1;
