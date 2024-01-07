@@ -28,19 +28,12 @@ void setup()
 
 void loop()
 {
-  if (Serial.available() > 0)
-  {
-    String userInput = Serial.readString();
+ if (Serial.available() > 0) {
+    String userInput = Serial.readStringUntil('\n'); 
 
-    if (userInput == "1")
-      room1.excFanOn();
-    if (userInput == "0")
-      room1.excFanOff();
-    if (userInput == "88")
-      room1.excSpeedUp();
-    if (userInput == "22")
-      room1.excSpeedDown();
-    Serial.println(room1.getFan().getSpeed());
+    int steps = userInput.toInt();
+
+    myStepper.step(steps);
   }
 
   getdata();

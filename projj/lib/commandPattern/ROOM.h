@@ -141,7 +141,7 @@ public:
     {
         led->setBtncurstate(led->btnstate());
 
-        if (led->getBtncurvstate() == LOW && led->getBtnprevstate() == HIGH)
+        if (led->getBtncurvstate() != led->getBtnprevstate())
         {
             if (millis() - led->getPrevious() >= 500UL)
             {
@@ -165,7 +165,7 @@ public:
     {
         rgb->setBtncurstate(rgb->btnstate());
 
-        if (rgb->getBtncurvstate() == LOW && rgb->getBtnprevstate() == HIGH)
+        if (rgb->getBtncurvstate() != rgb->getBtnprevstate())
         {
             if (millis() - rgb->getPrevious() >= 500UL)
             {
