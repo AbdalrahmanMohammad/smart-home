@@ -275,7 +275,7 @@
         function setTimer(itemID) {   // for put timer to toggleflag
             var secondsValue = document.getElementById(itemID).value;
             xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", "updatetimer.php", true);
+            xmlhttp.open("POST", "../controlData/updatetimer.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             if (itemID == 'tvseconds') {
                 xmlhttp.send("table=tv&id=esp1&roomID=3&timer=" + encodeURIComponent(secondsValue));
@@ -290,7 +290,7 @@
             var button = document.getElementById("myButton");
             xmlhttp = new XMLHttpRequest();
 
-            xmlhttp.open("POST", "updatestate.php", true);
+            xmlhttp.open("POST", "../controlData/updatestate.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             if (button.innerHTML == "OFF") {
                 xmlhttp.send("table=led&id=esp1&roomID=3&state=OFF&changed_by=room3page");
@@ -311,7 +311,7 @@
         function irsignal(code) {   // for put timer to toggle
             xmlhttp = new XMLHttpRequest();
 
-            xmlhttp.open("POST", "updatetv.php", true);
+            xmlhttp.open("POST", "../controlData/updatetv.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send("id=esp1&roomID=3&signal_value=" + code);
         }
@@ -366,7 +366,7 @@
                     }
                 }
             };
-            xmlhttp.open("POST", "getdata.php", true);
+            xmlhttp.open("POST", "../controlData/getdata.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send("id=esp1&table=tv&roomID=3");
         }
@@ -397,7 +397,7 @@
                     }
                 }
             };
-            xmlhttp.open("POST", "getdata.php", true);
+            xmlhttp.open("POST", "../controlData/getdata.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send("id=esp1&table=led&roomID=3");
 

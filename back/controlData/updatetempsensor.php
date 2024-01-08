@@ -1,5 +1,5 @@
 <?php
-require 'database.php';
+require '../database.php';
 
 //---------------------------------------- Condition to check that POST value is not empty.
 if (!empty($_POST)) {

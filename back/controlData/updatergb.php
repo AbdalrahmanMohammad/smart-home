@@ -1,5 +1,5 @@
 <?php
-require 'database.php'; // dimup_flag, dimdown_flag, color from web page // brightness from esp32
+require '../database.php'; // dimup_flag, dimdown_flag, color from web page // brightness from esp32
 
 if (!empty($_POST)) {
     //........................................ keep track POST values

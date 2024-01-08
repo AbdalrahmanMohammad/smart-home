@@ -112,7 +112,7 @@
       var secondsValue = document.getElementById('seconds').value;
       xmlhttp = new XMLHttpRequest();
 
-      xmlhttp.open("POST", "../updatetimer.php", true);
+      xmlhttp.open("POST", "../controlData/updatetimer.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xmlhttp.send("id=esp01&table=plug&roomID=-&timer=" + encodeURIComponent(secondsValue));
 
@@ -125,7 +125,7 @@
       var button = document.getElementById("myButton");
       xmlhttp = new XMLHttpRequest();
 
-      xmlhttp.open("POST", "../updatestate.php", true);
+      xmlhttp.open("POST", "../controlData/updatestate.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       if (button.innerHTML == "OFF") {
         xmlhttp.send("id=esp01&table=plug&roomID=-&state=OFF&changed_by=smartplug");
@@ -195,7 +195,7 @@
           }
         }
       };
-      xmlhttp.open("POST", "../getdata.php", true);
+      xmlhttp.open("POST", "../controlData/getdata.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xmlhttp.send("id=esp01&table=plug&roomID=-");
     }

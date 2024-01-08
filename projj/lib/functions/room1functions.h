@@ -32,7 +32,7 @@ void control_room1_rgb()
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetimer.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -52,7 +52,7 @@ void control_room1_rgb()
     postData += "&roomID=1";
     postData += "&color_flag=-1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -68,7 +68,7 @@ void control_room1_rgb()
     postData += "&roomID=1";
     postData += "&dimup_flag=-1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -84,7 +84,7 @@ void control_room1_rgb()
     postData += "&roomID=1";
     postData += "&dimdown_flag=-1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -100,7 +100,7 @@ void control_room1_rgb()
     postData += "&roomID=1";
     postData += "&undo_flag=-1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -115,7 +115,7 @@ void control_room1_rgb()
     postData += "&roomID=1";
     postData += "&brightness=" + String(room1.getRgb().getBrightness());
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatergb.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -171,7 +171,7 @@ void control_room1_fan()
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetimer.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -186,7 +186,7 @@ void control_room1_fan()
     postData += "&roomID=1";
     postData += "&speedup_flag=-1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatefan.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatefan.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -202,7 +202,7 @@ void control_room1_fan()
     postData += "&roomID=1";
     postData += "&speeddown_flag=-1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatefan.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatefan.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -217,7 +217,7 @@ void control_room1_fan()
     postData += "&roomID=1";
     postData += "&speed=" + String(room1.getFan().getSpeed());
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatefan.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatefan.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -237,7 +237,7 @@ void room1get()
     postData += "&table=rgb";
     postData += "&roomID=1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/getdata.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -253,7 +253,7 @@ void room1get()
     postData += "&table=fan";
     postData += "&roomID=1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/getdata.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -283,7 +283,7 @@ void room1send()
     postData += (room1.rgbbuttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + FAN_State;
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatestate.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
@@ -308,7 +308,7 @@ void room1send()
     postData += "&changed_by=timer";
      postData += "&state=" + FAN_State;
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatestate.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing

@@ -21,7 +21,7 @@ void control_room3_tv()
     postData += "&roomID=3";
     postData += "&signal_value=-1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetv.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetv.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -43,7 +43,7 @@ void control_room3_tv()
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetimer.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -85,7 +85,7 @@ void control_room3_led()
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetimer.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -103,7 +103,7 @@ void room3get()
     postData += "&table=tv";
     postData += "&roomID=3";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/getdata.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -119,7 +119,7 @@ void room3get()
     postData += "&table=led";
     postData += "&roomID=3";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/getdata.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -148,7 +148,7 @@ void room3send()
     postData+= (room3.ledbuttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + LED_State;
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatestate.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing

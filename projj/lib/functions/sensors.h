@@ -53,7 +53,7 @@ void temp_sensor()
     postData += "&humidity=" + humidity;
 
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetempsensor.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetempsensor.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
@@ -74,7 +74,7 @@ void smoke_sensor()
     postData += "&fire=true";
 
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatesmokesensor.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatesmokesensor.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
@@ -90,7 +90,7 @@ void smoke_sensor_get()
     int httpCode;
     postData = "id=esp1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/getsmokesensor.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/getsmokesensor.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -116,7 +116,7 @@ void door_get()
     int httpCode;
     postData = "id=esp1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/controldoor.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/controldoor.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -144,7 +144,7 @@ void door_get()
       postData += "&state=" + doorstate;
       postData += "&flag=0";
       payload = "";
-      http.begin("http://192.168.8.110/GP/back/controldoor.php");
+      http.begin("http://192.168.8.110/GP/back/controlData/controldoor.php");
       http.addHeader("Content-Type", "application/x-www-form-urlencoded");
       httpCode = http.POST(postData);
       payload = http.getString(); // returns nothing
@@ -161,7 +161,7 @@ void lcd_get()
     int httpCode;
     postData = "id=esp1";
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/getlcd.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/getlcd.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();

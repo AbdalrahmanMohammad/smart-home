@@ -237,7 +237,7 @@
             function setTimer(itemID) {
                 var secondsValue = document.getElementById(itemID).value;
                 xmlhttp = new XMLHttpRequest();
-                xmlhttp.open("POST", "updatetimer.php", true);
+                xmlhttp.open("POST", "../controlData/updatetimer.php", true);
 
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (itemID == 'rgbseconds') {
@@ -252,7 +252,7 @@
                 var button = document.getElementById(itemID);
                 xmlhttp = new XMLHttpRequest();
 
-                xmlhttp.open("POST", "updatestate.php", true);
+                xmlhttp.open("POST", "../controlData/updatestate.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
                     if (itemID == 'rgbButton')
@@ -330,7 +330,7 @@
                         }
                     }
                 };
-                xmlhttp.open("POST", "getdata.php", true);
+                xmlhttp.open("POST", "../controlData/getdata.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xmlhttp.send("id=esp1&table=led&roomID=2");
 
@@ -366,7 +366,7 @@
                         }
                     }
                 };
-                xmlhttp.open("POST", "getdata.php", true);
+                xmlhttp.open("POST", "../controlData/getdata.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xmlhttp.send("table=rgb&id=esp1&roomID=2");
 
@@ -375,7 +375,7 @@
 
             function buttonClick(buttonName) { // dimdown and up
                 xmlhttp = new XMLHttpRequest();
-                xmlhttp.open("POST", "updatergb.php", true);
+                xmlhttp.open("POST", "../controlData/updatergb.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if ((buttonName == 'button1'))
                     xmlhttp.send("id=esp1&roomID=2&dimup_flag=1");
@@ -393,7 +393,7 @@
                     myButton.click();
                 } else {
                     var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open("POST", "updatergb.php", true);
+                    xmlhttp.open("POST", "../controlData/updatergb.php", true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("id=esp1&roomID=2&color_flag=1&color=" + encodeURIComponent(colorValue));
                 }
@@ -402,7 +402,7 @@
 
             function undo() {
                 xmlhttp = new XMLHttpRequest();
-                xmlhttp.open("POST", "updatergb.php", true);
+                xmlhttp.open("POST", "../controlData/updatergb.php", true);
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xmlhttp.send("id=esp1&roomID=2&undo_flag=1");
             }

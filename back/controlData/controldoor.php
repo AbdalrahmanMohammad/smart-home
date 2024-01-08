@@ -1,5 +1,5 @@
 <?php
-require 'database.php';
+require '../database.php';
 
 if (!empty($_POST)) {// if it gets state and flag then it updates them, else it will return the value of them
     $id = $_POST['id'];
