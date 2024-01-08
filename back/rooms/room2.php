@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+session_start();
+if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))) && (strpos($_SESSION['role'], '2') == false) ) {
+    header("location: ../index.php?loginError=1");
+    exit;
+}
+?>
 
 <head>
     <title>Room2</title>
@@ -96,8 +103,7 @@
             margin-bottom: 10px;
         }
 
-        #ledseconds
-        {
+        #ledseconds {
             width: 100%;
         }
 
@@ -215,9 +221,8 @@
         <div id="leddiv" class="modal-body text-center">
             <div>
                 <label id="ledtimerlabel">set a timer</label>
-                    <input type='number' class='form-control' id='ledseconds' min='0'
-                        oninput="validity.valid||(value='');">
-                    <button onclick="setTimer('ledseconds')" class='btn btn-warning mt-3'>Set</button>
+                <input type='number' class='form-control' id='ledseconds' min='0' oninput="validity.valid||(value='');">
+                <button onclick="setTimer('ledseconds')" class='btn btn-warning mt-3'>Set</button>
             </div>
         </div>
 
@@ -279,7 +284,7 @@
             setInterval(Get_Data, 500);
 
             //------------------------------------------------------------
-            function getTimeDifferenceInSeconds(databaseTime,buttonID) {
+            function getTimeDifferenceInSeconds(databaseTime, buttonID) {
 
                 var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
 
@@ -314,7 +319,7 @@
                             var timer = document.getElementById("ledtimerlabel");
 
                             var previousDate = myObj.timer_time;
-                            timer.innerHTML = getTimeDifferenceInSeconds(previousDate,"ledButton");
+                            timer.innerHTML = getTimeDifferenceInSeconds(previousDate, "ledButton");
 
 
                             if (myObj.state == "ON") {
@@ -349,7 +354,7 @@
                             var brightnessLabel = document.getElementById("brightlabel");
 
                             var previousDate = myObj.timer_time;
-                            timer.innerHTML = getTimeDifferenceInSeconds(previousDate,"rgbButton");
+                            timer.innerHTML = getTimeDifferenceInSeconds(previousDate, "rgbButton");
 
                             brightnessLabel.innerHTML = myObj.brightness;
 

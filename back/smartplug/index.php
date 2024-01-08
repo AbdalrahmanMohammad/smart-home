@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
-
+<?php
+    session_start();
+    if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin')))) {
+      header("location: ../index.php?loginError=1");
+      exit;
+    }
+    ?>
 <head>
   <title>Smart Plug</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">

@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+session_start();
+if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))) && (strpos($_SESSION['role'], '3') == false) ) {
+    header("location: ../index.php?loginError=1");
+    exit;
+}
+?>
 
 <head>
     <title>Room3</title>
@@ -160,7 +167,6 @@
         #leddiv {
             text-align: center;
         }
-
     </style>
 </head>
 
