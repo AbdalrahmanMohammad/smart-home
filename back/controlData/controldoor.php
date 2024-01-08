@@ -1,7 +1,7 @@
 <?php
 require '../database.php';
 require 'Class.authorization.php';
-if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'])) {
+if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password']??null)) {
     // if it gets state and flag then it updates them, else it will return the value of them
     $id = $_POST['id'];
     $state = $_POST['state'] ?? null;

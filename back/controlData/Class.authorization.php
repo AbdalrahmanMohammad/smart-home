@@ -1,13 +1,20 @@
 <?php
-// require_once("Class.Tools.php");
+require_once("../Class.Tools.php");
 require_once '../database.php';
 
 class authorization
 {
     static function authorize($userName, $password)
-    {
-        // $userName = Tools::cleanData($userName);
-        // $password = Tools::cleanData($password);
+    {// if i get password then it is the microcontroller and it has accessability to everything
+        // if password is null then it is a user and he must have a session
+        $userName = Tools::cleanData($userName);
+        $password = Tools::cleanData($password);
+        if ($password == null) {
+            session_start();
+            if ($_SESSION['login'] == false)
+                return false;
+            return true;
+        }
 
         $pdo = Database::connect();
         $sql = "SELECT * FROM authorization WHERE id = ?";
@@ -22,9 +29,9 @@ class authorization
             } else {
                 return false;
             }
-        } 
+        }
         Database::disconnect();
-        return false;// in case a problem with accessing Data base(prevent the suer from access)
+        return false; // in case a problem with accessing Data base(prevent the suer from access)
     }
 }
 ?>

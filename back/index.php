@@ -2,7 +2,7 @@
 	require 'Class.login.php';
 	
 	if ( !empty($_POST)){
-	 login::checkIn($_POST['Username'],$_POST['password']);
+	 login::checkIn($_POST['Username'],$_POST['password']??null);
 	} 
 ?>
 <!DOCTYPE html>
