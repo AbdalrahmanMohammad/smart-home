@@ -8,7 +8,7 @@
     }
     ?>
 <head>
-  <title>Smart Plug</title>
+  <title>Smart socket</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -79,7 +79,7 @@
 <body>
   <div class="container">
     <div class="btn-container">
-      <h1 class="mt-5">Smart Plug</h1>
+      <h1 class="mt-5">Smart socket</h1>
       <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()"
         onmousedown="startTimer()" onmouseup="endTimer()" class="btn btn-lg btn-danger mt-3">OFF</button>
     </div>
@@ -88,7 +88,7 @@
       <div>
         <button type="button" class="btn-close" aria-label="Close" onclick="$('#actionContainer').toggle();">
         </button>
-        <h3 class="modal-title" for='colorInput'>Smart Plug</h3>
+        <h3 class="modal-title" for='colorInput'>Smart socket</h3>
       </div>
       <div id="leddiv" class="modal-body text-center">
         <div>
@@ -120,7 +120,7 @@
 
       xmlhttp.open("POST", "../controlData/updatetimer.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.send("id=esp01&table=plug&roomID=-&timer=" + encodeURIComponent(secondsValue));
+      xmlhttp.send("id=esp01&table=socket&roomID=-&timer=" + encodeURIComponent(secondsValue));
 
     }
 
@@ -134,13 +134,13 @@
       xmlhttp.open("POST", "../controlData/updatestate.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       if (button.innerHTML == "OFF") {
-        xmlhttp.send("id=esp01&table=plug&roomID=-&state=OFF&changed_by=smartplug");
+        xmlhttp.send("id=esp01&table=socket&roomID=-&state=OFF&changed_by=smartsocket");
         button.innerHTML = "ON";
         button.classList.remove("btn-danger");
         button.classList.add("btn-success");
       }
       else {
-        xmlhttp.send("id=esp01&table=plug&roomID=-&state=ON&changed_by=smartplug");
+        xmlhttp.send("id=esp01&table=socket&roomID=-&state=ON&changed_by=smartsocket");
         button.innerHTML = "OFF";
         button.classList.remove("btn-success");
         button.classList.add("btn-danger");
@@ -170,7 +170,7 @@
       var btnnextstate=button.innerHTML=="OFF"?"OFF":"ON";
     
       if (timeDifferenceInSeconds<0) return "set a timer";
-    return "your plug will be "+btnnextstate+" after "+timeDifferenceInSeconds;
+    return "your socket will be "+btnnextstate+" after "+timeDifferenceInSeconds;
 }
     //------------------------------------------------------------
     function Get_Data(id) {
@@ -203,7 +203,7 @@
       };
       xmlhttp.open("POST", "../controlData/getdata.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.send("id=esp01&table=plug&roomID=-");
+      xmlhttp.send("id=esp01&table=socket&roomID=-");
     }
     //------------------------------------------------------------
 

@@ -151,7 +151,7 @@
     <a href="../rooms/room1.php" class="btn btn-info custom-button btn3">Room 1</a>
     <a href="../rooms/room2.php" class="btn btn-info custom-button btn3">Room 2</a>
     <a href="../rooms/room3.php" class="btn btn-info custom-button btn3">Room 3</a>
-    <a href="../smartplug" class="btn btn-info custom-button btn3">Smart plug</a>
+    <a href="../smartsocket" class="btn btn-info custom-button btn3">Smart socket</a>
     <a href="../logout.php" class="btn btn-danger custom-button btn4">Logout</a>
 
   </div>

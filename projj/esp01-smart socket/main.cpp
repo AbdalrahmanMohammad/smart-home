@@ -62,7 +62,7 @@ void control()
     int httpCode;
     postData = "id=esp01";
     postData += "&roomID=-";
-    postData += "&table=plug";
+    postData += "&table=socket";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
     postData += "&password=" + authorizationPassword;
@@ -83,7 +83,7 @@ void getdata()
     HTTPClient http;
     int httpCode;
     postData = "id=esp01";
-    postData += "&table=plug";
+    postData += "&table=socket";
     postData += "&roomID=-";
     postData += "&password=" + authorizationPassword;
 
@@ -112,7 +112,7 @@ void senddata()
 
     postData = "id=esp01";
     postData += "&roomID=-";
-    postData += "&table=plug";
+    postData += "&table=socket";
     postData += "&changed_by=";
     postData += (buttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + LED_State;

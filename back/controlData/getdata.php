@@ -20,7 +20,7 @@ if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password']?
         $date = date_create($row['date']);
         $dateFormat = date_format($date, "d-m-Y");
 
-        if ($table != "tv")// just for led & rgb & plug & fan
+        if ($table != "tv")// just for led & rgb & socket & fan
         {
             $myObj->state = $row['state'];
         }
