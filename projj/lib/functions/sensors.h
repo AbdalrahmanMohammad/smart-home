@@ -81,6 +81,16 @@ void smoke_sensor()
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
     http.end();
+
+    postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/mail/sendForAll.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString(); // return nothing
+    http.end();
+
   }
 }
 

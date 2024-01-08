@@ -11,7 +11,9 @@ $message = "You're house is on fire!!!";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+require '../controlData/Class.authorization.php';
 
+if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'])) { // password can't be null because just the ESP is what uses this php file
 
 require './PHPMailer/src/Exception.php';
 require './PHPMailer/src/PHPMailer.php';
@@ -50,3 +52,5 @@ try {
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
+}
+?>
