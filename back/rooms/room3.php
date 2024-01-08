@@ -299,13 +299,13 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             xmlhttp.open("POST", "../controlData/updatestate.php", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             if (button.innerHTML == "OFF") {
-                xmlhttp.send("table=led&id=esp1&roomID=3&state=OFF&changed_by=room3page");
+                xmlhttp.send("table=led&id=esp1&roomID=3&state=OFF&changed_by=<?php echo ($_SESSION['userName']); ?>");
                 button.innerHTML = "ON";
                 button.classList.remove("btn-danger");
                 button.classList.add("btn-success");
             }
             else {
-                xmlhttp.send("table=led&id=esp1&roomID=3&state=ON&changed_by=room3page");
+                xmlhttp.send("table=led&id=esp1&roomID=3&state=ON&changed_by=<?php echo ($_SESSION['userName']); ?>");
                 button.innerHTML = "OFF";
                 button.classList.remove("btn-success");
                 button.classList.add("btn-danger");

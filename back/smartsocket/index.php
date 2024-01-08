@@ -134,13 +134,13 @@
       xmlhttp.open("POST", "../controlData/updatestate.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       if (button.innerHTML == "OFF") {
-        xmlhttp.send("id=esp01&table=socket&roomID=-&state=OFF&changed_by=smartsocket");
+        xmlhttp.send("id=esp01&table=socket&roomID=-&state=OFF&changed_by=<?php echo ($_SESSION['userName']); ?>");
         button.innerHTML = "ON";
         button.classList.remove("btn-danger");
         button.classList.add("btn-success");
       }
       else {
-        xmlhttp.send("id=esp01&table=socket&roomID=-&state=ON&changed_by=smartsocket");
+        xmlhttp.send("id=esp01&table=socket&roomID=-&state=ON&changed_by=<?php echo ($_SESSION['userName']); ?>");
         button.innerHTML = "OFF";
         button.classList.remove("btn-success");
         button.classList.add("btn-danger");

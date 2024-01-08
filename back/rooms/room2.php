@@ -261,18 +261,18 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
                 xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 if (button.innerHTML == "OFF") {
                     if (itemID == 'rgbButton')
-                        xmlhttp.send("table=rgb&id=esp1&roomID=2&state=OFF&changed_by=room2page");
+                        xmlhttp.send("table=rgb&id=esp1&roomID=2&state=OFF&changed_by=<?php echo ($_SESSION['userName']); ?>");
                     else if (itemID == 'ledButton')
-                        xmlhttp.send("table=led&id=esp1&roomID=2&state=OFF&changed_by=room2page");
+                        xmlhttp.send("table=led&id=esp1&roomID=2&state=OFF&changed_by=<?php echo ($_SESSION['userName']); ?>");
                     button.innerHTML = "ON";
                     button.classList.remove("btn-danger");
                     button.classList.add("btn-success");
                 }
                 else {
                     if (itemID == 'rgbButton')
-                        xmlhttp.send("table=rgb&id=esp1&roomID=2&state=ON&changed_by=room2page");
+                        xmlhttp.send("table=rgb&id=esp1&roomID=2&state=ON&changed_by=<?php echo ($_SESSION['userName']); ?>");
                     else if (itemID == 'ledButton')
-                        xmlhttp.send("table=led&id=esp1&roomID=2&state=ON&changed_by=room2page");
+                        xmlhttp.send("table=led&id=esp1&roomID=2&state=ON&changed_by=<?php echo ($_SESSION['userName']); ?>");
                     button.innerHTML = "OFF";
                     button.classList.remove("btn-success");
                     button.classList.add("btn-danger");
