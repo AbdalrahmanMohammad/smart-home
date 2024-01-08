@@ -5,6 +5,7 @@
   <title>Admin Page</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <style>
     /* Custom CSS for the page background with linear gradient */
@@ -156,15 +157,18 @@
 
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
   <script>
+    let fireFlag = false;
+
     // Update the clock every second
     function updateClock() {
-      var now = new Date();
-      var hours = now.getHours().toString().padStart(2, '0');
-      var minutes = now.getMinutes().toString().padStart(2, '0');
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
 
       document.getElementById('clock').innerText = hours + ':' + minutes;
     }
@@ -172,5 +176,48 @@
     // Update temperature and humidity (placeholders in this example)
     function updateTempHumidity() {
       document.getElementById('temperature').innerText = '25°C'; // Placeholder, replace with real data
-      document.getElementById('humidity').innerText = "10%";
+      document.getElementById('humidity').innerText = '10%';
     }
+
+    setInterval(Get_Data_rgb, 500);
+
+    function Get_Data_rgb() {
+      const xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const myObj = JSON.parse(this.responseText);
+          if (myObj.id == 'esp1') {
+            if (myObj.fire == 'true' && !fireFlag) {
+              fireFlag = true;
+
+              Swal.fire({
+                title: 'THE HOUSE IS ON FIRE',
+                text: 'Smoke sensor detected smoke in the house',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Stop the Alert',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  Swal.fire({
+                    title: 'Alert stopped!',
+                    text: 'Thanks for dealing with the situation',
+                    icon: 'success',
+                  });
+                  fireFlag = false;
+                  xmlhttp.open('POST', '../controlData/updatesmokesensor.php', true);
+                  xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                  xmlhttp.send('id=esp1&fire=false');
+                }
+              });
+            }
+          }
+        }
+      };
+
+      xmlhttp.open('POST', '../controlData/getsmokesensor.php', true);
+      xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      xmlhttp.send('id=esp1');
+    }
+
+  </script>

@@ -4,7 +4,7 @@
 $name = "PTUK-SmartHome";
 $email = $_POST["email"];
 $subject = "Safety Alert";
-$message = "You're house is on fire!!!";
+$message = "Your house is on fire!!!";
 
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
