@@ -1,7 +1,7 @@
 <?php
 require '../database.php'; // dimup_flag, dimdown_flag, color from web page // brightness from esp32
-
-if (!empty($_POST)) {
+require 'Class.authorization.php';
+if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'])) {
     //........................................ keep track POST values
     $id = $_POST['id'];
     $roomID = $_POST['roomID'];

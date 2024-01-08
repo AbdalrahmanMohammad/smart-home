@@ -1,7 +1,7 @@
 <?php
 require '../database.php';
-
-if (!empty($_POST)) {
+require 'Class.authorization.php';
+if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'])) {
     //........................................ keep track POST values
     $id = $_POST['id'];
     $roomID = $_POST['roomID'];

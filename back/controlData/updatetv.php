@@ -1,7 +1,7 @@
 <?php
 require '../database.php';
-
-if (!empty($_POST)) {
+require 'Class.authorization.php';
+if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'])) {
     // ........................................ keep track POST values
     $id = $_POST['id'];
     $roomID = $_POST['roomID'];
@@ -12,7 +12,6 @@ if (!empty($_POST)) {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if ($signal_value !== null) {
-        // Use a ternary operator to conditionally set the SQL string
         $sql = ($signal_value == "toggle")
             ? "UPDATE tv SET signal_value = ?, time = NOW(), date = NOW() WHERE id = ? AND roomID = ?"
             : "UPDATE tv SET signal_value = ? WHERE id = ? AND roomID = ?";

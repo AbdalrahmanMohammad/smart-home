@@ -1,7 +1,7 @@
 <?php
 include '../database.php';
-
-if (!empty($_POST)) {
+require 'Class.authorization.php';
+if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'])) {
 
     $id = $_POST['id'];
 

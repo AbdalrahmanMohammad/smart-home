@@ -29,6 +29,7 @@ const char *ssid = "PL";
 const char *password = "87654321";
 String postData = "";
 String payload = "";
+String authorizationPassword="esp1";
 RGB room2rgb(23, 34, 8, RMT_CHANNEL_0);
 LedClass wifiLed(13);
 LedClass room3led(12, 39);

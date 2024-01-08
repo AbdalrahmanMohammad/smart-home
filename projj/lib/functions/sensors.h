@@ -51,6 +51,7 @@ void temp_sensor()
     postData = "id=esp1";
     postData += "&temperature=" + temperature;
     postData += "&humidity=" + humidity;
+    postData += "&password=" + authorizationPassword;
 
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatetempsensor.php");
@@ -72,6 +73,7 @@ void smoke_sensor()
 
     postData = "id=esp1";
     postData += "&fire=true";
+    postData += "&password=" + authorizationPassword;
 
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatesmokesensor.php");
@@ -89,6 +91,8 @@ void smoke_sensor_get()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/getsmokesensor.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -115,6 +119,8 @@ void door_get()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/controldoor.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -143,6 +149,7 @@ void door_get()
       postData = "id=esp1";
       postData += "&state=" + doorstate;
       postData += "&flag=0";
+      postData += "&password=" + authorizationPassword;
       payload = "";
       http.begin("http://192.168.8.110/GP/back/controlData/controldoor.php");
       http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -160,6 +167,7 @@ void lcd_get()
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/getlcd.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");

@@ -33,6 +33,8 @@ void control_room2_rgb()
     postData += "&table=rgb";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -53,6 +55,8 @@ void control_room2_rgb()
     postData = "id=esp1";
     postData += "&roomID=2";
     postData += "&color_flag=-1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -69,6 +73,8 @@ void control_room2_rgb()
     postData = "id=esp1";
     postData += "&roomID=2";
     postData += "&dimup_flag=-1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -85,6 +91,8 @@ void control_room2_rgb()
     postData = "id=esp1";
     postData += "&roomID=2";
     postData += "&dimdown_flag=-1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -101,6 +109,8 @@ void control_room2_rgb()
     postData = "id=esp1";
     postData += "&roomID=2";
     postData += "&undo_flag=-1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -116,6 +126,8 @@ void control_room2_rgb()
     postData = "id=esp1";
     postData += "&roomID=2";
     postData += "&brightness=" + String(room2.getRgb().getBrightness());
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatergb.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -165,6 +177,8 @@ void control_room2_led()
     postData += "&table=led";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -173,7 +187,6 @@ void control_room2_led()
     http.end();
   }
 }
-
 
 void room2get()
 {
@@ -184,6 +197,8 @@ void room2get()
     postData = "id=esp1";
     postData += "&table=rgb";
     postData += "&roomID=2";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -194,13 +209,15 @@ void room2get()
     room2.startException = false;
   }
 
-    if (WiFi.status() == WL_CONNECTED)
+  if (WiFi.status() == WL_CONNECTED)
   {
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
     postData += "&table=led";
     postData += "&roomID=2";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -210,8 +227,6 @@ void room2get()
     control_room2_led();
   }
 }
-
-
 
 void room2send()
 {
@@ -230,18 +245,21 @@ void room2send()
     postData += "&roomID=2";
     postData += "&table=rgb";
     postData += "&changed_by=";
-    postData+= (room2.rgbbuttonclickedbytimer ? "timer" : "button");    postData += "&state=" + LED_State;
+    postData += (room2.rgbbuttonclickedbytimer ? "timer" : "button");
+    postData += "&state=" + LED_State;
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
     http.end();
-    room2.rgbbuttonclickedbytimer=false;
+    room2.rgbbuttonclickedbytimer = false;
   }
   // i put sending brightness in control_room2
 
-    if (WiFi.status() == WL_CONNECTED && room2.ledbuttonclicked == true)
+  if (WiFi.status() == WL_CONNECTED && room2.ledbuttonclicked == true)
   {
     room2.ledbuttonclicked = false;
     HTTPClient http;
@@ -251,13 +269,15 @@ void room2send()
       LED_State = "ON";
     else if (room2.getLed().isOn() == false)
       LED_State = "OFF";
- 
-     postData = "id=esp1";
+
+    postData = "id=esp1";
     postData += "&roomID=2";
     postData += "&table=led";
     postData += "&changed_by=";
-    postData+= (room2.ledbuttonclickedbytimer ? "timer" : "button");
+    postData += (room2.ledbuttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + LED_State;
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -266,5 +286,4 @@ void room2send()
     http.end();
     room2.ledbuttonclickedbytimer = false;
   }
-
 }

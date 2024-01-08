@@ -1,8 +1,7 @@
 <?php
 require '../database.php';
-
-//---------------------------------------- Condition to check that POST value is not empty.
-if (!empty($_POST)) {
+require 'Class.authorization.php';
+if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'])) {
     //........................................ keep track POST values
     $id = $_POST['id'];
     $temperature = $_POST['temperature'];

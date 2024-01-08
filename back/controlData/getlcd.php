@@ -1,16 +1,13 @@
 <?php
 include '../database.php';
-
-if (!empty($_POST)) {
-
+require 'Class.authorization.php';
+if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'])) {
     $id = $_POST['id'];
 
     $myObj = (object) array();
 
-    // Connect to the database
     $pdo = Database::connect();
 
-    // Retrieve data from the database
     $sql = "SELECT * FROM lcd WHERE id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array($id));
@@ -21,11 +18,9 @@ if (!empty($_POST)) {
         $myObj->id = $row['id'];
         $myObj->show = $row['show'];
 
-        // Get the current date and time for Jerusalem, Palestine timezone
         $timezone = new DateTimeZone('Asia/Jerusalem');
         $datetime = new DateTime('now', $timezone);
 
-        // Add date and time as separate properties
         $myObj->date = $datetime->format('Y-m-d');
         $myObj->time = $datetime->format('H:i');
 
@@ -43,7 +38,6 @@ if (!empty($_POST)) {
 
     $myJSON = json_encode($myObj);
     echo $myJSON;
-    // Disconnect from the database
     Database::disconnect();
 }
 ?>

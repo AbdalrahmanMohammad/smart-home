@@ -8,6 +8,7 @@
 WiFiClient client;
 const char *ssid = "PL";
 const char *password = "87654321";
+String authorizationPassword = "esp01";
 String postData = "";
 String payload = "";
 LedClass ledPin(0, 3);
@@ -64,6 +65,8 @@ void control()
     postData += "&table=plug";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin(client, "http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -82,6 +85,8 @@ void getdata()
     postData = "id=esp01";
     postData += "&table=plug";
     postData += "&roomID=-";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin(client, "http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -109,15 +114,17 @@ void senddata()
     postData += "&roomID=-";
     postData += "&table=plug";
     postData += "&changed_by=";
-    postData+= (buttonclickedbytimer ? "timer" : "button");
+    postData += (buttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + LED_State;
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin(client, "http://192.168.8.110/GP/back/controlData/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
     http.end();
-    buttonclickedbytimer=false;
+    buttonclickedbytimer = false;
   }
 }
 

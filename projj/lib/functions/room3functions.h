@@ -20,6 +20,8 @@ void control_room3_tv()
     postData = "id=esp1";
     postData += "&roomID=3";
     postData += "&signal_value=-1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatetv.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -42,6 +44,8 @@ void control_room3_tv()
     postData += "&table=tv";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -84,6 +88,8 @@ void control_room3_led()
     postData += "&table=led";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -102,6 +108,8 @@ void room3get()
     postData = "id=esp1";
     postData += "&table=tv";
     postData += "&roomID=3";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -111,13 +119,15 @@ void room3get()
     control_room3_tv();
   }
 
-    if (WiFi.status() == WL_CONNECTED) // for led
+  if (WiFi.status() == WL_CONNECTED) // for led
   {
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
     postData += "&table=led";
     postData += "&roomID=3";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -145,8 +155,10 @@ void room3send()
     postData += "&roomID=3";
     postData += "&table=led";
     postData += "&changed_by=";
-    postData+= (room3.ledbuttonclickedbytimer ? "timer" : "button");
+    postData += (room3.ledbuttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + LED_State;
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
     http.begin("http://192.168.8.110/GP/back/controlData/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
