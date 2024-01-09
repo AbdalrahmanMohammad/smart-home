@@ -390,7 +390,7 @@
     // Create humidity gauge
     var humidityGauge = new JustGage({
       id: "humidityGauge",
-      value: 75,
+      value: 0,
       min: 0,
       max: 100,
       title: "Humidity",
@@ -400,7 +400,7 @@
     // Create temperature gauge
     var temperatureGauge = new JustGage({
       id: "temperatureGauge",
-      value: 25.77,
+      value: 0,
       min: -50,
       max: 50,
       decimals: 1,
