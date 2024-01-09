@@ -30,13 +30,12 @@
             top: 1px;
             left: 10px;
             cursor: pointer;
-            font-size: 55px; /* Adjust the font size for a larger arrow */
+            font-size: 55px;
             background: none;
             border: none;
             color: #007bff;
         }
         @media (max-width: 768px) {
-            /* Simplify layout for smaller screens */
             .chart-container {
                 margin-top: 0;
             }
@@ -46,7 +45,7 @@
                 margin-bottom: 10px;
             }
             .chart-container {
-            width: 100%; /* Adjust to full width for smaller screens */
+            width: 100%; 
             margin-top: 20px;
         }
         }
@@ -106,7 +105,6 @@
             });
         }
 
-        // AJAX request to fetch data from the server
         function fetchData() {
             const xhr = new XMLHttpRequest();
             const dateInput = document.getElementById('dateInput').value;
@@ -115,7 +113,6 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     const data = JSON.parse(xhr.responseText);
 
-                    // Sample data (replace with your data)
                     const temperatureData = data.map(item => item.temperature);
                     const humidityData = data.map(item => item.humidity);
 
@@ -125,16 +122,15 @@
 
             xhr.open('POST', '../controlData/getaveragetemprecordss.php', true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send('id=esp1&date=' + encodeURIComponent(dateInput)); // Update with your credentials
+            xhr.send('id=esp1&date=' + encodeURIComponent(dateInput)); 
         }
 
-        // Function to go back to the previous page
         function goBack() {
             window.history.back();
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            fetchData(); // Initial fetch when the page loads
+            fetchData(); 
         });
     </script>
 </body>
