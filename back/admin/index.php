@@ -209,12 +209,12 @@
   </div>
 
   <div id="temperatureGauge"
-    style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;">
+    style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;margin-bottom:30px;">
     <h3 id="humlabel" style="margin: 0;">Temperature</h3>
   </div>
 
   <div id="humidityGauge"
-    style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;">
+    style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;margin-bottom:20px;">
     <h3 id="humlabel" style="margin: 0;">Humidity</h3>
   </div>
 

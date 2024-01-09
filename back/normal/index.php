@@ -90,24 +90,25 @@
 			.btn4 {
 				width: 18%;
 			}
+
+			#temperatureGauge {
+				/* Adjust width, margins, and other styles as needed */
+				position: absolute;
+				right: 50px;
+				top: 40%;
+
+
+			}
+
+
+			#humidityGauge {
+				/* Adjust width, margins, and other styles as needed */
+				position: absolute;
+				left: 70px;
+				top: 40%;
+
+			}
 		}
-		#temperatureGauge {
-        /* Adjust width, margins, and other styles as needed */
-        position: absolute;
-        right: 50px;
-        top: 40%;
-
-
-      }
-
-
-      #humidityGauge {
-        /* Adjust width, margins, and other styles as needed */
-        position: absolute;
-        left: 70px;
-        top: 40%;
-
-      }
 	</style>
 </head>
 
@@ -143,12 +144,12 @@
 
 		<a href="../logout.php" class="btn btn-danger custom-button btn4">Logout</a>
 		<div id="temperatureGauge"
-			style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;">
+			style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;margin-bottom:30px;margin-top:20px">
 			<h3 id="humlabel" style="margin: 0;">Temperature</h3>
 		</div>
 
 		<div id="humidityGauge"
-			style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;">
+			style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;margin-bottom:20px;">
 			<h3 id="humlabel" style="margin: 0;">Humidity</h3>
 		</div>
 	</div>
@@ -157,7 +158,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/dist/justgage.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/dist/justgage.min.js"></script>
 	<script>
 
 		window.onload = function () {// to update temperature and humidity as soon as i enter the page
