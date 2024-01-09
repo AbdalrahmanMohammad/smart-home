@@ -231,6 +231,12 @@
     let doorOpen = true;
     let defaultValue = "";// for the LCD
 
+    $(document).ready(function() {
+        $('#powerIcon').click(function () {
+          window.location.href = 'power_statictics.php';
+        });
+  });
+
     // Toggle door icon on click
     document.getElementById('doorIcon').addEventListener('click', function () {
       const xmlhttp = new XMLHttpRequest();
