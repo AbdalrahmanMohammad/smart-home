@@ -20,7 +20,7 @@ SmokeSensor smk(36, 19);
 Stepper myStepper(2048,27,25,26,21);
 /// lcd //////////////// 
 LiquidCrystal lcd(15,4,16,17,5,0);
-Timer lcdTimer(5UL);
+Timer lcdTimer(3UL);
 
 
 

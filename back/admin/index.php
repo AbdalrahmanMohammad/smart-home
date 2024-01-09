@@ -201,6 +201,7 @@
   <script>
     let fireFlag = false;
     let doorOpen = true;
+    let defaultValue = "";// for the LCD
 
     // Update the clock every second
     function updateClock() {
@@ -225,11 +226,11 @@
       if (doorOpen) {
         this.src = 'closed.png';
         xmlhttp.send('id=esp1&state=closed&flag=1');
-        doorOpen=false;
+        doorOpen = false;
       } else {
         this.src = 'open.png';
         xmlhttp.send('id=esp1&state=open&flag=1');
-        doorOpen=true;
+        doorOpen = true;
       }
     });
 
@@ -245,13 +246,13 @@
         if (this.readyState == 4 && this.status == 200) {
           const myObj = JSON.parse(this.responseText);
           if (myObj.id == 'esp1') {
-            if (myObj.state == 'open'&&doorOpen==false) {
-              document.getElementById('doorIcon').src='open.png';
-              doorOpen=true;
+            if (myObj.state == 'open' && doorOpen == false) {
+              document.getElementById('doorIcon').src = 'open.png';
+              doorOpen = true;
             }
-            else if (myObj.state == 'closed'&&doorOpen==true) {
-              document.getElementById('doorIcon').src='closed.png';
-              doorOpen=false;
+            else if (myObj.state == 'closed' && doorOpen == true) {
+              document.getElementById('doorIcon').src = 'closed.png';
+              doorOpen = false;
             }
           }
         }
@@ -261,7 +262,7 @@
       xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
       xmlhttp.send('id=esp1');
     }
-
+    ///////////////////////////////////// to check if there is fire
     function Get_Data_Fire() {
       const xmlhttp = new XMLHttpRequest();
 
@@ -269,6 +270,7 @@
         if (this.readyState == 4 && this.status == 200) {
           const myObj = JSON.parse(this.responseText);
           if (myObj.id == 'esp1') {
+            defaultValue = myObj.show;
             if (myObj.fire == 'true' && !fireFlag) {
               fireFlag = true;
 
@@ -296,10 +298,35 @@
         }
       };
 
-      xmlhttp.open('POST', '../controlData/getsmokesensor.php', true);
+      xmlhttp.open('POST', '../controlData/controllcd.php', true);// note i should have used getsmokesensor but since controllcd also return fire state i used it to get the default value for the lcd also, 2 in 1
       xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
       xmlhttp.send('id=esp1');
     }
+    //////////////////////////////// showing what LCD shows
+    document.getElementById('lcdIcon').addEventListener('click', async () => {
+      const xmlhttp = new XMLHttpRequest();
+      xmlhttp.open('POST', '../controlData/controllcd.php', true);
+      xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      const inputOptions = new Promise((resolve) => {
+        resolve({
+          "temp": "Temperature",
+          "time": "Time"
+        });
+      });
+
+      const { value: selectedOption } = await Swal.fire({
+        title: "LCD shows",
+        input: "radio",
+        inputOptions,
+        inputValue: defaultValue
+      });
+
+      if (selectedOption && selectedOption !== defaultValue) {// just if the user choosed other than the default option
+        var show = "&show=" + selectedOption;
+        xmlhttp.send('id=esp1' + show);
+      }
+    });
+
   </script>
 </body>
 

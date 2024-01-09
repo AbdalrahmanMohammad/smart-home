@@ -172,14 +172,14 @@ void door_get()
 
 void lcd_get()
 {
-  if (lcdTimer.clause() && WiFi.status() == WL_CONNECTED) // there is fire, and the user still didn't tell me that he managed the situation
+  if (lcdTimer.clause() && WiFi.status() == WL_CONNECTED)
   {
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
     postData += "&password=" + authorizationPassword;
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/controlData/getlcd.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/controllcd.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -190,7 +190,7 @@ void lcd_get()
       return;
     }
 
-    if (strcmp(myObject["fire"], "true") == 0)
+    if (strcmp(myObject["fire"], "true") == 0) // there is fire, and the user still didn't tell me that he managed the situation(didn't change the value in the data base)
     {
       printFire();
     }
