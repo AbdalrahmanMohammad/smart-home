@@ -127,6 +127,7 @@
         /* Set width to 100% for smaller screens (phones) */
       }
 
+
     }
 
     /* Media query for larger screens (PCs) */
@@ -154,6 +155,24 @@
 
       .btn4 {
         width: 18%;
+      }
+
+      #temperatureGauge {
+        /* Adjust width, margins, and other styles as needed */
+        position: absolute;
+        right: 50px;
+        top: 40%;
+
+
+      }
+
+
+      #humidityGauge {
+        /* Adjust width, margins, and other styles as needed */
+        position: absolute;
+        left: 70px;
+        top: 40%;
+
       }
 
     }
@@ -194,8 +213,22 @@
     <a href="../logout.php" class="btn btn-danger custom-button btn4">Logout</a>
   </div>
 
+  <div id="temperatureGauge"
+    style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;">
+    <h3 id="humlabel" style="margin: 0;">Temperature</h3>
+  </div>
+
+  <div id="humidityGauge"
+    style="display: flex; flex-direction: column-reverse; align-items: center; justify-content: center;">
+    <h3 id="humlabel" style="margin: 0;">Humidity</h3>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/dist/justgage.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
   <script>
@@ -234,11 +267,35 @@
       }
     });
 
+    window.onload = function () {// to update temperature and humidity as soon as i enter the page
+      Get_Data_Temp();
+    };
+
     setInterval(Get_Data, 500);
+    setInterval(Get_Data_Temp, 10000);//that is enough because the ESP sends a recorod each 20 seconds
     function Get_Data() {
       Get_Data_Fire();
       Get_Data_Door();
     }
+    function Get_Data_Temp() {
+      const xmlhttp = new XMLHttpRequest();
+      console.log("HI");
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const myObj = JSON.parse(this.responseText);
+          if (myObj.id == 'esp1') {
+            humidityGauge.refresh(myObj.humidity);
+            temperatureGauge.refresh(myObj.temperature);
+
+          }
+        }
+      };
+
+      xmlhttp.open('POST', '../controlData/gettemprecords.php', true);
+      xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      xmlhttp.send('id=esp1');
+    }
+    ////////////////////////////////////////
     function Get_Data_Door() {
       const xmlhttp = new XMLHttpRequest();
 
@@ -327,6 +384,29 @@
       }
     });
 
+
+    // ... (Your existing scripts) ...
+
+    // Create humidity gauge
+    var humidityGauge = new JustGage({
+      id: "humidityGauge",
+      value: 75,
+      min: 0,
+      max: 100,
+      title: "Humidity",
+      label: "%"
+    });
+
+    // Create temperature gauge
+    var temperatureGauge = new JustGage({
+      id: "temperatureGauge",
+      value: 25.77,
+      min: -50,
+      max: 50,
+      decimals: 1,
+      title: "Temperature",
+      label: "°C"
+    });
   </script>
 </body>
 
