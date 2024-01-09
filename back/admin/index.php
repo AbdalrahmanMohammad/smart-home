@@ -64,11 +64,6 @@
       margin-bottom: 20px;
     }
 
-    #clock {
-      font-size: 2.2em;
-      font-weight: bold;
-    }
-
     #info {
       font-size: 1.2em;
       margin-bottom: 20px;
@@ -235,21 +230,6 @@
     let fireFlag = false;
     let doorOpen = true;
     let defaultValue = "";// for the LCD
-
-    // Update the clock every second
-    function updateClock() {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-
-      document.getElementById('clock').innerText = hours + ':' + minutes;
-    }
-
-    // Update temperature and humidity (placeholders in this example)
-    function updateTempHumidity() {
-      document.getElementById('temperature').innerText = '25°C'; // Placeholder, replace with real data
-      document.getElementById('humidity').innerText = '10%';
-    }
 
     // Toggle door icon on click
     document.getElementById('doorIcon').addEventListener('click', function () {
