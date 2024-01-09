@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <title>Admin Page</title>
@@ -17,6 +17,38 @@
       flex-direction: column;
       align-items: center;
       color: white;
+    }
+
+    /* New style for the top bar */
+    .top-bar {
+      background-color: #2c3e50;
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-bar h2 {
+      margin: 0;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      margin-left: 10px;
+      /* Adjust margin as needed */
+    }
+
+    /* Media query for larger screens (PCs) */
+    @media (min-width: 992px) {
+      .icon {
+        width: 70px;
+        /* Adjust the icon size for larger screens */
+        height: 70px;
+      }
     }
 
     .container {
@@ -129,7 +161,15 @@
 </head>
 
 <body>
-  <div class="container mt-5">
+  <!-- Top bar -->
+  <div class="top-bar">
+    <img id="doorIcon" class="icon" src="open.png" alt="Door Icon">
+    <img id="tempIcon" class="icon" src="temp.webp" alt="temp Icon">
+    <img id="powerIcon" class="icon" src="power.png" alt="power Icon">
+    <img id="lcdIcon" class="icon" src="lcd.png" alt="lcd Icon">
+  </div>
+
+  <div class="container mt-3">
     <?php
     session_start();
     if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin')))) { // the second condition is !$_SESSION['role']=="admin"
@@ -143,8 +183,6 @@
       <div>Welcome:
         <?php echo $_SESSION['userName'] ?>
       </div>
-      <div id="clock"></div>
-      <div>Temperature: <span id="temperature">25°C</span>, Humidity: <span id="humidity">50%</span></div>
     </div>
 
     <a href="del.php" class="btn btn-primary custom-button btn1">Edit Users</a>
@@ -154,7 +192,6 @@
     <a href="../rooms/room3.php" class="btn btn-info custom-button btn3">Room 3</a>
     <a href="../smartsocket" class="btn btn-info custom-button btn3">Smart socket</a>
     <a href="../logout.php" class="btn btn-danger custom-button btn4">Logout</a>
-
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -163,6 +200,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
   <script>
     let fireFlag = false;
+    let doorOpen = true;
 
     // Update the clock every second
     function updateClock() {
@@ -179,9 +217,52 @@
       document.getElementById('humidity').innerText = '10%';
     }
 
-    setInterval(Get_Data_rgb, 500);
+    // Toggle door icon on click
+    document.getElementById('doorIcon').addEventListener('click', function () {
+      const xmlhttp = new XMLHttpRequest();
+      xmlhttp.open('POST', '../controlData/controldoor.php', true);
+      xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      if (doorOpen) {
+        this.src = 'closed.png';
+        xmlhttp.send('id=esp1&state=closed&flag=1');
+        doorOpen=false;
+      } else {
+        this.src = 'open.png';
+        xmlhttp.send('id=esp1&state=open&flag=1');
+        doorOpen=true;
+      }
+    });
 
-    function Get_Data_rgb() {
+    setInterval(Get_Data, 500);
+    function Get_Data() {
+      Get_Data_Fire();
+      Get_Data_Door();
+    }
+    function Get_Data_Door() {
+      const xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const myObj = JSON.parse(this.responseText);
+          if (myObj.id == 'esp1') {
+            if (myObj.state == 'open'&&doorOpen==false) {
+              document.getElementById('doorIcon').src='open.png';
+              doorOpen=true;
+            }
+            else if (myObj.state == 'closed'&&doorOpen==true) {
+              document.getElementById('doorIcon').src='closed.png';
+              doorOpen=false;
+            }
+          }
+        }
+      };
+
+      xmlhttp.open('POST', '../controlData/controldoor.php', true);
+      xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      xmlhttp.send('id=esp1');
+    }
+
+    function Get_Data_Fire() {
       const xmlhttp = new XMLHttpRequest();
 
       xmlhttp.onreadystatechange = function () {
@@ -219,5 +300,7 @@
       xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
       xmlhttp.send('id=esp1');
     }
-
   </script>
+</body>
+
+</html>

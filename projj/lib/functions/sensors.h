@@ -148,12 +148,12 @@ void door_get()
       String doorstate;
       if (strcmp(myObject["state"], "open") == 0)
       {
-        myStepper.step(100);
+        myStepper.step(666);
         doorstate = "open";
       }
       else if (strcmp(myObject["state"], "closed") == 0)
       {
-        myStepper.step(-100);
+        myStepper.step(-666);
         doorstate = "closed";
       }
       postData = "id=esp1";
