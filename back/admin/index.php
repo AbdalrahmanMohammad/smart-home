@@ -177,10 +177,10 @@
 <body>
   <!-- Top bar -->
   <div class="top-bar">
-    <img id="doorIcon" class="icon" src="open.png" alt="Door Icon">
-    <img id="tempIcon" class="icon" src="temp.webp" alt="temp Icon">
-    <img id="powerIcon" class="icon" src="power.png" alt="power Icon">
-    <img id="lcdIcon" class="icon" src="lcd.png" alt="lcd Icon">
+    <img id="doorIcon" class="icon" src="icons/open.png" alt="Door Icon">
+    <img id="tempIcon" class="icon" src="icons/temp.webp" alt="temp Icon" title="temperature statistics">
+    <img id="powerIcon" class="icon" src="icons/power.png" alt="power Icon" title="Power usage statistics">
+    <img id="lcdIcon" class="icon" src="icons/lcd.png" alt="lcd Icon" title="LCD">
   </div>
 
   <div class="container mt-3">
@@ -237,11 +237,11 @@
       xmlhttp.open('POST', '../controlData/controldoor.php', true);
       xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
       if (doorOpen) {
-        this.src = 'closed.png';
+        this.src = 'icons/closed.png';
         xmlhttp.send('id=esp1&state=closed&flag=1');
         doorOpen = false;
       } else {
-        this.src = 'open.png';
+        this.src = 'icons/open.png';
         xmlhttp.send('id=esp1&state=open&flag=1');
         doorOpen = true;
       }
@@ -284,11 +284,11 @@
           const myObj = JSON.parse(this.responseText);
           if (myObj.id == 'esp1') {
             if (myObj.state == 'open' && doorOpen == false) {
-              document.getElementById('doorIcon').src = 'open.png';
+              document.getElementById('doorIcon').src = 'icons/open.png';
               doorOpen = true;
             }
             else if (myObj.state == 'closed' && doorOpen == true) {
-              document.getElementById('doorIcon').src = 'closed.png';
+              document.getElementById('doorIcon').src = 'icons/closed.png';
               doorOpen = false;
             }
           }
