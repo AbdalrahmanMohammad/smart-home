@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php
+		session_start();
+		if ($_SESSION['login'] == false or !(in_array($_SESSION['role'], array('admin')))) {
+			header("location: ../index.php?loginError=1");
+			exit;
+		}
+		?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temperature and Humidity Chart</title>
