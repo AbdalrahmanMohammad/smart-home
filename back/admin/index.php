@@ -233,7 +233,7 @@
 
     $(document).ready(function() {
         $('#powerIcon').click(function () {
-          window.location.href = 'power_statictics.php';
+          window.location.href = 'power_statistics.php';
         });
   });
 
