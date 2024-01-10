@@ -52,6 +52,17 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     }
 
+    #returnButton {
+            position: absolute;
+            top: 1px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 55px;
+            background: none;
+            border: none;
+            color: orangered;
+        }
+
     #leddiv {
       text-align: center;
     }
@@ -78,6 +89,7 @@
 
 <body>
   <div class="container">
+  <button id="returnButton" onclick="window.history.back()">&#8592;</button>
     <div class="btn-container">
       <h1 class="mt-5">Smart socket</h1>
       <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()"

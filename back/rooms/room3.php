@@ -2,7 +2,7 @@
 <html lang="en">
 <?php
 session_start();
-if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))) && (strpos($_SESSION['role'], '3') == false) ) {
+if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))) && (strpos($_SESSION['role'], '3') == false)) {
     header("location: ../index.php?loginError=1");
     exit;
 }
@@ -125,6 +125,16 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             /* Shadow becomes slightly more prominent on hover */
         }
 
+        #returnButton {
+            position: absolute;
+            top: 1px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 55px;
+            background: none;
+            border: none;
+            color: orangered;
+        }
 
         #tvdiv {
             text-align: center;
@@ -173,6 +183,7 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 <body>
     <h1>Room 3</h1>
     <div class="container">
+    <button id="returnButton" onclick="window.history.back()">&#8592;</button>
         <h1 class="mt-5">LED</h1>
         <button id="myButton" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()"
             onmouseup="endTimer()" onclick="toggle()" class=" btn-lg btn-danger mt-3">OFF</button>
