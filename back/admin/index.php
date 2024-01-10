@@ -236,7 +236,11 @@
           window.location.href = 'temp_statistics.php';
         });
   });
-
+  $(document).ready(function() {
+        $('#powerIcon').click(function () {
+          window.location.href = 'power_statistics.php';
+        });
+  });
     // Toggle door icon on click
     document.getElementById('doorIcon').addEventListener('click', function () {
       const xmlhttp = new XMLHttpRequest();
