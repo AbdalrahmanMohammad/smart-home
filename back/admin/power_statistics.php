@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    session_start();
-    if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin')))) { // the second condition is !$_SESSION['role']=="admin"
-      header("location: ../index.php?loginError=1");
-      exit;
-    }
-    ?>
+session_start();
+if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin')))) { // the second condition is !$_SESSION['role']=="admin"
+    header("location: ../index.php?loginError=1");
+    exit;
+}
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +28,17 @@
             margin-bottom: 20px;
         }
 
+        #returnButton {
+            position: absolute;
+            top: 1px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 55px;
+            background: none;
+            border: none;
+            color: #007bff;
+        }
+
         #usageChart {
             width: 70%;
             /* Adjust the width as needed */
@@ -42,7 +54,7 @@
 
 <body>
     <div>
-        <label for="dateInput">Select Date:</label>
+    <button id="returnButton" onclick="window.location.href='../admin/'">&#8592;</button>
         <input type="date" id="dateInput" onchange="fetchDeviceUsage()" value="<?php echo date('Y-m-d'); ?>">
     </div>
 
@@ -91,11 +103,13 @@
                     durations.push(durationInSeconds);
                 }
             }
+
             if (usageChart) {
                 usageChart.destroy(); // Destroy existing chart before creating a new one
             }
+
             const ctx = document.getElementById('usageChart').getContext('2d');
-             usageChart = new Chart(ctx, {
+            usageChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels,
@@ -112,10 +126,21 @@
                         y: {
                             beginAtZero: true
                         }
+                    },
+                    onClick: function (event, elements) {
+                        // Check if any element is clicked
+                        const dateInput = document.getElementById('dateInput').value;
+
+                        if (elements.length > 0) {
+                            const clickedLabel = labels[elements[0].index];
+                            // You can replace this with your desired URL
+                            window.location.href = 'getdevicesrecordsbyuser.php?id=esp1&device=' + encodeURIComponent(clickedLabel) + '&date=' + encodeURIComponent(dateInput);
+                        }
                     }
                 }
             });
         }
+
     </script>
 </body>
 
