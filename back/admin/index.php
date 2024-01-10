@@ -281,7 +281,7 @@
         }
       };
 
-      xmlhttp.open('POST', '../controlData/gettemprecords.php', true);
+      xmlhttp.open('POST', '../controlData/getlasttemprecord.php', true);
       xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
       xmlhttp.send('id=esp1');
     }
