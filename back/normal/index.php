@@ -127,8 +127,6 @@
 			<div>Welcome:
 				<?php echo $_SESSION['userName'] ?>
 			</div>
-			<div id="clock"></div>
-			<div>Temperature: <span id="temperature">25°C</span>, Humidity: <span id="humidity">50%</span></div>
 		</div>
 		<?php
 		if ((strpos($_SESSION['role'], '1') == true)) {
