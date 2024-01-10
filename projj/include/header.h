@@ -51,6 +51,9 @@ TurnOnCommand room3ledoncom(&room3led);
 TurnOnCommand room2ledoncom(&room2led);
 TurnOnCommand room1fanoncom(&room1fan);
 SendIRCommand room3presstvbtncmd(&room3tv);
+//////////////////////////////////
+Command *commands[] = {&room2rgboncom, &room1rgboncom, &room2ledoncom, &room3ledoncom, &room1fanoncom };
+MacroCommand bedtime(commands, 5);
 
 ROOM room1;
 ROOM room2;

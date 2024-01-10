@@ -39,7 +39,6 @@
       height: 50px;
       cursor: pointer;
       margin-left: 10px;
-      /* Adjust margin as needed */
     }
 
     /* Media query for larger screens (PCs) */
@@ -175,10 +174,10 @@
 </head>
 
 <body>
-  <!-- Top bar -->
   <div class="top-bar">
     <img id="doorIcon" class="icon" src="icons/open.png" alt="Door Icon">
     <img id="tempIcon" class="icon" src="icons/temp.webp" alt="temp Icon" title="temperature statistics">
+    <img id="bedIcon" class="icon" src="icons/bedtime.png">
     <img id="powerIcon" class="icon" src="icons/power.png" alt="power Icon" title="Power usage statistics">
     <img id="lcdIcon" class="icon" src="icons/lcd.png" alt="lcd Icon" title="LCD">
   </div>
@@ -231,16 +230,16 @@
     let doorOpen = true;
     let defaultValue = "";// for the LCD
 
-    $(document).ready(function() {
-        $('#tempIcon').click(function () {
-          window.location.href = 'temp_statistics.php';
-        });
-  });
-  $(document).ready(function() {
-        $('#powerIcon').click(function () {
-          window.location.href = 'power_statistics.php';
-        });
-  });
+    $(document).ready(function () {
+      $('#tempIcon').click(function () {
+        window.location.href = 'temp_statistics.php';
+      });
+    });
+    $(document).ready(function () {
+      $('#powerIcon').click(function () {
+        window.location.href = 'power_statistics.php';
+      });
+    });
     // Toggle door icon on click
     document.getElementById('doorIcon').addEventListener('click', function () {
       const xmlhttp = new XMLHttpRequest();
@@ -372,6 +371,22 @@
         var show = "&show=" + selectedOption;
         xmlhttp.send('id=esp1' + show);
       }
+    });
+    ////////////////////////////////////////////////////////////////////turn off all devices
+    document.getElementById('bedIcon').addEventListener('click', async () => {
+      Swal.fire({
+        title: "Are you sure you want to turn off all devices?",
+        showCancelButton: true,
+        confirmButtonText: "yes"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const xmlhttp = new XMLHttpRequest();
+          xmlhttp.open('POST', '../controlData/controlbedcommand.php', true);
+          xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          xmlhttp.send('id=esp1&flag=1');
+
+        }
+      });
     });
 
 

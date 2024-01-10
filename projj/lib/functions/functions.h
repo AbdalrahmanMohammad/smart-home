@@ -82,5 +82,6 @@ void getdata()
   smoke_sensor_get();
   door_get();
   lcd_get();
+ bed_time_get();
 }
 

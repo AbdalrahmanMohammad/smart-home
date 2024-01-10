@@ -210,3 +210,46 @@ void lcd_get()
     }
   }
 }
+
+void bed_time_get()
+{
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
+
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/controlData/controlbedcommand.php");
+
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    httpCode = http.POST(postData);
+
+    payload = http.getString();
+    http.end();
+    JSONVar myObject = JSON.parse(payload);
+
+    if (JSON.typeof(myObject) == "undefined")
+    {
+      return;
+    }
+  
+if (JSON.stringify(myObject["flag"]) == "1") {
+  
+      bedtime.undo();
+      postData = "id=esp1";
+      postData += "&flag=0";
+      postData += "&password=" + authorizationPassword;
+
+      payload = "";
+      http.begin("http://192.168.8.110/GP/back/controlData/controlbedcommand.php");
+      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+      httpCode = http.POST(postData);
+      payload = http.getString();
+      http.end();
+    }
+  }
+
+}
