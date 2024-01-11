@@ -1,9 +1,6 @@
 
-void control_room2_rgb()
+void control_room2_rgb(JSONVar myObject)
 {
-
-  JSONVar myObject = JSON.parse(payload);
-
   if (JSON.typeof(myObject) == "undefined")
   {
     return;
@@ -144,11 +141,8 @@ void control_room2_rgb()
   }
 }
 
-void control_room2_led()
+void control_room2_led(JSONVar myObject)
 {
-
-  JSONVar myObject = JSON.parse(payload);
-
   if (JSON.typeof(myObject) == "undefined")
   {
     return;
@@ -188,36 +182,13 @@ void control_room2_led()
   }
 }
 
-void room2get()
+void room2get(JSONVar rgb2Obj, JSONVar led2Obj)
 {
-  if (WiFi.status() == WL_CONNECTED)
-  {
-    HTTPClient http;
-    int httpCode;
-    postData = "id=esp1";
-    postData += "&table=rgb";
-    postData += "&roomID=2";
-    postData += "&password=" + authorizationPassword;
-
-    payload = "";
-    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    control_room2_rgb();
+  
+    control_room2_rgb(rgb2Obj);
+    control_room2_led(led2Obj);
     room2.startException = false;
 
-    postData = "id=esp1";
-    postData += "&table=led";
-    postData += "&roomID=2";
-    postData += "&password=" + authorizationPassword;
-
-    payload = "";
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    http.end();
-    control_room2_led();
-  }
 }
 
 void room2send()

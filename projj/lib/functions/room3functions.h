@@ -1,9 +1,6 @@
 
-void control_room3_tv()
+void control_room3_tv(JSONVar myObject)
 {
-
-  JSONVar myObject = JSON.parse(payload);
-
   if (JSON.typeof(myObject) == "undefined")
   {
     return;
@@ -55,11 +52,8 @@ void control_room3_tv()
   }
 }
 
-void control_room3_led()
+void control_room3_led(JSONVar myObject)
 {
-
-  JSONVar myObject = JSON.parse(payload);
-
   if (JSON.typeof(myObject) == "undefined")
   {
     return;
@@ -99,36 +93,10 @@ void control_room3_led()
   }
 }
 
-void room3get()
+void room3get(JSONVar tv3Obj, JSONVar led3Obj)
 {
-  if (WiFi.status() == WL_CONNECTED) // for tv
-  {
-    HTTPClient http;
-    int httpCode;
-    postData = "id=esp1";
-    postData += "&table=tv";
-    postData += "&roomID=3";
-    postData += "&password=" + authorizationPassword;
-
-    payload = "";
-    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    control_room3_tv();
-
-    postData = "id=esp1";
-    postData += "&table=led";
-    postData += "&roomID=3";
-    postData += "&password=" + authorizationPassword;
-
-    payload = "";
-
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    http.end();
-    control_room3_led();
-  }
+  control_room3_tv(tv3Obj);
+  control_room3_led(led3Obj);
 }
 
 void room3send()

@@ -1,6 +1,5 @@
-void control_room1_rgb()
+void control_room1_rgb(JSONVar myObject)
 {
-  JSONVar myObject = JSON.parse(payload);
 
   if (JSON.typeof(myObject) == "undefined")
   {
@@ -142,9 +141,8 @@ void control_room1_rgb()
   }
 }
 
-void control_room1_fan()
+void control_room1_fan(JSONVar myObject)
 {
-  JSONVar myObject = JSON.parse(payload);
 
   if (room1.startException) // to set speed value after restarting
   {
@@ -245,37 +243,13 @@ void control_room1_fan()
   }
 }
 
-void room1get()
+void room1get(JSONVar rgb1Obj, JSONVar fan1Obj)
 {
-  if (WiFi.status() == WL_CONNECTED)
-  {
-    HTTPClient http;
-    int httpCode;
-    postData = "id=esp1";
-    postData += "&table=rgb";
-    postData += "&roomID=1";
-    postData += "&password=" + authorizationPassword;
 
-    payload = "";
-    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    control_room1_rgb();
+  control_room1_rgb(rgb1Obj);
 
-    postData = "id=esp1";
-    postData += "&table=fan";
-    postData += "&roomID=1";
-    postData += "&password=" + authorizationPassword;
-
-    payload = "";
-
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    http.end();
-    control_room1_fan();
-    room1.startException = false;
-  }
+  control_room1_fan(fan1Obj);
+  room1.startException = false;
 }
 
 void room1send()

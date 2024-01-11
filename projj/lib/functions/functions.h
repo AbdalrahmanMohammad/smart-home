@@ -74,18 +74,36 @@ void senddata()
   smoke_sensor();
 }
 
-void getdata()
+void getallrooms()
 {
-  // if(inhancer==0)
-  // room1get();
-    // if(inhancer==1)
-  // room2get();
-    // if(inhancer==2)
-  // room3get();
-  //   if(inhancer==3)
-  get_others();// i didn't know what to name it but it gets 1.smokeSensor / 2.lcd / 3.door / 4. bedTimeCommand
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    HTTPClient http;
+    int httpCode;
+    postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
 
- inhancer++;
- inhancer=(inhancer>3)?0:inhancer;
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/controlData/getallrooms.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+
+    JSONVar jsonDoc = JSON.parse(payload);
+
+    room1get(jsonDoc["rgb1"], jsonDoc["fan1"]);
+    room2get(jsonDoc["rgb2"], jsonDoc["led2"]);
+    room3get(jsonDoc["tv3"], jsonDoc["led3"]);
+  }
 }
 
+void getdata()
+{
+  if (inhancer == 0)
+    getallrooms();
+  else if (inhancer == 1)
+    get_others(); // i didn't know what to name it but it gets 1.smokeSensor / 2.lcd / 3.door / 4. bedTimeCommand
+
+  inhancer++;
+  inhancer = (inhancer > 1) ? 0 : inhancer;
+}
