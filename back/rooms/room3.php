@@ -46,15 +46,17 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
         }
 
         a {
-            color: white;
-            text-decoration: none;
-            font-size: 1em;
-            width: 80%;
-            display: block;
-            margin: 5px auto;
-            padding: 10px;
-            border-radius: 5px;
-        }
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    width: 80%;
+    display: block;
+    margin: 5px auto;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center; /* Center the text horizontally */
+    line-height: 2; /* Adjust the line height for vertical centering */
+}
 
         @media (max-width: 767px) {
             h1 {
@@ -115,6 +117,11 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             /*  these three lines so that the inner div comes in the middle of the outer div*/
             justify-content: center;
             align-items: center;
+        }
+
+        .tv-image:hover {
+            opacity: 0.8;
+            /* Adjust the opacity as needed */
         }
 
         /* Change background color on hover */
@@ -183,7 +190,7 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 <body>
     <h1>Room 3</h1>
     <div class="container">
-    <button id="returnButton" onclick="window.history.back()">&#8592;</button>
+        <button id="returnButton" onclick="window.history.back()">&#8592;</button>
         <h1 class="mt-5">LED</h1>
         <button id="myButton" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()"
             onmouseup="endTimer()" onclick="toggle()" class=" btn-lg btn-danger mt-3">OFF</button>
@@ -202,12 +209,16 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
                 <button class=' btn-warning mt-3' onclick="setTimer('ledseconds')">Set</button>
             </div>
         </div>
+        
     </div>
 
+        <h1 class="mt-5">TV</h1>
+        <a data-bs-toggle="modal" onclick="$('#TVmod').toggle();" data-bs-target="#TVmod" style="cursor: pointer;">
+            <img class="tv-image" src="television.png" alt="TV Image" style="height: 50px; width: 50px;">
+        </a>
 
     <div class="container mt-5">
-        <a data-bs-toggle="modal" onclick="$('#TVmod').toggle();" class="btn-primary btn1" data-bs-target="#TVmod"
-            style="height: 50px; width: 50px;">TV</a>
+    
 
         <div class="modal" id="TVmod" tabindex="-1" role="dialog" aria-labelledby="TVmodLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-md w-100" style="max-width: fit-content;">

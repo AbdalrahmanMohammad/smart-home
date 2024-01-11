@@ -169,6 +169,8 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 </head>
 
 <body>
+<h1>Room 2</h1>
+
     <div class="container">
     <button id="returnButton" onclick="window.history.back()">&#8592;</button>
         <div class="btn-container">
