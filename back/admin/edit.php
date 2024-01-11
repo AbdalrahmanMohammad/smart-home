@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../checkConnection.js"></script>
+
     <style>
         body {
             background: linear-gradient(120deg, #2980b9, #8e44ad);
@@ -151,7 +153,8 @@ $row = $usrinfo->fetch();
                         echo "selected"; ?>>Admin</option>
                 </select>
             </div>
-            <div class="form-group allowed_rooms" <?php if ($row['role'] == "admin") echo "style='display: none;'"; ?>>
+            <div class="form-group allowed_rooms" <?php if ($row['role'] == "admin")
+                echo "style='display: none;'"; ?>>
                 <label>Allowed Rooms:</label>
                 <div class="checkbox-group">
                     <label><input type="checkbox" id="room1" name="room1" value="1" <?php if (strpos($row['role'], '1') !== false)
@@ -166,6 +169,9 @@ $row = $usrinfo->fetch();
             <a href="del.php" class="btn btn-light btn-block mt-2 back-button">Back</a>
         </form>
     </div>
+    <script>
+        Check_Connection('esp1');
+    </script>
 </body>
 
 </html>

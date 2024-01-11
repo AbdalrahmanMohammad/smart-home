@@ -17,6 +17,8 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="../checkConnection.js"></script>
+
 
     <style>
         body {
@@ -435,7 +437,9 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 
     </script>
 
-
+    <script>
+        Check_Connection('esp1');
+    </script>
 </body>
 
 </html>

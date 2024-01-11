@@ -18,6 +18,8 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="../checkConnection.js"></script>
+
 
     <style>
         /* Custom CSS for centering content */
@@ -163,10 +165,10 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 </head>
 
 <body>
-<h1>Room 1</h1>
+    <h1>Room 1</h1>
 
     <div class="container">
-    <button id="returnButton" onclick="window.history.back()">&#8592;</button>
+        <button id="returnButton" onclick="window.history.back()">&#8592;</button>
         <div class="btn-container">
             <h1 class="mt-5">RGB Control</h1>
             <button id="myButton" onclick="toggle('myButton')" ontouchstart="startTimer('#actionContainer')"
@@ -449,7 +451,9 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             xmlhttp.send("id=esp1&roomID=1&undo_flag=1");
         }
     </script>
-
+    <script>
+        Check_Connection('esp1');
+    </script>
 </body>
 
 </html>

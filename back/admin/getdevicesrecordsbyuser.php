@@ -30,6 +30,7 @@ $stmt->execute(array($id, $table, $roomID, $selectedDate));
 
 <head>
     <meta charset="UTF-8">
+    <script src="../checkConnection.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>devices records</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -137,6 +138,9 @@ $stmt->execute(array($id, $table, $roomID, $selectedDate));
         </div>
         <a href="../admin/power_statistics.php" class="back-button">Back</a>
     </div>
+    <script>
+        Check_Connection('esp1');
+    </script>
 </body>
 
 </html>

@@ -21,7 +21,7 @@ Stepper myStepper(2048, 27, 25, 26, 21);
 /// lcd ////////////////
 LiquidCrystal lcd(15, 4, 16, 17, 5, 0);
 Timer lcdTimer(3UL);
-long ss = 0;
+Timer connectionTimer(3UL);
 
 int inhancer = 0;
 

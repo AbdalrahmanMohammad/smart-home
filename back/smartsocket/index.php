@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <?php
-    session_start();
-    if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin')))) {
-      header("location: ../index.php?loginError=1");
-      exit;
-    }
-    ?>
+session_start();
+if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin')))) {
+  header("location: ../index.php?loginError=1");
+  exit;
+}
+?>
+
 <head>
   <title>Smart socket</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -17,6 +18,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="../checkConnection.js"></script>
+
 
   <style>
     html,
@@ -53,15 +56,15 @@
     }
 
     #returnButton {
-            position: absolute;
-            top: 1px;
-            left: 10px;
-            cursor: pointer;
-            font-size: 55px;
-            background: none;
-            border: none;
-            color: orangered;
-        }
+      position: absolute;
+      top: 1px;
+      left: 10px;
+      cursor: pointer;
+      font-size: 55px;
+      background: none;
+      border: none;
+      color: orangered;
+    }
 
     #leddiv {
       text-align: center;
@@ -89,7 +92,7 @@
 
 <body>
   <div class="container">
-  <button id="returnButton" onclick="window.history.back()">&#8592;</button>
+    <button id="returnButton" onclick="window.history.back()">&#8592;</button>
     <div class="btn-container">
       <h1 class="mt-5">Smart socket</h1>
       <button id="myButton" onclick="toggle()" ontouchstart="startTimer()" ontouchend="endTimer()"
@@ -167,23 +170,23 @@
     //------------------------------------------------------------
     function getTimeDifferenceInSeconds(databaseTime) {
 
-    var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
+      var [hours, minutes, seconds] = databaseTime.split(':').map(Number);
 
-    var now = new Date();
-    var noww = new Date();
+      var now = new Date();
+      var noww = new Date();
 
-    now.setHours(hours);
-    now.setMinutes(minutes);
-    now.setSeconds(seconds);
+      now.setHours(hours);
+      now.setMinutes(minutes);
+      now.setSeconds(seconds);
 
-    var timeDifferenceInSeconds = Math.floor(((now.getTime())-Date.now())/1000);
+      var timeDifferenceInSeconds = Math.floor(((now.getTime()) - Date.now()) / 1000);
 
-    var button = document.getElementById("myButton");
-      var btnnextstate=button.innerHTML=="OFF"?"OFF":"ON";
-    
-      if (timeDifferenceInSeconds<0) return "set a timer";
-    return "your socket will be "+btnnextstate+" after "+timeDifferenceInSeconds;
-}
+      var button = document.getElementById("myButton");
+      var btnnextstate = button.innerHTML == "OFF" ? "OFF" : "ON";
+
+      if (timeDifferenceInSeconds < 0) return "set a timer";
+      return "your socket will be " + btnnextstate + " after " + timeDifferenceInSeconds;
+    }
     //------------------------------------------------------------
     function Get_Data(id) {
 
@@ -192,12 +195,12 @@
       xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           const myObj = JSON.parse(this.responseText);
-          if (myObj.id == "esp01"&&myObj.roomID == "-") {// it should always be true
+          if (myObj.id == "esp01" && myObj.roomID == "-") {// it should always be true
             var button = document.getElementById("myButton");
             var timer = document.getElementById("timerlabel");
 
             var previousDate = myObj.timer_time;
-            timer.innerHTML =  getTimeDifferenceInSeconds(previousDate);
+            timer.innerHTML = getTimeDifferenceInSeconds(previousDate);
 
 
             if (myObj.state == "ON") {
@@ -222,7 +225,9 @@
 
 
   </script>
-
+  <script>
+    Check_Connection('esp01');
+  </script>
 </body>
 
 </html>

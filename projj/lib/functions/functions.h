@@ -72,6 +72,7 @@ void senddata()
   room3send();
   temp_sensor();
   smoke_sensor();
+  check_connection();
 }
 
 void getallrooms()

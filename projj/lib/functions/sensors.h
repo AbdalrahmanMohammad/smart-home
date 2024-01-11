@@ -210,3 +210,22 @@ void get_others()
     bed_time_get(myObject);     //////////////
   }
 }
+
+void check_connection(){
+   if (connectionTimer.clause() && WiFi.status() == WL_CONNECTED)
+  {
+    HTTPClient http;
+    int httpCode;
+
+    postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
+    postData += "&send=yes";
+
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/controlData/controlconnection.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString(); // return nothing
+    http.end();
+  }
+}

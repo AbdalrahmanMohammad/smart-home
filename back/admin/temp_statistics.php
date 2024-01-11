@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<?php
-		session_start();
-		if ($_SESSION['login'] == false or !(in_array($_SESSION['role'], array('admin')))) {
-			header("location: ../index.php?loginError=1");
-			exit;
-		}
-		?>
+    <?php
+    session_start();
+    if ($_SESSION['login'] == false or !(in_array($_SESSION['role'], array('admin')))) {
+        header("location: ../index.php?loginError=1");
+        exit;
+    }
+    ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temperature and Humidity Chart</title>
@@ -42,6 +43,7 @@
             border: none;
             color: #007bff;
         }
+
         @media (max-width: 768px) {
             .chart-container {
                 margin-top: 0;
@@ -51,14 +53,18 @@
                 width: 100%;
                 margin-bottom: 10px;
             }
+
             .chart-container {
-            width: 100%; 
-            margin-top: 20px;
-        }
+                width: 100%;
+                margin-top: 20px;
+            }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../checkConnection.js"></script>
+
 </head>
+
 <body>
     <div>
         <button id="returnButton" onclick="goBack()">&#8592;</button>
@@ -129,7 +135,7 @@
 
             xhr.open('POST', '../controlData/getaveragetemprecordss.php', true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send('id=esp1&date=' + encodeURIComponent(dateInput)); 
+            xhr.send('id=esp1&date=' + encodeURIComponent(dateInput));
         }
 
         function goBack() {
@@ -137,8 +143,12 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            fetchData(); 
+            fetchData();
         });
     </script>
+    <script>
+        Check_Connection('esp1');
+    </script>
 </body>
+
 </html>

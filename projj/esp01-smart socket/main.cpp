@@ -11,6 +11,7 @@ const char *password = "87654321";
 String authorizationPassword = "esp01";
 String postData = "";
 String payload = "";
+unsigned long lastExecutionTime = 0;
 LedClass ledPin(0, 3);
 boolean buttonclicked = false;
 boolean buttonclickedbytimer = false;
@@ -155,10 +156,36 @@ void LedPushbutton()
   ledPin.setBtnprevstate(ledPin.getBtncurvstate());
 }
 
+void check_connection()
+{
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    HTTPClient http;
+    int httpCode;
+
+    postData = "id=esp01";
+    postData += "&password=" + authorizationPassword;
+    postData += "&send=yes";
+
+    payload = "";
+    http.begin(client, "http://192.168.8.110/GP/back/controlData/controlconnection.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString(); // return nothing
+    http.end();
+  }
+}
+
 void loop()
 {
   getdata();
   LedPushbutton();
   Timer();
   senddata();
+
+  if (millis() - lastExecutionTime >= 3000UL)
+  {
+    check_connection();
+    lastExecutionTime = millis();
+  }
 }

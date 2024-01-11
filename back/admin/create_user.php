@@ -7,6 +7,7 @@
   <title>Create Account</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="../checkConnection.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
     body {
@@ -68,19 +69,21 @@
 </head>
 
 <script>
-    $(document).ready(function () {
-      $("#role").change(function () {
-        if ($(this).val() === "normal") {
-          $(".checkbox-group input").prop("disabled", false);
-          $(".checkbox-group ").show();
-          $(".allowed_rooms").show();
-        } else {
-          $(".checkbox-group input").prop("disabled", true);
-          $(".checkbox-group ").hide();
-          $(".allowed_rooms").hide();
-        }
-      });
+  Check_Connection('esp1');
+
+  $(document).ready(function () {
+    $("#role").change(function () {
+      if ($(this).val() === "normal") {
+        $(".checkbox-group input").prop("disabled", false);
+        $(".checkbox-group ").show();
+        $(".allowed_rooms").show();
+      } else {
+        $(".checkbox-group input").prop("disabled", true);
+        $(".checkbox-group ").hide();
+        $(".allowed_rooms").hide();
+      }
     });
+  });
 </script>
 
 
@@ -88,17 +91,17 @@
 if (!empty($_POST)) {
   require_once("../Class.data.php");
   require_once("../Class.Tools.php");
-  
+
   $allowedRoomsString = "";
-  
+
   if (isset($_POST['room1'])) {
-    $allowedRoomsString = $allowedRoomsString.$_POST['room1'];
+    $allowedRoomsString = $allowedRoomsString . $_POST['room1'];
   }
   if (isset($_POST['room2'])) {
-    $allowedRoomsString = $allowedRoomsString.$_POST['room2'];
+    $allowedRoomsString = $allowedRoomsString . $_POST['room2'];
   }
   if (isset($_POST['room3'])) {
-    $allowedRoomsString = $allowedRoomsString.$_POST['room3'];
+    $allowedRoomsString = $allowedRoomsString . $_POST['room3'];
   }
   $roleWithRooms = $_POST['role'] . '' . $allowedRoomsString;
 
@@ -155,6 +158,9 @@ if (!empty($_POST)) {
       <a href="index.php" class="btn btn-light btn-block mt-2 back-button">Back</a>
     </form>
   </div>
+  <script>
+    Check_Connection('esp1');
+  </script>
 </body>
 
 </html>

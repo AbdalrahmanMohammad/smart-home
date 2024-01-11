@@ -50,11 +50,13 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../checkConnection.js"></script>
+
 </head>
 
 <body>
     <div>
-    <button id="returnButton" onclick="window.location.href='../admin/'">&#8592;</button>
+        <button id="returnButton" onclick="window.location.href='../admin/'">&#8592;</button>
         <input type="date" id="dateInput" onchange="fetchDeviceUsage()" value="<?php echo date('Y-m-d'); ?>">
     </div>
 
@@ -141,6 +143,9 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             });
         }
 
+    </script>
+    <script>
+        Check_Connection('esp1');
     </script>
 </body>
 

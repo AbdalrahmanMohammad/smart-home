@@ -219,6 +219,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="../checkConnection.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/dist/justgage.min.js"></script>
@@ -259,16 +260,17 @@
     window.onload = function () {// to update temperature and humidity as soon as i enter the page
       Get_Data_Temp();
     };
-
     setInterval(Get_Data, 500);
     setInterval(Get_Data_Temp, 10000);//that is enough because the ESP sends a recorod each 20 seconds
     function Get_Data() {
       Get_Data_Fire();
       Get_Data_Door();
     }
+    Check_Connection('esp1');
+
+    ////////////////////////////////////
     function Get_Data_Temp() {
       const xmlhttp = new XMLHttpRequest();
-      console.log("HI");
       xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           const myObj = JSON.parse(this.responseText);
