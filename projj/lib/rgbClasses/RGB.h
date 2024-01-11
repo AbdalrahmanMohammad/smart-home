@@ -143,25 +143,25 @@ public:
 
     virtual void brightnessup()
     {
-        if (brightness + 20 > 255)
+        if (brightness + 50 > 255)
         {
             setBrightness(255);
         }
         else
         {
-            setBrightness(brightness + 20);
+            setBrightness(brightness + 50);
         }
     }
 
     virtual void brightnessdown()
     {
-        if (brightness - 20 < 0)
+        if (brightness - 50 < 0)
         {
             setBrightness(5);
         }
         else
         {
-            setBrightness(brightness - 20);
+            setBrightness(brightness - 50);
         }
     }
 
