@@ -1,5 +1,5 @@
 <?php
-include '../database.php';
+include '../database.php';// this page now is unused but i'll keep it
 require 'Class.authorization.php';
 if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password']??null)) {
 

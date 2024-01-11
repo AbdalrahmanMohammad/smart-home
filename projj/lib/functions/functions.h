@@ -76,12 +76,16 @@ void senddata()
 
 void getdata()
 {
-  room1get();
-  room2get();
-  room3get();
-  smoke_sensor_get();
-  door_get();
-  lcd_get();
- bed_time_get();
+  // if(inhancer==0)
+  // room1get();
+    // if(inhancer==1)
+  // room2get();
+    // if(inhancer==2)
+  // room3get();
+  //   if(inhancer==3)
+  get_others();// i didn't know what to name it but it gets 1.smokeSensor / 2.lcd / 3.door / 4. bedTimeCommand
+
+ inhancer++;
+ inhancer=(inhancer>3)?0:inhancer;
 }
 

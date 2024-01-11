@@ -28,15 +28,13 @@ void setup()
 
 void loop()
 {
- if (Serial.available() > 0) {
-    String userInput = Serial.readStringUntil('\n'); 
-
-    int steps = userInput.toInt();
-
-    myStepper.step(steps);
-  }
+  Serial.println("*********************");
+ss=millis();
 
   getdata();
+  Serial.print("after get data: ");
+  Serial.println(millis()-ss);
+  ss=millis();
   ///////////////////////////////////////////////////////////////////////
   room1toggles(); // toggles the rgb led using the button
   room2toggles(); // toggles the led using the button
@@ -45,6 +43,12 @@ void loop()
   room1.timers();
   room2.timers();
   room3.timers();
+    Serial.print("after controls: ");
+  Serial.println(millis()-ss);
+  ss=millis();
   //////////////////////////////////////////////////
   senddata();
+    Serial.print("after send data: ");
+  Serial.println(millis()-ss);
+  // ss=millis();
 }

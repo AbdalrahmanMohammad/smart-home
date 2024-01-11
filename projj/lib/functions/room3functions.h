@@ -115,22 +115,15 @@ void room3get()
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
-    http.end();
     control_room3_tv();
-  }
 
-  if (WiFi.status() == WL_CONNECTED) // for led
-  {
-    HTTPClient http;
-    int httpCode;
     postData = "id=esp1";
     postData += "&table=led";
     postData += "&roomID=3";
     postData += "&password=" + authorizationPassword;
 
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
     httpCode = http.POST(postData);
     payload = http.getString();
     http.end();

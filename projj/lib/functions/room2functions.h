@@ -204,23 +204,15 @@ void room2get()
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
-    http.end();
     control_room2_rgb();
     room2.startException = false;
-  }
 
-  if (WiFi.status() == WL_CONNECTED)
-  {
-    HTTPClient http;
-    int httpCode;
     postData = "id=esp1";
     postData += "&table=led";
     postData += "&roomID=2";
     postData += "&password=" + authorizationPassword;
 
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/controlData/getdata.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
     http.end();
