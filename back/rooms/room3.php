@@ -46,17 +46,19 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
         }
 
         a {
-    color: white;
-    text-decoration: none;
-    font-size: 1em;
-    width: 80%;
-    display: block;
-    margin: 5px auto;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center; /* Center the text horizontally */
-    line-height: 2; /* Adjust the line height for vertical centering */
-}
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            width: 80%;
+            display: block;
+            margin: 5px auto;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            /* Center the text horizontally */
+            line-height: 2;
+            /* Adjust the line height for vertical centering */
+        }
 
         @media (max-width: 767px) {
             h1 {
@@ -209,16 +211,16 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
                 <button class=' btn-warning mt-3' onclick="setTimer('ledseconds')">Set</button>
             </div>
         </div>
-        
+
     </div>
 
-        <h1 class="mt-5">TV</h1>
-        <a data-bs-toggle="modal" onclick="$('#TVmod').toggle();" data-bs-target="#TVmod" style="cursor: pointer;">
-            <img class="tv-image" src="television.png" alt="TV Image" style="height: 50px; width: 50px;">
-        </a>
+    <h1 class="mt-5">TV</h1>
+    <a data-bs-toggle="modal" onclick="$('#TVmod').toggle();" data-bs-target="#TVmod" style="cursor: pointer;">
+        <img class="tv-image" src="television.png" alt="TV Image" style="height: 50px; width: 50px;">
+    </a>
 
     <div class="container mt-5">
-    
+
 
         <div class="modal" id="TVmod" tabindex="-1" role="dialog" aria-labelledby="TVmodLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-md w-100" style="max-width: fit-content;">
