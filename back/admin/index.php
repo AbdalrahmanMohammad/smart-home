@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <style>
-    /* Custom CSS for the page background with linear gradient */
     body {
       background: linear-gradient(120deg, #2980b9, #8e44ad);
       min-height: 100vh;
@@ -19,7 +18,6 @@
       color: white;
     }
 
-    /* New style for the top bar */
     .top-bar {
       background-color: #2c3e50;
       width: 100%;
@@ -41,11 +39,9 @@
       margin-left: 10px;
     }
 
-    /* Media query for larger screens (PCs) */
     @media (min-width: 992px) {
       .icon {
         width: 70px;
-        /* Adjust the icon size for larger screens */
         height: 70px;
       }
     }
@@ -54,7 +50,6 @@
       text-align: center;
       padding: 20px;
       max-width: 80%;
-      /* Adjusted max-width for responsiveness */
     }
 
     h1 {
@@ -77,7 +72,6 @@
       padding: 10px;
       border-radius: 5px;
       width: 100%;
-      /* Default width for all devices */
     }
 
     .btn {
@@ -88,53 +82,42 @@
 
     }
 
-    /* Different background colors for buttons */
     .btn1 {
       background-color: #3498db;
-      /* Blue */
     }
 
     .btn2 {
       background-color: #e67e22;
-      /* Orange */
     }
 
     .btn3 {
       background-color: #2ecc71;
-      /* Green */
     }
 
     .btn4 {
       background-color: #e74c3c;
-      /* Red */
     }
 
-    /* Improve button style */
     .custom-button:hover {
       background-color: #2980b9;
     }
 
-    /* Media query for smaller screens (phones) */
     @media (max-width: 576px) {
       a {
         width: 100%;
-        /* Set width to 100% for smaller screens (phones) */
       }
 
 
     }
 
-    /* Media query for larger screens (PCs) */
     @media (min-width: 992px) {
       .btn {
         width: 30%;
-        /* Set width to 30% for larger screens (PCs) */
         display: block;
         margin-bottom: 10px;
 
       }
 
-      /* Different background colors for buttons */
       .btn1 {
         width: 30%;
       }
@@ -152,7 +135,6 @@
       }
 
       #temperatureGauge {
-        /* Adjust width, margins, and other styles as needed */
         position: absolute;
         right: 50px;
         top: 40%;
@@ -162,7 +144,6 @@
 
 
       #humidityGauge {
-        /* Adjust width, margins, and other styles as needed */
         position: absolute;
         left: 70px;
         top: 40%;
@@ -391,10 +372,6 @@
       });
     });
 
-
-    // ... (Your existing scripts) ...
-
-    // Create humidity gauge
     var humidityGauge = new JustGage({
       id: "humidityGauge",
       value: 0,
@@ -404,7 +381,6 @@
       label: "%"
     });
 
-    // Create temperature gauge
     var temperatureGauge = new JustGage({
       id: "temperatureGauge",
       value: 0,

@@ -41,11 +41,8 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 
         #usageChart {
             width: 70%;
-            /* Adjust the width as needed */
             max-width: 90%;
-            /* Set a maximum width */
             max-height: 90%;
-            /* Set a maximum width */
             margin-top: 20px;
         }
     </style>
@@ -130,12 +127,10 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
                         }
                     },
                     onClick: function (event, elements) {
-                        // Check if any element is clicked
                         const dateInput = document.getElementById('dateInput').value;
 
                         if (elements.length > 0) {
                             const clickedLabel = labels[elements[0].index];
-                            // You can replace this with your desired URL
                             window.location.href = 'getdevicesrecordsbyuser.php?id=esp1&device=' + encodeURIComponent(clickedLabel) + '&date=' + encodeURIComponent(dateInput);
                         }
                     }

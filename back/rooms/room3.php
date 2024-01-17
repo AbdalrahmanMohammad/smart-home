@@ -57,9 +57,7 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             padding: 10px;
             border-radius: 5px;
             text-align: center;
-            /* Center the text horizontally */
             line-height: 2;
-            /* Adjust the line height for vertical centering */
         }
 
         @media (max-width: 767px) {
@@ -80,7 +78,6 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             width: 100%;
             max-width: 120px;
             justify-content: center;
-            /* Added line to center elements vertically */
         }
 
         .action-container label,
@@ -101,39 +98,29 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 
         .btn:active {
             background-color: #111;
-            /* Change the background color when clicked */
         }
 
 
         .modal-content {
             max-width: 300px;
-            /* Set a maximum width */
             padding: 40px 20px;
-            /* Increased vertical padding */
             background: linear-gradient(120deg, #2980b9, #8e44ad);
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            /* Subtle box shadow */
             transition: background 0.3s, box-shadow 0.3s;
-            /* Transitions on hover */
 
             display: flex;
-            /*  these three lines so that the inner div comes in the middle of the outer div*/
             justify-content: center;
             align-items: center;
         }
 
         .tv-image:hover {
             opacity: 0.8;
-            /* Adjust the opacity as needed */
         }
 
-        /* Change background color on hover */
         #tvdiv:hover {
             background: linear-gradient(120deg, #3498db, #9b59b6);
-            /* Slightly different gradient on hover */
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            /* Shadow becomes slightly more prominent on hover */
         }
 
         #returnButton {
@@ -149,7 +136,6 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 
         #tvdiv {
             text-align: center;
-            /* Optional: Center the content horizontally */
         }
 
         #myButton {
@@ -163,7 +149,6 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
             transition: background 0.3s, box-shadow 0.3s;
             padding: 20px;
-            /* Keep the necessary padding */
             margin-top: 20px;
             text-align: center;
             position: absolute;

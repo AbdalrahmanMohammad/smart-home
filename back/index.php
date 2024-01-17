@@ -13,58 +13,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <style>
-    /* Custom CSS for clock */
     #clock {
       font-size: 2.5em;
       font-weight: bold;
       text-align: center;
       margin-bottom: 20px;
-      color: white; /* White text for visibility on the gradient background */
+      color: white; 
     }
 
-    /* Custom CSS for temperature and humidity display */
     #temp-humidity {
       text-align: center;
       margin-bottom: 20px;
-      color: white; /* White text for visibility on the gradient background */
+      color: white; 
     }
 
-    /* Custom CSS for login section */
     #login-section {
-      max-width: 300px; /* Set a maximum width */
-      padding: 40px 20px; /* Increased vertical padding */
+      max-width: 300px;
+      padding: 40px 20px; 
       background: linear-gradient(120deg, #2980b9, #8e44ad);
       border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle box shadow */
-      transition: background 0.3s, box-shadow 0.3s; /* Transitions on hover */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+      transition: background 0.3s, box-shadow 0.3s; 
     }
 
-    /* Change background color on hover */
     #login-section:hover {
-      background: linear-gradient(120deg, #3498db, #9b59b6); /* Slightly different gradient on hover */
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Shadow becomes slightly more prominent on hover */
+      background: linear-gradient(120deg, #3498db, #9b59b6); 
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); 
     }
 
-    /* Custom CSS for login button */
     .login-button {
-      background-color: #e74c3c; /* Alizarin red */
+      background-color: #e74c3c; 
       border: none;
     }
     .login-button:hover {
-      background-color: #c0392b; /* Darker red on hover */
+      background-color: #c0392b; 
     }
 
-    /* Custom CSS for the page background with linear gradient */
     body {
       background: linear-gradient(120deg, #2980b9, #8e44ad);
       min-height: 100vh;
       margin: 0;
       display: flex;
       flex-direction: column;
-      color: white; /* White text for visibility on the gradient background */
+      color: white; 
     }
 
-    /* Remove margin from the last child of the container */
     .container>:last-child {
       margin-bottom: 0;
     }
@@ -104,7 +97,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
   <script>
-    // Update the clock every second
      function updateClock() {
             var now = new Date();
             var hours = now.getHours().toString().padStart(2, '0');
@@ -114,7 +106,6 @@
             document.getElementById('clock').innerText = hours + ':' + minutes + ':' + seconds;
         }
 
-    // Update the clock immediately and then every second
     updateClock();
     setInterval(updateClock, 1000);
   </script>

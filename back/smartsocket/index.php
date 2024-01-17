@@ -33,7 +33,6 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
       transition: background 0.3s, box-shadow 0.3s;
       padding: 20px;
-      /* Keep the necessary padding */
       margin-top: 20px;
       text-align: center;
       position: absolute;

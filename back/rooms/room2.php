@@ -22,7 +22,6 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 
 
     <style>
-        /* Custom CSS for centering content */
         html,
         body {
             height: 100%;
@@ -71,9 +70,7 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
         #leddiv:hover,
         #rgbdiv:hover {
             background: linear-gradient(120deg, #3498db, #9b59b6);
-            /* Slightly different gradient on hover */
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            /* Shadow becomes slightly more prominent on hover */
         }
 
         #returnButton {
@@ -90,7 +87,6 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
         #leddiv,
         #rgbdiv {
             text-align: center;
-            /* Optional: Center the content horizontally */
         }
 
         #left-container,
@@ -154,7 +150,6 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
 
         .rgb-box {
             background-color: #3498db;
-            /* Set your desired color */
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 10px;
@@ -197,21 +192,18 @@ if ($_SESSION['login'] == false || !(in_array($_SESSION['role'], array('admin'))
             </div>
             <div id="rgbdiv" class="modal-body text-center">
 
-                <!-- Right Container: Color input and Set Color button -->
                 <div id="right-container">
                     <label for='colorInput'>Choose color:</label>
                     <input type='color' id='colorInput'>
                     <button onclick="setColor()" class='btn btn-warning mt-3'>Set Color</button>
                 </div>
 
-                <!-- Middle Container: Buttons -->
                 <div id="middle-container">
                     <label id="brightlabel" for="control">Control:</label>
                     <button onclick="buttonClick('button1')" class='btn btn-info'>&#8593</button>
                     <button onclick="buttonClick('button2')" class='btn btn-info'>&#8595</button>
                 </div>
 
-                <!-- Left Container: Input and Perform Action button -->
                 <div id="left-container">
                     <label for='rgbseconds' id="rgbtimerlabel">set a timer</label>
                     <input type='number' class='form-control' id='rgbseconds' min='0'

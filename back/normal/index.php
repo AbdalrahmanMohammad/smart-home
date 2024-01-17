@@ -55,27 +55,22 @@
 
 		.btn3 {
 			background-color: #2ecc71;
-			/* Green */
 		}
 
 		.btn4 {
 			background-color: #e74c3c;
-			/* Red */
 		}
 
-		/* Improve button style */
 		.custom-button:hover {
 			background-color: #2980b9;
 		}
 
-		/* Media query for smaller screens (phones) */
 		@media (max-width: 576px) {
 			a {
 				width: 100%;
 			}
 		}
 
-		/* Media query for larger screens (PCs) */
 		@media (min-width: 992px) {
 			.btn {
 				width: 30%;
@@ -83,7 +78,6 @@
 				margin-bottom: 10px;
 			}
 
-			/* Different background colors for buttons */
 			.btn3 {
 				width: 23%;
 			}
@@ -93,7 +87,6 @@
 			}
 
 			#temperatureGauge {
-				/* Adjust width, margins, and other styles as needed */
 				position: absolute;
 				right: 50px;
 				top: 40%;
@@ -103,7 +96,6 @@
 
 
 			#humidityGauge {
-				/* Adjust width, margins, and other styles as needed */
 				position: absolute;
 				left: 70px;
 				top: 40%;
@@ -184,7 +176,6 @@
 			xmlhttp.send('id=esp1');
 		}
 
-		// Create humidity gauge
 		var humidityGauge = new JustGage({
 			id: "humidityGauge",
 			value: 0,
@@ -194,7 +185,6 @@
 			label: "%"
 		});
 
-		// Create temperature gauge
 		var temperatureGauge = new JustGage({
 			id: "temperatureGauge",
 			value: 0,

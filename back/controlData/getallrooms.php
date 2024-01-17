@@ -89,10 +89,8 @@ if (!empty($_POST) && authorization::authorize($_POST['id'], $_POST['password'] 
     // Convert the associative array to JSON format
     $jsonResponse = json_encode($responseArray);
 
-    // Set the appropriate headers for JSON response
     header('Content-Type: application/json');
 
-    // Echo the JSON response
     echo $jsonResponse;
 }
 //----------------------------------------
