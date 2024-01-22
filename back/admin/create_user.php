@@ -114,7 +114,21 @@ if (!empty($_POST)) {
   }
 }
 ?>
-
+<script>
+    $(document).ready(function () {
+        $("#role").change(function () {
+            if ($(this).val() === "normal") {
+                $(".checkbox-group input").prop("disabled", false);
+                $(".checkbox-group ").show();
+                $(".allowed_rooms").show();
+            } else {
+                $(".checkbox-group input").prop("disabled", true);
+                $(".checkbox-group ").hide();
+                $(".allowed_rooms").hide();
+            }
+        });
+    });
+</script>
 
 <body>
   <?php
@@ -146,7 +160,7 @@ if (!empty($_POST)) {
           <option value="admin">Admin</option>
         </select>
       </div>
-      <div class="form-group allowed_rooms">
+      <div class="form-group allowed_rooms" >
         <label>Allowed Rooms:</label>
         <div class="checkbox-group">
           <label><input type="checkbox" id="room1" name="room1" value="1"> Room 1</label>
