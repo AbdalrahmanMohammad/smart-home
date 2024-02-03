@@ -51,9 +51,10 @@ void temp_sensor()
     postData = "id=esp1";
     postData += "&temperature=" + temperature;
     postData += "&humidity=" + humidity;
+    postData += "&password=" + authorizationPassword;
 
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetempsensor.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetempsensor.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
@@ -72,35 +73,30 @@ void smoke_sensor()
 
     postData = "id=esp1";
     postData += "&fire=true";
+    postData += "&password=" + authorizationPassword;
 
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatesmokesensor.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatesmokesensor.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString(); // return nothing
+    http.end();
+
+    postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/mail/sendForAll.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
     http.end();
   }
 }
-
-void smoke_sensor_get()
+/// @brief /////////////////////
+void smoke_sensor_get(JSONVar myObject)
 {
-  if (smk.ison() == true && WiFi.status() == WL_CONNECTED) // there is fire, and the user still didn't tell me that he managed the situation
+  if (smk.ison() == true) // there is fire, and the user still didn't tell me that he managed the situation
   {
-    HTTPClient http;
-    int httpCode;
-    postData = "id=esp1";
-    payload = "";
-    http.begin("http://192.168.8.110/GP/back/getsmokesensor.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    http.end();
-    JSONVar myObject = JSON.parse(payload);
-    if (JSON.typeof(myObject) == "undefined")
-    {
-      return;
-    }
-
     if (strcmp(myObject["fire"], "false") == 0)
     {
       smk.endAlarm();
@@ -108,17 +104,97 @@ void smoke_sensor_get()
   }
 }
 
-void door_get()
+void door_get(JSONVar myObject)
+{
+  HTTPClient http;
+  int httpCode;
+  if (strcmp(myObject["doorflag"], "1") == 0)
+  {
+    String doorstate;
+    if (strcmp(myObject["doorstate"], "open") == 0)
+    {
+      myStepper.step(666);
+      doorstate = "open";
+    }
+    else if (strcmp(myObject["doorstate"], "closed") == 0)
+    {
+      myStepper.step(-666);
+      doorstate = "closed";
+    }
+    postData = "id=esp1";
+    postData += "&state=" + doorstate;
+    postData += "&flag=0";
+    postData += "&password=" + authorizationPassword;
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/controlData/controldoor.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString(); // returns nothing
+    http.end();
+  }
+}
+
+void lcd_get(JSONVar myObject)
+{
+  if (strcmp(myObject["fire"], "true") == 0) // there is fire, and the user still didn't tell me that he managed the situation(didn't change the value in the data base)
+  {
+    printFire();
+  }
+  else
+  {
+    if (strcmp(myObject["show"], "temp") == 0)
+    {
+      printTemp();
+    }
+    if (strcmp(myObject["show"], "time") == 0)
+    {
+      String time = JSON.stringify(myObject["time"]);
+      String date = JSON.stringify(myObject["date"]);
+
+      printTime(time, date);
+    }
+  }
+}
+
+void bed_time_get(JSONVar myObject)
+{
+
+  HTTPClient http;
+  int httpCode;
+
+  if (JSON.stringify(myObject["bedflag"]) == "1")
+  {
+
+    bedtime.undo();
+    postData = "id=esp1";
+    postData += "&flag=0";
+    postData += "&password=" + authorizationPassword;
+
+    payload = "";
+    http.begin("http://192.168.8.110/GP/back/controlData/controlbedcommand.php");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpCode = http.POST(postData);
+    payload = http.getString();
+    http.end();
+  }
+}
+
+void get_others()
 {
   if (WiFi.status() == WL_CONNECTED)
   {
     HTTPClient http;
     int httpCode;
     postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/controldoor.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/getothers.php");
+
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
     httpCode = http.POST(postData);
+
     payload = http.getString();
     http.end();
     JSONVar myObject = JSON.parse(payload);
@@ -127,68 +203,29 @@ void door_get()
     {
       return;
     }
-    if (strcmp(myObject["flag"], "1") == 0)
-    {
-      String doorstate;
-      if (strcmp(myObject["state"], "open") == 0)
-      {
-        myStepper.step(100);
-        doorstate = "open";
-      }
-      else if (strcmp(myObject["state"], "closed") == 0)
-      {
-        myStepper.step(-100);
-        doorstate = "closed";
-      }
-      postData = "id=esp1";
-      postData += "&state=" + doorstate;
-      postData += "&flag=0";
-      payload = "";
-      http.begin("http://192.168.8.110/GP/back/controldoor.php");
-      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-      httpCode = http.POST(postData);
-      payload = http.getString(); // returns nothing
-      http.end();
-    }
+
+    smoke_sensor_get(myObject); ///////////
+    door_get(myObject);         ////////////////
+    lcd_get(myObject);          /////////////////
+    bed_time_get(myObject);     //////////////
   }
 }
 
-void lcd_get()
-{
-  if (lcdTimer.clause() && WiFi.status() == WL_CONNECTED) // there is fire, and the user still didn't tell me that he managed the situation
+void check_connection(){
+   if (connectionTimer.clause() && WiFi.status() == WL_CONNECTED)
   {
     HTTPClient http;
     int httpCode;
+
     postData = "id=esp1";
+    postData += "&password=" + authorizationPassword;
+    postData += "&send=yes";
+
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/getlcd.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/controlconnection.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
-    payload = http.getString();
+    payload = http.getString(); // return nothing
     http.end();
-    JSONVar myObject = JSON.parse(payload);
-    if (JSON.typeof(myObject) == "undefined")
-    {
-      return;
-    }
-
-    if (strcmp(myObject["fire"], "true") == 0)
-    {
-      printFire();
-    }
-    else
-    {
-      if (strcmp(myObject["show"], "temp") == 0)
-      {
-        printTemp();
-      }
-      if (strcmp(myObject["show"], "time") == 0)
-      {
-        String time = JSON.stringify(myObject["time"]);
-        String date = JSON.stringify(myObject["date"]);
-
-        printTime(time, date);
-      }
-    }
   }
 }

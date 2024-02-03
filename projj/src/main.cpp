@@ -28,14 +28,6 @@ void setup()
 
 void loop()
 {
- if (Serial.available() > 0) {
-    String userInput = Serial.readStringUntil('\n'); 
-
-    int steps = userInput.toInt();
-
-    myStepper.step(steps);
-  }
-
   getdata();
   ///////////////////////////////////////////////////////////////////////
   room1toggles(); // toggles the rgb led using the button
