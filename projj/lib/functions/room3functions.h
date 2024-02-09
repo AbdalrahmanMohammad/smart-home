@@ -1,9 +1,6 @@
 
-void control_room3_tv()
+void control_room3_tv(JSONVar myObject)
 {
-
-  JSONVar myObject = JSON.parse(payload);
-
   if (JSON.typeof(myObject) == "undefined")
   {
     return;
@@ -20,8 +17,10 @@ void control_room3_tv()
     postData = "id=esp1";
     postData += "&roomID=3";
     postData += "&signal_value=-1";
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetv.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetv.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -42,8 +41,10 @@ void control_room3_tv()
     postData += "&table=tv";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetimer.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -51,11 +52,8 @@ void control_room3_tv()
   }
 }
 
-void control_room3_led()
+void control_room3_led(JSONVar myObject)
 {
-
-  JSONVar myObject = JSON.parse(payload);
-
   if (JSON.typeof(myObject) == "undefined")
   {
     return;
@@ -84,8 +82,10 @@ void control_room3_led()
     postData += "&table=led";
     postData += "&timer=-1";
     postData += "&flag=no"; // this flag to tell updatetimer page not to update timer_time just to update timer.
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatetimer.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatetimer.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString();
@@ -93,39 +93,10 @@ void control_room3_led()
   }
 }
 
-void room3get()
+void room3get(JSONVar tv3Obj, JSONVar led3Obj)
 {
-  if (WiFi.status() == WL_CONNECTED) // for tv
-  {
-    HTTPClient http;
-    int httpCode;
-    postData = "id=esp1";
-    postData += "&table=tv";
-    postData += "&roomID=3";
-    payload = "";
-    http.begin("http://192.168.8.110/GP/back/getdata.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    http.end();
-    control_room3_tv();
-  }
-
-    if (WiFi.status() == WL_CONNECTED) // for led
-  {
-    HTTPClient http;
-    int httpCode;
-    postData = "id=esp1";
-    postData += "&table=led";
-    postData += "&roomID=3";
-    payload = "";
-    http.begin("http://192.168.8.110/GP/back/getdata.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpCode = http.POST(postData);
-    payload = http.getString();
-    http.end();
-    control_room3_led();
-  }
+  control_room3_tv(tv3Obj);
+  control_room3_led(led3Obj);
 }
 
 void room3send()
@@ -145,10 +116,12 @@ void room3send()
     postData += "&roomID=3";
     postData += "&table=led";
     postData += "&changed_by=";
-    postData+= (room3.ledbuttonclickedbytimer ? "timer" : "button");
+    postData += (room3.ledbuttonclickedbytimer ? "timer" : "button");
     postData += "&state=" + LED_State;
+    postData += "&password=" + authorizationPassword;
+
     payload = "";
-    http.begin("http://192.168.8.110/GP/back/updatestate.php");
+    http.begin("http://192.168.8.110/GP/back/controlData/updatestate.php");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     httpCode = http.POST(postData);
     payload = http.getString(); // return nothing
